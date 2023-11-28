@@ -51,21 +51,21 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     /*-----------------------End User Management-----------------------------*/
 
     /*-----------------------Config Management-----------------------------*/
+    Route::get('settings/chart-of-account','Apps\ConfigurationController@coaIndex')->name('coas.index');
+    Route::post('settings/chart-of-account/create','Apps\ConfigurationController@coaStore')->name('coas.store');
+    Route::get('settings/chart-of-account/edit/{id}','Apps\ConfigurationController@coaEdit')->name('coas.edit');
+    Route::post('settings/chart-of-account/update/{id}','Apps\ConfigurationController@coaUpdate')->name('coas.update');
+    Route::post('settings/chart-of-account/delete/{id}','Apps\ConfigurationController@coaDestroy')->name('coas.destroy');
+    Route::get('settings/branch','Apps\ConfigurationController@branchIndex')->name('branch.index');
+    Route::post('settings/branch/create','Apps\ConfigurationController@branchStore')->name('branch.store');
+    Route::get('settings/branch/edit/{id}','Apps\ConfigurationController@branchEdit')->name('branch.edit');
+    Route::post('settings/branch/update/{id}','Apps\ConfigurationController@branchUpdate')->name('branch.update');
+    Route::post('settings/branch/delete/{id}','Apps\ConfigurationController@branchDestroy')->name('branch.destroy');
     Route::get('settings/warehouse','Apps\ConfigurationController@warehouseIndex')->name('warehouse.index');
     Route::post('settings/warehouse/create','Apps\ConfigurationController@warehouseStore')->name('warehouse.store');
     Route::get('settings/warehouse/edit/{id}','Apps\ConfigurationController@warehouseEdit')->name('warehouse.edit');
     Route::post('settings/warehouse/update/{id}','Apps\ConfigurationController@warehouseUpdate')->name('warehouse.update');
     Route::post('settings/warehouse/delete/{id}','Apps\ConfigurationController@warehouseDestroy')->name('warehouse.destroy');
-    Route::get('settings/payment-methods','Apps\ConfigurationController@methodIndex')->name('pay-method.index');
-    Route::post('settings/payment-methods/create','Apps\ConfigurationController@methodStore')->name('pay-method.store');
-    Route::get('settings/payment-methods/edit/{id}','Apps\ConfigurationController@methodEdit')->name('pay-method.edit');
-    Route::post('settings/payment-methods/update/{id}','Apps\ConfigurationController@methodUpdate')->name('pay-method.update');
-    Route::post('settings/payment-methods/delete/{id}','Apps\ConfigurationController@methodDestroy')->name('pay-method.destroy');
-    Route::get('settings/payment-terms','Apps\ConfigurationController@termIndex')->name('pay-term.index');
-    Route::post('settings/payment-terms/create','Apps\ConfigurationController@termStore')->name('pay-term.store');
-    Route::get('settings/payment-terms/edit/{id}','Apps\ConfigurationController@termEdit')->name('pay-term.edit');
-    Route::post('settings/payment-terms/update/{id}','Apps\ConfigurationController@termUpdate')->name('pay-term.update');
-    Route::post('settings/payment-terms/delete/{id}','Apps\ConfigurationController@termDestroy')->name('pay-term.destroy');
     Route::get('settings/uom-category','Apps\ConfigurationController@uomcatIndex')->name('uom-cat.index');
     Route::post('settings/uom-category/create','Apps\ConfigurationController@uomcatStore')->name('uom-cat.store');
     Route::get('settings/uom-category/edit/{id}','Apps\ConfigurationController@uomcatEdit')->name('uom-cat.edit');
@@ -76,11 +76,6 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('settings/uom-value/edit/{id}','Apps\ConfigurationController@uomvalEdit')->name('uom-val.edit');
     Route::post('settings/uom-value/update/{id}','Apps\ConfigurationController@uomvalUpdate')->name('uom-val.update');
     Route::post('settings/uom-value/delete/{id}','Apps\ConfigurationController@uomvalDestroy')->name('uom-val.destroy');
-    Route::get('settings/delivery-services','Apps\ConfigurationController@deliveryServiceIndex')->name('delivery-service.index');
-    Route::post('settings/delivery-services/create','Apps\ConfigurationController@deliveryServiceStore')->name('delivery-service.store');
-    Route::get('settings/delivery-service/edit/{id}','Apps\ConfigurationController@deliveryServiceEdit')->name('delivery-service.edit');
-    Route::post('settings/delivery-service/update/{id}','Apps\ConfigurationController@deliveryServiceUpdate')->name('delivery-service.update');
-    Route::post('settings/delivery-service/delete/{id}','Apps\ConfigurationController@deliveryServiceDelete')->name('delivery-service.destroy');
 
     /*-----------------------End Config Management-----------------------------*/
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentTermsTable extends Migration
+class CreateChartOfAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreatePaymentTermsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_terms', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::create('chart_of_accounts', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('coa_code');
+            $table->string('coa_name');
             $table->uuid('created_by');
             $table->uuid('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreatePaymentTermsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_terms');
+        Schema::dropIfExists('chart_of_accounts');
     }
 }

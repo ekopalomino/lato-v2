@@ -9,33 +9,36 @@
             <li class="nav-item {{ set_active('dashboard.index') }}">
                 <a href="{{ route('dashboard.index') }}" class="nav-link">
                     <i class="icon-home"></i>
-                    <span class="title">Beranda</span>
+                    <span class="title">Dashboard</span>
                     <span class="selected"></span>
                 </a>
             </li>
             @can('Can Access Settings')
-            <li class="nav-item {{ set_active(['warehouse.index','uom-cat.index','uom-val.index','pay-method.index','pay-term.index','delivery-service.index']) }}">
+            <li class="nav-item {{ set_active(['coas.index','branch.index','warehouse.index','uom-cat.index','uom-val.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
-                    <span class="title">Konfigurasi Umum</span>
+                    <span class="title">Configuration</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    @can('Disable')
-                    <li class="nav-item {{ set_active(['warehouse.index']) }}">
-                        <a href="{{ route('warehouse.index') }}" class="nav-link">
-                            <span class="title">Data Gudang</span>
+                    <li class="nav-item {{ set_active(['coas.index']) }}">
+                        <a href="{{ route('coas.index') }}" class="nav-link">
+                            <span class="title">Chart of Account</span>
                         </a>
                     </li>
-                    @endcan
-                    <li class="nav-item {{ set_active(['delivery-service.index']) }}">
-                        <a href="{{ route('delivery-service.index') }}" class="nav-link">
-                            <span class="title">Jasa Pengiriman</span>
+                    <li class="nav-item {{ set_active(['branch.index']) }}">
+                        <a href="{{ route('branch.index') }}" class="nav-link">
+                            <span class="title">Branch</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ set_active(['warehouse.index']) }}">
+                        <a href="{{ route('warehouse.index') }}" class="nav-link">
+                            <span class="title">Warehouse</span>
                         </a>
                     </li>
                     <li class="nav-item {{ set_active(['uom-cat.index','uom-val.index']) }}">
                         <a href="javascript:;" class="nav-link nav-toggle">
-                            <span class="title">Satuan Ukur</span>
+                            <span class="title">Unit of Measurement</span>
                             <span class="arrow"></span>
                         </a>
                         <ul class="sub-menu">
@@ -50,25 +53,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item {{ set_active(['pay-method.index','pay-term.index']) }}">
-                        <a href="javascript:;" class="nav-link nav-toggle">
-                            <span class="title">Kategori Pembayaran</span>
-                            <span class="arrow"></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="nav-item {{ set_active(['pay-method.index']) }}">
-                                <a href="{{ route('pay-method.index') }}" class="nav-link ">
-                                    <span class="title">Metode</span>
-                                </a>
-                            </li>
-                            <li class="nav-item {{ set_active(['pay-term.index']) }}">
-                                <a href="{{ route('pay-term.index') }}" class="nav-link ">
-                                    <span class="title">Jangka Waktu</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>                                    
+                    </li>                                   
                 </ul>
             </li>
             @endcan

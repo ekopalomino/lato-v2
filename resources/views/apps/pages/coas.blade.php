@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Jasa Pengiriman
+ATK Management | Chart of Account
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Jasa Pengiriman
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Jasa Pengiriman
+                        <i class="fa fa-database"></i>Chart of Account
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -28,40 +28,44 @@ FiberTekno | Jasa Pengiriman
                                 </ul>
                         </div>
                     @endif
-                    @can('Can Create Setting')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
                                 </td>
                             </tr>
                         </div>
                     </div>
-                    @endcan
                     <div class="col-md-6">
                         <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    {!! Form::open(array('route' => 'delivery-service.store','method'=>'POST')) !!}
+                                    {!! Form::open(array('route' => 'coas.store','method'=>'POST')) !!}
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Jasa Pengiriman Baru</h4>
+                                        <h4 class="modal-title">Chart of Account</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nama Jasa Pengiriman</label>
-                                                    {!! Form::text('delivery_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                                                    <label class="control-label">COA Code</label>
+                                                    {!! Form::text('coa_code', null, array('placeholder' => 'COA Code','class' => 'form-control')) !!}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">COA Name</label>
+                                                    {!! Form::text('coa_name', null, array('placeholder' => 'COA Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                         </div>  
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button id="register" type="submit" class="btn green">Save</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -72,10 +76,11 @@ FiberTekno | Jasa Pengiriman
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Jasa Pengiriman</th>
-                                <th>Dibuat</th>
-                                <th>Diubah</th>
-                				<th>Tgl Dibuat</th>
+                				<th>Code</th>
+                                <th>Chart of Account</th>
+                                <th>Status</th>
+                                <th>Create / Update</th>
+                				<th>Data Date</th>
                 				<th></th>
                 			</tr>
                 		</thead>
@@ -83,13 +88,26 @@ FiberTekno | Jasa Pengiriman
                             @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                				<td>{{ $val->delivery_name }}</td>
-                                <td>{{ $val->created_by }}</td>
-                                <td>{{ $val->updated_by }}</td>
-                				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
+                				<td>{{ $val->coa_code }}</td>
+                                <td>{{ $val->coa_name }}</td>
+                                <td>
+                                    @if(!empty($val->deleted_at))
+                                    <label class="label label-sm label-danger">Inactive</label>
+                                    @else
+                                    <label class="label label-sm label-info">Active</label>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!empty($val->updated_by))    
+                                    {{ $val->Editor->name }}
+                                    @else
+                                    {{ $val->Author->name }}
+                                    @endif
+                                </td>
+                				<td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                 				<td>
-                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@deliveryServiceEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    {!! Form::open(['method' => 'POST','route' => ['delivery-service.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
+                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@coaEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    {!! Form::open(['method' => 'POST','route' => ['warehouse.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Data']) !!}
                                     {!! Form::close() !!}
                                 </td>
@@ -114,7 +132,7 @@ FiberTekno | Jasa Pengiriman
 <script>
     function ConfirmDelete()
     {
-    var x = confirm("Yakin Data Akan Dihapus?");
+    var x = confirm("Data Will Be Delete?");
     if (x)
         return true;
     else

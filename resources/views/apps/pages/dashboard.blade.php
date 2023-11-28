@@ -45,6 +45,7 @@ FiberTekno | Dashboard
         chart.draw(data, options);
     }
 </script>
+@endsection
 @section('content')
 <div class="page-content">
 	<div class="row">

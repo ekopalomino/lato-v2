@@ -18,18 +18,22 @@
             <div class="row">
             	<div class="col-md-12">
                 	<div class="form-group">
-                		<label class="control-label">Nama Gudang</label>
+                		<label class="control-label">Warehouse Name</label>
                 		{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                 	</div>
                     <div class="form-group">
-                        <label class="control-label">Jenis Gudang</label>
-                        {!! Form::select('type', array('0'=>'Please Select','1'=>'Gudang Stok','2'=>'Gudang Penjualan', '3'=>'Gudang Scrap', '4'=>'Gudang Bahan Baku'),old('type'), array('class' => 'form-control')) !!}
+                        <label class="control-label">Branch</label>
+                        {!! Form::select('branch_id', $branches,old('branch_id'), array('class' => 'form-control')) !!}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Chart of Account</label>
+                        {!! Form::select('account_id', $accounts,old('account_id'), array('class' => 'form-control')) !!}
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                <button id="register" type="submit" class="btn green">Save changes</button>
+                <button id="register" type="submit" class="btn green">Update</button>
             </div>
             {!! Form::close() !!}
 		</div>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentMethodsTable extends Migration
+class CreateBranchesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreatePaymentMethodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_methods', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->uuid('created_by');
-            $table->uuid('updated_by')->nullable();
+        Schema::create('branches', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('branch_name');
+            $table->timestamp('deleted_at');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreatePaymentMethodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('branches');
     }
 }

@@ -13,19 +13,23 @@
     @endif 
 	<div class="row">
 		<div class="col-md-12">
-			{!! Form::model($data, ['method' => 'POST','route' => ['delivery-service.update', $data->id]]) !!}
+			{!! Form::model($data, ['method' => 'POST','route' => ['coas.update', $data->id]]) !!}
             @csrf
             <div class="row">
             	<div class="col-md-12">
                 	<div class="form-group">
-                		<label class="control-label">Nama Jasa Pengiriman</label>
-                		{!! Form::text('delivery_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                		<label class="control-label">COA Code</label>
+                		{!! Form::text('coa_code', null, array('placeholder' => 'COA Code','class' => 'form-control')) !!}
+                	</div>
+                    <div class="form-group">
+                		<label class="control-label">COA Name</label>
+                		{!! Form::text('coa_name', null, array('placeholder' => 'COA Name','class' => 'form-control')) !!}
                 	</div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                <button id="register" type="submit" class="btn green">Save changes</button>
+                <button id="register" type="submit" class="btn green">Update</button>
             </div>
             {!! Form::close() !!}
 		</div>

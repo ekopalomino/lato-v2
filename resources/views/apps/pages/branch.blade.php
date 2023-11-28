@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Termin Pembayaran
+ATK Management | Branch
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Termin Pembayaran
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Termin Pembayaran 
+                        <i class="fa fa-database"></i>Branch
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -28,40 +28,38 @@ FiberTekno | Termin Pembayaran
                                 </ul>
                         </div>
                     @endif
-                    @can('Can Create Setting')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
                                 </td>
                             </tr>
                         </div>
                     </div>
-                    @endcan
                     <div class="col-md-6">
                         <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    {!! Form::open(array('route' => 'pay-term.store','method'=>'POST')) !!}
+                                    {!! Form::open(array('route' => 'branch.store','method'=>'POST')) !!}
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Termin Pembayaran Baru</h4>
+                                        <h4 class="modal-title">Chart of Account</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nama Termin</label>
-                                                    {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                                                    <label class="control-label">Branch Name</label>
+                                                    {!! Form::text('branch_name', null, array('placeholder' => 'Branch Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                         </div>  
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button id="register" type="submit" class="btn green">Save</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -72,9 +70,10 @@ FiberTekno | Termin Pembayaran
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Nama Termin</th>
-                                <th>Dibuat</th>
-                				<th>Tgl Dibuat</th>
+                				<th>Branch Name</th>
+                                <th>Status</th>
+                                <th>Create / Update</th>
+                				<th>Data Date</th>
                 				<th></th>
                 			</tr>
                 		</thead>
@@ -82,12 +81,25 @@ FiberTekno | Termin Pembayaran
                             @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                				<td>{{ $val->name }}</td>
-                                <td>{{ $val->created_by }}</td>
-                				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
+                				<td>{{ $val->branch_name }}</td>
+                                <td>
+                                    @if(!empty($val->deleted_at))
+                                    <label class="label label-sm label-danger">Inactive</label>
+                                    @else
+                                    <label class="label label-sm label-info">Active</label>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!empty($val->updated_by))    
+                                    {{ $val->Editor->name }}
+                                    @else
+                                    {{ $val->Author->name }}
+                                    @endif
+                                </td>
+                				<td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                 				<td>
-                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@termEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    {!! Form::open(['method' => 'POST','route' => ['pay-term.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
+                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@branchEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    {!! Form::open(['method' => 'POST','route' => ['warehouse.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Data']) !!}
                                     {!! Form::close() !!}
                                 </td>
@@ -112,7 +124,7 @@ FiberTekno | Termin Pembayaran
 <script>
     function ConfirmDelete()
     {
-    var x = confirm("Yakin Data Akan Dihapus?");
+    var x = confirm("Data Will Be Delete?");
     if (x)
         return true;
     else

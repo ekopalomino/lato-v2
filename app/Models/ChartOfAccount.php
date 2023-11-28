@@ -4,12 +4,14 @@ namespace iteos\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentTerm extends Model
+class ChartOfAccount extends Model
 {
     protected $fillable = [
-        'name',
+        'coa_code',
+        'coa_name',
         'created_by',
         'updated_by',
+        'deleted_at',
     ];
 
     public function Author()

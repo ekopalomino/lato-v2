@@ -13,19 +13,19 @@
     @endif 
 	<div class="row">
 		<div class="col-md-12">
-			{!! Form::model($data, ['method' => 'POST','route' => ['pay-term.update', $data->id]]) !!}
+			{!! Form::model($data, ['method' => 'POST','route' => ['branch.update', $data->id]]) !!}
             @csrf
             <div class="row">
             	<div class="col-md-12">
                 	<div class="form-group">
-                		<label class="control-label">Name</label>
-                		{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                		<label class="control-label">Branch Name</label>
+                		{!! Form::text('branch_name', null, array('placeholder' => 'Branch Name','class' => 'form-control')) !!}
                 	</div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                <button id="register" type="submit" class="btn green">Save changes</button>
+                <button id="register" type="submit" class="btn green">Update</button>
             </div>
             {!! Form::close() !!}
 		</div>

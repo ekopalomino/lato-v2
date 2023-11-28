@@ -4,12 +4,13 @@ namespace iteos\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model
+class Branch extends Model
 {
     protected $fillable = [
-        'name',
+        'branch_name',
         'created_by',
         'updated_by',
+        'deleted_at',
     ];
 
     public function Author()

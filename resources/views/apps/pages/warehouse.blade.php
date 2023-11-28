@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Gudang
+ATK Management | Warehouse
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Gudang
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Gudang 
+                        <i class="fa fa-database"></i>Warehouse
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -28,17 +28,15 @@ FiberTekno | Gudang
                                 </ul>
                         </div>
                     @endif
-                    @can('Disable')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
                                 </td>
                             </tr>
                         </div>
                     </div>
-                    @endcan
                     <div class="col-md-6">
                         <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
@@ -47,21 +45,33 @@ FiberTekno | Gudang
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Data Gudang Baru</h4>
+                                        <h4 class="modal-title">New Warehouse</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nama Gudang</label>
+                                                    <label class="control-label">Warehouse Name</label>
                                                     {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Branch</label>
+                                                    {!! Form::select('branch_id', [null=>'Please Select'] + $branches,[], array('class' => 'form-control')) !!}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Chart of Account</label>
+                                                    {!! Form::select('account_id', [null=>'Please Select'] + $accounts,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                         </div>  
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button id="register" type="submit" class="btn green">Save</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -72,9 +82,12 @@ FiberTekno | Gudang
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Nama Gudang</th>
-                                <th>Dibuat</th>
-                				<th>Tgl Dibuat</th>
+                				<th>Warehouse Name</th>
+                                <th>Branch</th>
+                                <th>Chart of Account</th>
+                                <th>Status</th>
+                                <th>Create / Update</th>
+                				<th>Data Date</th>
                 				<th></th>
                 			</tr>
                 		</thead>
@@ -83,7 +96,22 @@ FiberTekno | Gudang
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $val->name }}</td>
-                                <td>{{ $val->created_by }}</td>
+                                <td>{{ $val->Branches->branch_name }}</td>
+                                <td>{{ $val->Coas->coa_name }}</td>
+                                <td>
+                                    @if(!empty($val->deleted_at))
+                                    <label class="label label-sm label-danger">Inactive</label>
+                                    @else
+                                    <label class="label label-sm label-info">Active</label>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!empty($val->updated_by))    
+                                    {{ $val->Editor->name }}
+                                    @else
+                                    {{ $val->Author->name }}
+                                    @endif
+                                </td>
                 				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
                 				<td>
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@warehouseEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>

@@ -2,17 +2,17 @@
 
 namespace iteos\Models;
 
-use iteos\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Warehouse extends Model
 {
-    use Uuid;
-    
     protected $fillable = [
+        'account_id',
+        'branch_id',
         'name',
         'created_by',
         'updated_by',
+        'deleted_at'
     ];
 
     public $incrementing = false;
@@ -25,5 +25,15 @@ class Warehouse extends Model
     public function Editor()
     {
         return $this->belongsTo(User::class,'updated_by');
+    }
+
+    public function Coas()
+    {
+        return $this->belongsTo(ChartOfAccount::class,'account_id');
+    }
+
+    public function Branches()
+    {
+        return $this->belongsTo(Branch::class,'branch_id');
     }
 }
