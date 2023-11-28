@@ -1,13 +1,13 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Fiber Tekno | Edit Product
+ATK Management | Edit Product
 @endsection
 @section('content')
 <div class="page-content">
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> Edit Product Form 
+                <i class="fa fa-database"></i> Edit Product 
             </div>
         </div>
         <div class="portlet-body form">
@@ -25,9 +25,9 @@ Fiber Tekno | Edit Product
                 @csrf
                 <div class="form-body">
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Product Barcode</label>
+                        <label class="col-md-3 control-label">SAP Code</label>
                         <div class="col-md-4">
-                            {!! Form::text('product_barcode', null, array('placeholder' => 'Product Barcode','class' => 'form-control')) !!}
+                            {!! Form::text('sap_code', null, array('placeholder' => 'SAP Code','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -40,12 +40,6 @@ Fiber Tekno | Edit Product
                         <label class="col-md-3 control-label">Product Category</label>
                         <div class="col-md-4">
                             {!! Form::select('category_id', $categories,old('category_id'), array('class' => 'form-control')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Product Supplier</label>
-                        <div class="col-md-4">
-                            {!! Form::select('supplier_id', $vendors,old('supplier_id'), array('class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -63,13 +57,7 @@ Fiber Tekno | Edit Product
                     <div class="form-group">
                         <label class="col-md-3 control-label">Product Cost Price</label>
                         <div class="col-md-4">
-                            {!! Form::text('base_price', null, array('placeholder' => 'Product Cost Price','class' => 'form-control')) !!} 
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Product Sale Price</label>
-                        <div class="col-md-4">
-                            {!! Form::text('sale_price', null, array('placeholder' => 'Product Sale Price','class' => 'form-control')) !!}
+                            {!! Form::text('price', null, array('placeholder' => 'Product Cost Price','class' => 'form-control')) !!} 
                         </div>
                     </div>
                     <div class="form-group">
@@ -79,21 +67,15 @@ Fiber Tekno | Edit Product
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Produk Manufaktur</label>
+                        <label class="col-md-3 control-label">Product Specification</label>
                         <div class="col-md-4">
-                            {!! Form::checkbox('is_manufacture') !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Produk Bisa Dijual Terpisah</label>
-                        <div class="col-md-4">
-                            {!! Form::checkbox('is_sale') !!}
+                            {!! Form::textarea('specification', null, array('placeholder' => 'Product Specification','class' => 'form-control')) !!} 
                         </div>
                     </div>
                     <div class="form-actions right">
                         <a button type="button" class="btn default" href="{{ route('product.index') }}">Cancel</a>
                         <button type="submit" class="btn blue">
-                        <i class="fa fa-check"></i> Save</button>
+                        <i class="fa fa-check"></i> Update</button>
                     </div>
                 </div>
             {!! Form::close() !!}

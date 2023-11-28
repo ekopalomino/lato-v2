@@ -84,26 +84,21 @@
             </li>
             @endcan
             @can('Can Access Products')
-            <li class="nav-item {{ set_active(['product-cat.index','product.index','product.create','product.edit','product-bom.index','product-bom.create','product.show','product.barcode']) }}">
+            <li class="nav-item {{ set_active(['product-cat.index','product.index','product.create','product.edit']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-social-dropbox"></i>
-            		<span class="title">Produk</span>
+            		<span class="title">Product</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                	<li class="nav-item {{ set_active(['product.index','product.create','product.edit','product-bom.index','product-bom.create','product.show']) }}">
+                	<li class="nav-item {{ set_active(['product.index','product.create','product.edit']) }}">
                 		<a href="{{ route('product.index') }}" class="nav-link ">
-                            <span class="title">Data Produk</span>
+                            <span class="title">Product Catalog</span>
                         </a>
                     </li>
                     <li class="nav-item {{ set_active(['product-cat.index']) }}">
                 		<a href="{{ route('product-cat.index') }}" class="nav-link ">
-                            <span class="title">Kategori Produk</span>
-                        </a>
-                    </li>
-                    <li class="nav-item {{ set_active(['product.barcode']) }}">
-                        <a href="{{ route('product.barcode') }}" class="nav-link ">
-                            <span class="title">Produk Barcode</span>
+                            <span class="title">Product Category</span>
                         </a>
                     </li>
                 </ul>

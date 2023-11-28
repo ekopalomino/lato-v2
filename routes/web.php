@@ -88,19 +88,9 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('products','Apps\ProductManagementController@productIndex')->name('product.index');
     Route::get('products/create','Apps\ProductManagementController@productCreate')->name('product.create');
     Route::post('products/store','Apps\ProductManagementController@productStore')->name('product.store');
-    Route::get('products/show/{id}','Apps\ProductManagementController@productShow')->name('product.show');
-    Route::get('products/show/print/{id}','Apps\ProductManagementController@productPdf')->name('product.pdf');
-    Route::get('products/barcode','Apps\ProductManagementController@productBarcode')->name('product.barcode');
-    Route::get('products/barcode/pdf','Apps\ProductManagementController@barcodePdf')->name('barcode.pdf');
     Route::get('products/edit/{id}','Apps\ProductManagementController@productEdit')->name('product.edit');
     Route::post('products/update/{id}','Apps\ProductManagementController@productUpdate')->name('product.update');
     Route::post('products/delete/{id}','Apps\ProductManagementController@productDestroy')->name('product.destroy');
-    Route::get('products/bom','Apps\ProductManagementController@indexBom')->name('product-bom.index');
-    Route::get('products/bom/create/{id}','Apps\ProductManagementController@createBom')->name('product-bom.create');
-    Route::post('products/bom/store','Apps\ProductManagementController@storeBom')->name('product-bom.store');
-    Route::get('products/bom/edit/{id}','Apps\ProductManagementController@editBom')->name('product-bom.edit');
-    Route::post('products/bom/update/{id}','Apps\ProductManagementController@updateBom')->name('product-bom.update');
-    Route::post('products/bom/delete/{id}','Apps\ProductManagementController@destroyBom')->name('product-bom.destroy');
     /*-----------------------End Product Management--------------------------------*/
 
     /*-----------------------Contact Management------------------------------------*/ 

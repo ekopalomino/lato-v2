@@ -102,7 +102,7 @@ ATK Management | Warehouse
                                     @if(!empty($val->deleted_at))
                                     <label class="label label-sm label-danger">Inactive</label>
                                     @else
-                                    <label class="label label-sm label-info">Active</label>
+                                    <label class="label label-sm label-success">Active</label>
                                     @endif
                                 </td>
                                 <td>
@@ -112,7 +112,7 @@ ATK Management | Warehouse
                                     {{ $val->Author->name }}
                                     @endif
                                 </td>
-                				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
+                				<td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                 				<td>
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@warehouseEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
                                     {!! Form::open(['method' => 'POST','route' => ['warehouse.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}

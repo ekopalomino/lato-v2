@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Kategori Produk
+ATK Management | Product Category
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Kategori Produk
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Kategori Produk 
+                        <i class="fa fa-database"></i>Product Category 
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -23,7 +23,7 @@ FiberTekno | Kategori Produk
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add New </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
                                 </td>
                             </tr>
                         </div>
@@ -43,7 +43,7 @@ FiberTekno | Kategori Produk
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nama Kategori</label>
+                                                    <label class="control-label">Category Name</label>
                                                     {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
@@ -51,7 +51,7 @@ FiberTekno | Kategori Produk
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button id="register" type="submit" class="btn green">Save</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -72,10 +72,11 @@ FiberTekno | Kategori Produk
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Name</th>
-                                <th>Created By</th>
-                				<th>Created At</th>
-                				<th>Action</th>
+                				<th>Category Name</th>
+                                <th>Status</th>
+                                <th>Create / Update</th>
+                				<th>Data Date</th>
+                				<th></th>
                 			</tr>
                 		</thead>
                 		<tbody>
@@ -83,8 +84,21 @@ FiberTekno | Kategori Produk
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $val->name }}</td>
-                                <td>{{ $val->created_by }}</td>
-                				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
+                                <td>
+                                    @if(!empty($val->deleted_at))
+                                    <label class="label label-sm label-danger">Inactive</label>
+                                    @else
+                                    <label class="label label-sm label-success">Active</label>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!empty($val->updated_by))    
+                                    {{ $val->Editor->name }}
+                                    @else
+                                    {{ $val->Author->name }}
+                                    @endif
+                                </td>
+                				<td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                 				<td>
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ProductManagementController@categoryEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
                                     {!! Form::open(['method' => 'POST','route' => ['product-cat.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}

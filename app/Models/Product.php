@@ -10,28 +10,20 @@ class Product extends Model
     use Uuid;
 
     protected $fillable = [
-        'product_barcode',
+        'sap_code',
         'name',
         'category_id',
         'uom_id',
         'image',
-        'supplier_id',
         'min_stock',
-        'base_price',
-        'sale_price',
-        'active',
-        'is_manufacture',
-        'is_sale',
+        'price',
+        'specification',
         'created_by',
         'updated_by',
+        'deleted_at',
     ];
 
     public $incrementing = false;
-
-    public function Suppliers()
-    {
-        return $this->belongsTo(Contact::class,'supplier_id');
-    }
 
     public function Author()
     {
@@ -41,11 +33,6 @@ class Product extends Model
     public function Editor()
     {
         return $this->belongsTo(User::class,'updated_by');
-    }
-
-    public function Statuses()
-    {
-        return $this->belongsTo(Status::class,'active');
     }
 
     public function Categories()
@@ -66,10 +53,5 @@ class Product extends Model
     public function Details()
     {
         return $this->hasMany(ProductBom::class,'product_id');
-    }
-
-    public function Manufactures()
-    {
-        return $this->hasOne(ManufactureItem::class,'item_id');
     }
 }

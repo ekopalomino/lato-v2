@@ -94,7 +94,7 @@ ATK Management | Chart of Account
                                     @if(!empty($val->deleted_at))
                                     <label class="label label-sm label-danger">Inactive</label>
                                     @else
-                                    <label class="label label-sm label-info">Active</label>
+                                    <label class="label label-sm label-success">Active</label>
                                     @endif
                                 </td>
                                 <td>
