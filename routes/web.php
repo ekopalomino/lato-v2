@@ -93,22 +93,6 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::post('products/delete/{id}','Apps\ProductManagementController@productDestroy')->name('product.destroy');
     /*-----------------------End Product Management--------------------------------*/
 
-    /*-----------------------Contact Management------------------------------------*/ 
-    Route::get('customers','Apps\ContactManagementController@customerIndex')->name('customer.index');
-    Route::get('customers/create','Apps\ContactManagementController@customerCreate')->name('customer.create');
-    Route::post('customers/store','Apps\ContactManagementController@customerStore')->name('customer.store');
-    Route::get('customers/edit/{id}','Apps\ContactManagementController@customerEdit')->name('customer.edit');
-    Route::get('customers/show/{id}','Apps\ContactManagementController@customerShow')->name('customer.show');
-    Route::post('customers/update/{id}','Apps\ContactManagementController@customerUpdate')->name('customer.update');
-    Route::post('customers/delete/{id}','Apps\ContactManagementController@customerDestroy')->name('customer.destroy');
-    Route::get('suppliers','Apps\ContactManagementController@supplierIndex')->name('supplier.index');
-    Route::get('suppliers/create','Apps\ContactManagementController@supplierCreate')->name('supplier.create');
-    Route::post('suppliers/store','Apps\ContactManagementController@supplierStore')->name('supplier.store');
-    Route::get('suppliers/show/{id}','Apps\ContactManagementController@supplierShow')->name('supplier.show');
-    Route::get('suppliers/edit/{id}','Apps\ContactManagementController@supplierEdit')->name('supplier.edit');
-    Route::post('suppliers/update/{id}','Apps\ContactManagementController@supplierUpdate')->name('supplier.update');
-    Route::post('suppliers/delete/{id}','Apps\ContactManagementController@supplierDestroy')->name('supplier.destroy');
-
     /*-----------------------Sales Management------------------------------------*/
     Route::get('sales','Apps\SalesManagementController@index')->name('sales.index');
     Route::get('sales/point-of-sale','Apps\SalesManagementController@posIndex')->name('pos.index');
