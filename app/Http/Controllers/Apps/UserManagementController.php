@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use iteos\Http\Controllers\Controller;
 use iteos\Models\User;
 use iteos\Models\Warehouse;
+use iteos\Models\Branch;
 use iteos\Models\Division;
 use iteos\Models\Status;
 use iteos\Models\UserWarehouse;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Carbon\Carbon;
 use Hash;
 use DB;
 use Auth;
@@ -29,10 +31,11 @@ class UserManagementController extends Controller
     {
         $users = User::orderBy('name','asc')
                         ->get();
-        $ukers = Division::pluck('name','id')->toArray();
+        $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
+        $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
         $roles = Role::pluck('name','name')->all();
         
-        return view('apps.pages.users',compact('users','ukers','roles'));
+        return view('apps.pages.users',compact('users','branches','warehouses','roles'));
     }
 
     public function userProfile()
@@ -49,25 +52,19 @@ class UserManagementController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
             'roles' => 'required',
-            'division_id' => 'required',
+            'branch_id' => 'required',
+            'warehouse_id' => 'required',
         ]);
 
         $input = $request->all();
-        $locations = $request->warehouse_name;
         $input['password'] = Hash::make($input['password']);
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
-        foreach($locations as $index=>$location)
-        {
-            $warehouses = UserWarehouse::create([
-                'user_id' => $user->id,
-                'warehouse_name' => $location,
-            ]);
-        }
-        $log = 'User '.($user->name).' Berhasil disimpan';
+        
+        $log = 'User '.($user->name).' Created';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'User '.($user->name).' Berhasil disimpan',
+            'message' => 'User '.($user->name).' Created',
             'alert-type' => 'success'
         );
 
@@ -86,10 +83,10 @@ class UserManagementController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
-        $ukers = Division::pluck('name','id')->toArray();
-        $userLocations = UserWarehouse::where('user_id',$id)->get();
+        $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
+        $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
         
-        return view('apps.edit.users',compact('user','roles','userRole','ukers','userLocations'))->renderSections()['content'];
+        return view('apps.edit.users',compact('user','roles','userRole','branches','warehouses'))->renderSections()['content'];
     }
 
     public function userUpdate(Request $request, $id)
@@ -99,22 +96,12 @@ class UserManagementController extends Controller
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
             'roles' => 'required',
-            'division_id' => 'required',
-            'warehouse_name' => 'required',
+            'branch_id' => 'required',
+            'warehouse_id' => 'required',
         ]);
 
         $input = $request->all(); 
-        $locations = $request->warehouse_name;
-        foreach($locations as $index=>$location)
-        {
-            $userLoc = UserWarehouse::updateOrCreate([
-                'user_id' => $id,
-                'warehouse_name' => $location,
-            ],[
-                'warehouse_name' => $location,
-            ]);
-            
-        }
+        
         if(!empty($input['password'])){ 
             $input['password'] = Hash::make($input['password']);
         }else{
@@ -126,10 +113,10 @@ class UserManagementController extends Controller
         DB::table('model_has_roles')->where('model_id',$id)->delete();        
         $user->assignRole($request->input('roles'));
         
-        $log = 'User '.($user->name).' Berhasil diubah';
+        $log = 'User '.($user->name).' Updated';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'User '.($user->name).' Berhasil diubah',
+            'message' => 'User '.($user->name).' Updated',
             'alert-type' => 'success'
         );
 
@@ -206,16 +193,19 @@ class UserManagementController extends Controller
     public function userDestroy($id)
     {
         $user = User::find($id);
-        
-        $log = 'User '.($user->name).' Dihapus';
+        $destroy = [
+            'deleted_at' => Carbon::now()->toDateTimeString(),
+            'updated_by' => auth()->user()->id,
+        ];
+        $user->update($destroy);
+        $log = 'User '.($user->name).' Deleted';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'User '.($user->name).' Dihapus',
+            'message' => 'User '.($user->name).' Deleted',
             'alert-type' => 'success'
         );
-        $user->delete();
-        return redirect()->route('user.index')
-                        ->with($notification);
+        
+        return redirect()->route('user.index')->with($notification);
     }
 
     public function roleIndex(Request $request)

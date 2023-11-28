@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | User Management
+ATK Managements | Users
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | User Management
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data User 
+                        <i class="fa fa-database"></i>Users 
                     </div>
                     <div class="tools"> </div>
                 </div>
@@ -34,7 +34,7 @@ FiberTekno | User Management
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah User </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
                                 </td>
                             </tr>
                         </div>
@@ -48,13 +48,13 @@ FiberTekno | User Management
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Tambah User Baru</h4>
+                                        <h4 class="modal-title">Add</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nama</label>
+                                                    <label class="control-label">Name</label>
                                                     {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
@@ -84,7 +84,7 @@ FiberTekno | User Management
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Hak Akses</label>
+                                                    <label class="control-label">Access Role</label>
                                                     {!! Form::select('roles[]', [null=>'Please Select'] + $roles,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
@@ -92,44 +92,23 @@ FiberTekno | User Management
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Unit Kerja</label>
-                                                    {!! Form::select('division_id', [null=>'Please Select'] + $ukers,[], array('class' => 'form-control')) !!}
+                                                    <label class="control-label">Branch</label>
+                                                    {!! Form::select('branch_id', [null=>'Please Select'] + $branches,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>                                                              
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Gudang</label>
-                                                    <div class="mt-checkbox-list">
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Utama"> Gudang Utama
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Pengiriman"> Gudang Pengiriman
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Manufaktur"> Gudang Produksi
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Scrap"> Gudang Scrap
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Retur"> Gudang Retur
-                                                            <span></span>
-                                                        </label>
-                                                    </div>
+                                                    <label class="control-label">Warehouse</label>
+                                                    {!! Form::select('warehouse_id', [null=>'Please Select'] + $warehouses,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>                                                              
-                                        </div>   
+                                        </div>  
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button id="register" type="submit" class="btn green">Save</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -140,12 +119,14 @@ FiberTekno | User Management
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Nama</th>
+                				<th>Name</th>
                 				<th>Email</th>
-                				<th>Hak Akses</th>
+                				<th>Access Role</th>
+                                <th>Branch</th>
+                                <th>Warehouse</th>
                 				<th>Status</th>
-                				<th>Login Terakhir</th>
-                				<th>Tgl Dibuat</th>
+                				<th>Last Login</th>
+                				<th>Data Date</th>
                 				<th></th>
                 			</tr>
                 		</thead>
@@ -158,13 +139,23 @@ FiberTekno | User Management
                 				<td>
                                     @if(!empty($user->getRoleNames()))
                                     @foreach($user->getRoleNames() as $v)
-                                    <label class="label label-sm label-success">{{ $v }}</label>
+                                    <label class="label label-sm label-info">{{ $v }}</label>
                                     @endforeach
                                     @endif            
                                 </td>
+                                <td>
+                                    @if(!empty($user->branch_id))
+                                    {{ $user->Branches->branch_name }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!empty($user->warehouse_id))
+                                    {{ $user->Warehouses->name }}
+                                    @endif
+                                </td>
                 				<td>
                                     @if($user->status_id == '2b643e21-a94c-4713-93f1-f1cbde6ad633')
-                                    <label class="label label-sm label-info">{{ $user->Statuses->name }}</label>
+                                    <label class="label label-sm label-success">{{ $user->Statuses->name }}</label>
                                     @else
                                     <label class="label label-sm label-danger">{{ $user->Statuses->name }}</label>
                                     @endif
@@ -178,9 +169,6 @@ FiberTekno | User Management
                 				<td>
                                     <a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\UserManagementController@userShow',['id'=>$user->id]) }}" title="Lihat User" data-toggle="modal" data-target="#modalMd"><i class="fa fa-search"></i></a>
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\UserManagementController@userEdit',['id'=>$user->id]) }}" title="Edit User" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    {!! Form::open(['method' => 'POST','route' => ['user.suspend', $user->id],'style'=>'display:inline','onsubmit' => 'return ConfirmSuspend()']) !!}
-                                    {!! Form::button('<i class="fa fa-close"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Suspend User']) !!}
-                                    {!! Form::close() !!}
                                     {!! Form::open(['method' => 'POST','route' => ['user.destroy', $user->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Suspend User']) !!}
                                     {!! Form::close() !!}
@@ -207,16 +195,6 @@ FiberTekno | User Management
     function ConfirmDelete()
     {
     var x = confirm("User Akan Dihapus?");
-    if (x)
-        return true;
-    else
-        return false;
-    }
-</script>
-<script>
-    function ConfirmSuspend()
-    {
-    var x = confirm("User Akan Dinonaktifkan?");
     if (x)
         return true;
     else

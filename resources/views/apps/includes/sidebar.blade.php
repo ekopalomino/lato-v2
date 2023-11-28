@@ -75,11 +75,6 @@
                             <span class="title">Hak Akses</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ set_active(['uker.index']) }}">
-                        <a href="{{ route('uker.index') }}" class="nav-link ">
-                            <span class="title">Unit Kerja</span>
-                        </a>
-                    </li>
                     <li class="nav-item {{ set_active(['user.log']) }}">
                         <a href="{{ route('user.log') }}" class="nav-link ">
                             <span class="title">Log Aktivitas</span>

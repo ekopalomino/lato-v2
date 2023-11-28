@@ -24,6 +24,8 @@ class User extends Authenticatable
         'password',
         'avatar',
         'division_id',
+        'branch_id',
+        'warehouse_id',
         'status_id',
         'last_login_at',
         'last_login_from',
@@ -59,8 +61,13 @@ class User extends Authenticatable
         return $this->belongsTo(Division::class,'division_id');
     }
 
+    public function Branches()
+    {
+        return $this->belongsTo(Branch::class,'branch_id');
+    }
+
     public function Warehouses()
     {
-        return $this->hasMany(UserWarehouse::class);
+        return $this->belongsTo(Warehouse::class,'warehouse_id');
     }
 }
