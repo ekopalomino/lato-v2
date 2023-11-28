@@ -12179,7 +12179,7 @@ body[ng-controller] .modal {
     border-right: 0;
 }
 .table td, .table th {
-    font-size: 10px;
+    font-size: 12px;
 }
 .flip-scroll table, .table td .img-responsive {
     width: 100%}
@@ -12279,7 +12279,7 @@ body[ng-controller] .modal {
     margin-right: 5px;
 }
 .table thead tr th {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
 }
 .table-advance {

@@ -131,25 +131,17 @@
                 </ul>
             </li>
             @endcan
-            @can('disable')
-            <li class="nav-item {{ set_active(['pos.index']) }}">
-                <a href="{{ route('pos.index') }}" class="nav-link">
-                    <i class="icon-notebook"></i>
-                    <span class="title">Point of Sale</span>
-                </a>
-            </li>
-            @endcan
             @can('Can Access Purchasing')
             <li class="nav-item {{ set_active(['request.create','purchase.index','request.form','purchase.show','request.show']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-basket-loaded"></i>
-                    <span class="title">Purchasing</span>
+                    <span class="title">Product Request</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
                     <li class="nav-item {{ set_active(['purchase.index','request.create','purchase.show','request.show']) }}">
                         <a href="{{ route('purchase.index') }}" class="nav-link">
-                            <span class="title">Permintaan Eksternal</span>
+                            <span class="title">Purchase Request</span>
                             <span class="badge badge-danger">{{$purchases}}</span>
                         </a>
                     </li>
@@ -161,7 +153,7 @@
             ,'delivery.search','delivery.get','transfer.index','add.transfer','deliveryRetur.index','deliveryRetur.search','deliveryRetur.get']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-grid"></i>
-            		<span class="title">Gudang</span>
+            		<span class="title">Inventory</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
