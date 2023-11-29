@@ -65,9 +65,10 @@ ATK Management | Show Request
                             <table class="table table-striped table-bordered table-hover" id="sample_2">
                                 <thead>
                                     <tr>
-                                        <th>Produk</th>
-                                        <th>Jumlah</th>
-                                        <th>Satuan</th>
+                                        <th>Product Name</th>
+                                        <th>Request</th>
+                                        <th>Fulfill</th>
+                                        <th>UOM</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,6 +76,7 @@ ATK Management | Show Request
                                     <tr>
                                         <td>{{ $val->product_name }}</td>
                                         <td>{{ $val->request_qty }}</td>
+                                        <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Amount','class' => 'form-control')) !!}</td>
                                         <td>{{ $val->Uoms->name }}</td>
                                     </tr>
                                     @endforeach
