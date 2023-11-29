@@ -132,16 +132,22 @@
             </li>
             @endcan
             @can('Can Access Purchasing')
-            <li class="nav-item {{ set_active(['request.create','purchase.index','request.form','purchase.show','request.show']) }}">
+            <li class="nav-item {{ set_active(['request.index','request.create','request.show']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-basket-loaded"></i>
                     <span class="title">Product Request</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="nav-item {{ set_active(['purchase.index','request.create','purchase.show','request.show']) }}">
-                        <a href="{{ route('purchase.index') }}" class="nav-link">
+                    <li class="nav-item ">
+                        <a href="" class="nav-link">
                             <span class="title">Purchase Request</span>
+                            <span class="badge badge-danger">{{$purchases}}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ set_active(['request.index','request.create','request.show']) }}">
+                        <a href="{{ route('request.index') }}" class="nav-link">
+                            <span class="title">Internal Request</span>
                             <span class="badge badge-danger">{{$purchases}}</span>
                         </a>
                     </li>

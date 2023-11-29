@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatusesTable extends Migration
+class CreateInventoryRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('inventory_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('request_name');
+            $table->bigInteger('from_wh');
+            $table->bigInteger('to_wh');
+            $table->bigInteger('status_id');
             $table->uuid('created_by');
             $table->uuid('updated_by')->nullable();
+            $table->uuid('approve_by')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ class CreateStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('inventory_requests');
     }
 }

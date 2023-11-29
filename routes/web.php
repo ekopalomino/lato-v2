@@ -111,10 +111,10 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     /*-----------------------End Sales Management------------------------------------*/
 
     /*-----------------------Purchase Management------------------------------------*/
-    Route::get('purchase','Apps\PurchaseManagementController@index')->name('purchase.index');
+    Route::get('request','Apps\PurchaseManagementController@index')->name('request.index');
+    Route::get('request/show/{id}','Apps\PurchaseManagementController@requestShow')->name('request.show');
     Route::get('purchase/request/create','Apps\PurchaseManagementController@requestCreate')->name('request.create');
     Route::post('purchase/request/store','Apps\PurchaseManagementController@requestStore')->name('request.store');
-    Route::get('purchase/request/show/{id}','Apps\PurchaseManagementController@requestShow')->name('request.show');
     Route::get('purchase/request/print/{id}','Apps\PurchaseManagementController@requestPrint')->name('request.print');
     Route::get('purchase/request/edit/{id}','Apps\PurchaseManagementController@requestForm')->name('request.form');
     Route::post('purchase/request/approve/{id}','Apps\PurchaseManagementController@requestApprove')->name('request.approve');

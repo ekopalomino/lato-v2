@@ -4,11 +4,10 @@ namespace iteos\Http\Controllers\Apps;
 
 use Illuminate\Http\Request;
 use iteos\Http\Controllers\Controller;
-use iteos\Models\Contact;
-use iteos\Models\PaymentMethod;
-use iteos\Models\PaymentTerm;
 use iteos\Models\Purchase;
 use iteos\Models\PurchaseItem;
+use iteos\Models\InventoryRequest;
+use iteos\Models\InventoryRequestItem;
 use iteos\Models\Inventory;
 use iteos\Models\InventoryMovement;
 use iteos\Models\Product;
@@ -33,96 +32,86 @@ class PurchaseManagementController extends Controller
 
     public function index()
     {
-        $data = Purchase::orderBy('created_at','DESC')->get();
+        if(auth()->user()->hasAnyPermission(['Can View All Request']))
+        {
+            $data = InventoryRequest::where('to_wh',auth()->user()->branch_id)->orderBy('created_at','DESC')->get();
+        } else {
+            $data = InventoryRequest::where('from_wh',auth()->user()->warehouse_id)->orderBy('created_at','DESC')->get();
+        }
         
-        return view('apps.pages.purchase',compact('data'));
+        return view('apps.pages.request',compact('data'));
     }
 
     public function requestCreate()
     {
-        $suppliers = Contact::where('type_id','2')->get();
         $uoms = UomValue::pluck('name','id')->toArray();
-        $products = Product::orderBy('name','ASC')->get();
+        $products = Product::where('deleted_at',NULL)->pluck('name','id')->toArray();
         $getMonth = Carbon::now()->month;
         $getYear = Carbon::now()->year;
-        $references = Reference::where('type','7')->where('month',$getMonth)->where('year',$getYear)->count();
-        $refs = 'PR/FTI/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+        $references = Reference::where('type','1')->where('month',$getMonth)->where('year',$getYear)->count();
+        $refs = 'REQ/'.auth()->user()->Warehouses->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
 
-        return view('apps.input.purchase',compact('suppliers','uoms','products','refs'));
+        return view('apps.input.request',compact('uoms','products','refs'));
     }
 
     public function requestStore(Request $request)
     {
         $this->validate($request, [
-            'supplier_code' => 'required',
-            'delivery_date' => 'required',
-        ]);
-        $getMonth = Carbon::now()->month;
-        $getYear = Carbon::now()->year;
-        $references = Reference::where('type','7')->where('month',$getMonth)->where('year',$getYear)->count();
-        $ref = 'PR/FTI/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.($request->input('supplier_code')).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
-        $details = Contact::where('ref_id',$request->input('supplier_code'))->first();
-
-        $input = [
-            'order_ref' => $ref,
-            'supplier_code' => $request->input('supplier_code'),
-            'supplier_id' => $details->id,
-            'supplier_name' => $details->name,
-            'billing_address' => $details->billing_address,
-            'shipping_address' => $details->shipping_address,
-            'delivery_date' => $request->input('delivery_date'),
-            'created_by' => auth()->user()->name,
-        ];
-
-        $refs = Reference::create([
-            'type' => '7',
-            'month' => $getMonth,
-            'year' => $getYear,
-            'ref_no' => $ref,
+            'request_name' => 'required|unique:inventory_requests,request_name',
         ]);
         
-        $data = Purchase::create($input);
-        $items = $request->product;
+        $input = [
+            'request_ref' => $request->input('request_ref'),
+            'request_name' => $request->input('request_name'),
+            'from_wh' => auth()->user()->warehouse_id,
+            'to_wh' => auth()->user()->branch_id,
+            'created_by' => auth()->user()->id,
+        ];
+
+        $getMonth = Carbon::now()->month;
+        $getYear = Carbon::now()->year;
+
+        $refs = Reference::create([
+            'type' => '1',
+            'month' => $getMonth,
+            'year' => $getYear,
+            'ref_no' => $request->input('request_ref')
+        ]);
+        
+        $data = InventoryRequest::create($input);
+        $items = $request->product_id;
         $quantity = $request->quantity;
-        $purchase_price = $request->purchase_price;
         $uoms = $request->uom_id;
-        $purchase_id = $data->id;
+        $request_id = $data->id;
         
         foreach($items as $index=>$item) {
             if (isset($item)) {
-                $names = Product::where('name',$item)->first();
-                $items = PurchaseItem::create([
-                    'purchase_id' => $purchase_id,
+                $names = Product::where('id',$item)->first();
+                $items = InventoryRequestItem::create([
+                    'request_id' => $request_id,
                     'product_name' => $names->name,
-                    'quantity' => $quantity[$index],
+                    'request_qty' => $quantity[$index],
                     'uom_id' => $uoms[$index],
-                    'purchase_price' => $purchase_price[$index],
-                    'sub_total' => ($purchase_price[$index]) * ($quantity[$index]),
                 ]);
             } 
         }
-        $qty = PurchaseItem::where('purchase_id',$purchase_id)->sum('quantity');
-        $price = PurchaseItem::where('purchase_id',$purchase_id)->sum('sub_total');
         
-        $purchaseData = DB::table('purchases')
-                        ->where('id',$purchase_id)
-                        ->update(['quantity' => $qty, 'total' => $price]);
-        $log = 'Pengajuan '.($data->order_ref).' Berhasil Dibuat';
+        $log = 'Request '.($data->request_ref).' Created';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Pengajuan '.($data->order_ref).' Berhasil Dibuat',
+            'message' => 'Request '.($data->request_ref).' Created',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('purchase.index')->with($notification);
+        return redirect()->route('request.index')->with($notification);
     }
 
     public function requestShow($id)
     {
-        $data = Purchase::find($id);
-        $details = PurchaseItem::where('purchase_id',$id)->get();
+        $data = InventoryRequest::find($id);
+        $details = InventoryRequestItem::where('request_id',$id)->get();
 
-        return view('apps.show.purchaseRequest',compact('data','details'));
+        return view('apps.edit.request',compact('data','details'));
     }
 
     public function requestForm($id)

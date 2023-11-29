@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Role Management
+ATK Management | Access Role
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -13,7 +13,7 @@ FiberTekno | Role Management
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Hak Akses 
+                        <i class="fa fa-database"></i>Access Role
                     </div>
                     <div class="tools"> </div>
                 </div>
@@ -33,13 +33,13 @@ FiberTekno | Role Management
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" href="{{ route('role.create') }}"> Tambah Baru </a>
+                                    <a class="btn red btn-outline sbold" href="{{ route('role.create') }}"> Add </a>
                                 </td>
                             </tr>
                         </div>
                         @endcan
                     </div>
-                	<table class="table table-striped table-bordered table-hover" id="sample_1">
+                	<table class="table table-striped table-bordered table-hover" id="sample_2">
                 		<thead>
                 			<tr>
                                 <th>No</th>

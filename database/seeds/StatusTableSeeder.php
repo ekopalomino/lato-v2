@@ -13,16 +13,15 @@ class StatusTableSeeder extends Seeder
     public function run()
     {
         $statuses = [
-            'Submit',
-            'Full Payment',
-            'Down Payment',
-            'Complete Process',
-            'Receipt Created',
-            'Active',
+            'Draft',
+            'Requested',
+            'Approved',
+            'Rejected',
+            'Cancel',
             'Received',
-            'Invoice Created',
-            'Approve',
-            
+            'Not Received',
+            'Active',
+            'Suspend'
         ];
 
         foreach($statuses as $status) {
