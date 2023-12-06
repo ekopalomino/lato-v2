@@ -70,33 +70,15 @@ ATK Management | ATK Request
                                     @endif
                                 </td>
                                 <td> 
-                                    @if(($val->status_id) == '4')
-                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
+                                    @if(($val->status_id) == '12')
+                                    <label class="label label-sm label-warning">{{ $val->Statuses->name }}</label>
                                     @else
-                                    <label class="label label-sm label-info">{{ $val->Statuses->name }}</label>
+                                    <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
                                     @endif
                                 </td>
                                 <td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                                 <td>
-                                    @if(($val->status_id) == '1')
                                     <a class="btn btn-xs btn-info" title="Lihat PR" href="{{ route('request.show',$val->id) }}"><i class="fa fa-search"></i></a>
-                                    @can('Can Approve Purchase')
-                                    {!! Form::open(['method' => 'POST','route' => ['request.approve', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmAccept()']) !!}
-                                    {!! Form::button('<i class="fa fa-check"></i>',['type'=>'submit','class' => 'btn btn-xs btn-success','title'=>'Approve PR']) !!}
-                                    {!! Form::close() !!}
-                                    {!! Form::open(['method' => 'POST','route' => ['request.rejected', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
-                                    {!! Form::button('<i class="fa fa-remove"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Tolak PR']) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                    @endif
-                                    @if(($val->status) == '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')
-                                    {!! Form::open(['method' => 'POST','route' => ['purchase.close', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmClose()']) !!}
-                                    {!! Form::button('<i class="fa fa-lock"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Tolak PR']) !!}
-                                    {!! Form::close() !!}
-                                    @endif
-                                    @if(($val->status) == '458410e7-384d-47bc-bdbe-02115adc4449')
-                                    <a class="btn btn-xs btn-info" title="Lihat PO" href="{{ route('purchase.show',$val->id) }}"><i class="fa fa-search"></i></a>
-                                    @endif
                                 </td>
                 			</tr>
                             @endforeach

@@ -15,13 +15,13 @@ class CreateWarehousesTable extends Migration
     {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('account_id')->unsigned();
+            $table->bigInteger('material_group_id')->unsigned();
             $table->bigInteger('branch_id')->unsigned();
             $table->string('name');
             $table->uuid('created_by');
             $table->uuid('updated_by')->nullable();
             $table->timestamp('deleted_at');
-            $table->foreign('account_id')->references('id')->on('chart_of_accounts')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('material_group_id')->references('id')->on('material_groups')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

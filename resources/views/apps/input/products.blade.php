@@ -37,6 +37,12 @@ ATK Management | Add Product
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3 control-label">Material Group</label>
+                        <div class="col-md-4">
+                            {!! Form::select('material_group_id', [null=>'Please Select'] + $materials,[], array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3 control-label">Product Category</label>
                         <div class="col-md-4">
                             {!! Form::select('category_id', [null=>'Please Select'] + $categories,[], array('class' => 'form-control')) !!}

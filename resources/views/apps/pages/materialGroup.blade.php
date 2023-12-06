@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Warehouse
+LATO | Material Group
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ ATK Management | Warehouse
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Warehouse
+                        <i class="fa fa-database"></i>Material Group
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -41,36 +41,26 @@ ATK Management | Warehouse
                         <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    {!! Form::open(array('route' => 'warehouse.store','method'=>'POST')) !!}
+                                    {!! Form::open(array('route' => 'material.store','method'=>'POST')) !!}
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">New Warehouse</h4>
+                                        <h4 class="modal-title">Material Group</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Warehouse Name</label>
-                                                    {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                                                    <label class="control-label">Material Group Name</label>
+                                                    {!! Form::text('material_name', null, array('placeholder' => 'Branch Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Warehouse Prefix</label>
-                                                    {!! Form::text('prefix', null, array('placeholder' => 'Prefix','class' => 'form-control')) !!}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="control-label">Branch</label>
-                                                    {!! Form::select('branch_id', [null=>'Please Select'] + $branches,[], array('class' => 'form-control')) !!}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="control-label">Materiak Group</label>
-                                                    {!! Form::select('material_group_id', [null=>'Please Select'] + $materials,[], array('class' => 'form-control')) !!}
+                                                    <label class="control-label">COA Name</label>
+                                                    {!! Form::select('account_id', [null=>'Please Select'] + $coas,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                         </div>  
@@ -88,10 +78,8 @@ ATK Management | Warehouse
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                                <th>Prefix</th>
-                				<th>Warehouse Name</th>
-                                <th>Branch</th>
-                                <th>Material Group</th>
+                                <th>Chart of Account</th>
+                				<th>Material Group</th>
                                 <th>Status</th>
                                 <th>Create / Update</th>
                 				<th>Data Date</th>
@@ -102,14 +90,8 @@ ATK Management | Warehouse
                             @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                                <td>{{ $val->prefix }}</td>
-                				<td>{{ $val->name }}</td>
-                                <td>{{ $val->Branches->branch_name }}</td>
-                                <td>
-                                    @if(!empty($val->material_group_id))
-                                    {{ $val->Materials->material_name }}
-                                    @endif
-                                </td>
+                                <td>{{ $val->Coas->coa_code }} - {{ $val->Coas->coa_name }}</td>
+                				<td>{{ $val->material_name }}</td>
                                 <td>
                                     @if(!empty($val->deleted_at))
                                     <label class="label label-sm label-danger">Inactive</label>
@@ -126,7 +108,7 @@ ATK Management | Warehouse
                                 </td>
                 				<td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                 				<td>
-                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@warehouseEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ProductManagementController@materialEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
                                     {!! Form::open(['method' => 'POST','route' => ['warehouse.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Data']) !!}
                                     {!! Form::close() !!}
@@ -152,7 +134,7 @@ ATK Management | Warehouse
 <script>
     function ConfirmDelete()
     {
-    var x = confirm("Yakin Data Akan Dihapus?");
+    var x = confirm("Data Will Be Delete?");
     if (x)
         return true;
     else

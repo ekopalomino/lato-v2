@@ -32,6 +32,13 @@ class PurchaseManagementController extends Controller
 
     public function index()
     {
+        $data = Purchase::orderBy('created_at','DESC')->get();
+
+        return view('apps.pages.purchase',compact('data'));
+    }
+
+    public function oldIndex()
+    {
         if(auth()->user()->hasAnyPermission(['Can View All Request']))
         {
             $data = InventoryRequest::where('to_wh',auth()->user()->branch_id)->orderBy('created_at','DESC')->get();
@@ -45,11 +52,14 @@ class PurchaseManagementController extends Controller
     public function requestCreate()
     {
         $uoms = UomValue::pluck('name','id')->toArray();
-        $products = Product::where('deleted_at',NULL)->pluck('name','id')->toArray();
         $getMonth = Carbon::now()->month;
         $getYear = Carbon::now()->year;
-        $references = Reference::where('type','1')->where('month',$getMonth)->where('year',$getYear)->count();
-        $refs = 'REQ/'.auth()->user()->Warehouses->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+        $references = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
+        $refs = 'PR/'.auth()->user()->Branches->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+        $products = Inventory::join('products','products.id','inventories.product_id')->where([
+            ['inventories.warehouse_name',auth()->user()->Warehouses->name],
+            ['inventories.closing_amount','=<','inventories.min_stock']
+            ])->get();
 
         return view('apps.input.request',compact('uoms','products','refs'));
     }
@@ -57,28 +67,27 @@ class PurchaseManagementController extends Controller
     public function requestStore(Request $request)
     {
         $this->validate($request, [
-            'request_name' => 'required|unique:inventory_requests,request_name',
+            'request_title' => 'required|unique:purchases,request_title',
         ]);
         
         $input = [
             'request_ref' => $request->input('request_ref'),
-            'request_name' => $request->input('request_name'),
-            'from_wh' => auth()->user()->warehouse_id,
-            'to_wh' => auth()->user()->branch_id,
+            'request_title' => $request->input('request_title'),
+            'request_wh_id' => auth()->user()->warehouse_id,
             'created_by' => auth()->user()->id,
         ];
-
+        
         $getMonth = Carbon::now()->month;
         $getYear = Carbon::now()->year;
 
         $refs = Reference::create([
-            'type' => '1',
+            'type' => '2',
             'month' => $getMonth,
             'year' => $getYear,
             'ref_no' => $request->input('request_ref')
         ]);
         
-        $data = InventoryRequest::create($input);
+        $data = Purchase::create($input);
         $items = $request->product_id;
         $quantity = $request->quantity;
         $uoms = $request->uom_id;
@@ -86,15 +95,25 @@ class PurchaseManagementController extends Controller
         
         foreach($items as $index=>$item) {
             if (isset($item)) {
-                $names = Product::where('id',$item)->first();
-                $items = InventoryRequestItem::create([
-                    'request_id' => $request_id,
+                $names = Product::where('name',$item)->first();
+                $items = PurchaseItem::create([
+                    'purchase_id' => $request_id,
+                    'account_id' => $names->Materials->account_id,
+                    'material_group_id' => $names->Materials->id,
                     'product_name' => $names->name,
-                    'request_qty' => $quantity[$index],
+                    'quantity' => $quantity[$index],
+                    'purchase_price' => $names->price,
+                    'sub_total' => ($quantity[$index]) * ($names->price),
                     'uom_id' => $uoms[$index],
                 ]);
             } 
         }
+        $qty = PurchaseItem::where('purchase_id',$request_id)->sum('quantity');
+        $price = PurchaseItem::where('purchase_id',$request_id)->sum('sub_total');
+        
+        $purchaseData = DB::table('purchases')
+                        ->where('id',$request_id)
+                        ->update(['quantity' => $qty, 'total' => $price]);
         
         $log = 'Request '.($data->request_ref).' Created';
          \LogActivity::addToLog($log);
@@ -108,11 +127,143 @@ class PurchaseManagementController extends Controller
 
     public function requestShow($id)
     {
-        $data = InventoryRequest::find($id);
-        $details = InventoryRequestItem::where('request_id',$id)->get();
-
-        return view('apps.edit.request',compact('data','details'));
+        $data = Purchase::find($id);
+        $details = PurchaseItem::where('purchase_id',$id)->get();
+        $uoms = UomValue::pluck('name','id')->toArray();
+        
+        return view('apps.edit.request',compact('data','details','uoms'));
     }
+
+    public function requestProcess(Request $request,$id)
+    {
+        $this->validate($request, [
+            'status' => 'required',
+        ]);
+
+        if (($request->input('status')) == '13') {
+            $process = [
+                'status' => $request->input('status'),
+                'updated_by' => auth()->user()->id,
+            ];
+
+            $data = Purchase::find($id);
+            $data->update($process);
+
+            $log = 'Request '.($data->request_ref).' Processed';
+            \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Request '.($data->request_ref).' Processed',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('request.index')->with($notification);
+        } elseif (($request->input('status')) == '6') {
+            $process = [
+                'status' => $request->input('status'),
+                'updated_by' => auth()->user()->id,
+            ];
+            $data = Purchase::find($id);
+            $data->update($process);
+
+            $items = $request->product_id;
+            $quantity = $request->quantity;
+            $received = $request->received_qty;
+            $uoms = $request->uom_id;
+            $request_id = $data->id;
+            
+            foreach($items as $index=>$item) {
+                if (isset($item)) {
+                    $names = Product::where('name',$item)->first();
+                    $items = PurchaseItem::where('purchase_id',$id)->update([
+                        'quantity' => $quantity[$index],
+                        'received_qty' => $received[$index],
+                        'remaining_qty' => ($quantity[$index]) - ($received[$index]),
+                        'uom_id' => $uoms[$index],
+                    ]);
+                } 
+            }
+            
+            $log = 'Request '.($data->request_ref).' Received';
+            \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Request '.($data->request_ref).' Received',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('request.index')->with($notification);
+        }
+    }
+
+    /* public function requestProcess(Request $request,$id)
+    {
+        $data = InventoryRequest::find($id);
+        $inventories = Inventory::where('product_name',$data->Parent->product_name)->where('warehouse_name',$data->To->name)->first();
+        dd($inventories);
+        
+        $process = [
+            'status_id' => $request->input('status_id'),
+            'approve_by' => auth()->user()->id,
+        ];
+
+        $updates = InventoryRequest::find($id);
+        $updates->update($process);
+        if ($updates->status_id == '10') {
+            $items = $request->product_id;
+            $quantity = $request->quantity;
+            $uoms = $request->uom_id;
+            $request_id = $data->id;
+            
+            foreach($items as $index=>$item) {
+                if (isset($item)) {
+                    $names = Product::where('id',$item)->first();
+                    $items = InventoryRequestItem::where('request_id',$id)->update([
+                        'received_qty' => $quantity[$index],
+                    ]);
+
+
+                } 
+            }
+            $log = 'Request '.($updates->request_ref).' Completed';
+            \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Request '.($updates->request_ref).' Completed',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('request.index')->with($notification);
+        } elseif ($updates->status_id == '11') {
+            $items = $request->product_id;
+            $quantity = $request->quantity;
+            $uoms = $request->uom_id;
+            $request_id = $data->id;
+            
+            foreach($items as $index=>$item) {
+                if (isset($item)) {
+                    $names = Product::where('id',$item)->first();
+                    $items = InventoryRequestItem::where('request_id',$id)->update([
+                        'received_qty' => $quantity[$index],
+                    ]);
+
+
+                } 
+            }
+            $log = 'Request '.($updates->request_ref).' Completed Partial';
+            \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Request '.($updates->request_ref).' Completed Partial',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('purchase.index')->with($notification);
+        } else {
+            $log = 'Request '.($updates->request_ref).' On Hold';
+            \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Request '.($updates->request_ref).' On Hold',
+                'alert-type' => 'success'
+            );
+        }
+    } */
 
     public function requestForm($id)
     {
@@ -130,7 +281,7 @@ class PurchaseManagementController extends Controller
         return view('apps.show.purchaseOrder',compact('data','details'));
     }
 
-    public function requestApprove(Request $request,$id)
+    public function requestApproveOld(Request $request,$id)
     {
         $data = Purchase::find($id);
         $getMonth = Carbon::now()->month;

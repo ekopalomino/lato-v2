@@ -12,8 +12,10 @@ class Product extends Model
     protected $fillable = [
         'sap_code',
         'name',
+        'material_group_id',
         'category_id',
         'uom_id',
+        'location_id',
         'image',
         'min_stock',
         'price',
@@ -40,9 +42,19 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class,'category_id');
     }
 
+    public function Materials()
+    {
+        return $this->belongsTo(MaterialGroup::class,'material_group_id');
+    }
+
     public function Uoms()
     {
         return $this->belongsTo(UomValue::class,'uom_id');
+    }
+
+    public function Locations()
+    {
+        return $this->belongsTo(Branch::class,'location_id');
     }
 
     public function Invent()

@@ -13,21 +13,17 @@
     @endif 
 	<div class="row">
 		<div class="col-md-12">
-			{!! Form::model($data, ['method' => 'POST','route' => ['warehouse.update', $data->id]]) !!}
+			{!! Form::model($data, ['method' => 'POST','route' => ['material.update', $data->id]]) !!}
             @csrf
             <div class="row">
             	<div class="col-md-12">
                 	<div class="form-group">
-                		<label class="control-label">Warehouse Name</label>
-                		{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                		<label class="control-label">Material Group Name</label>
+                		{!! Form::text('material_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                 	</div>
                     <div class="form-group">
-                        <label class="control-label">Branch</label>
-                        {!! Form::select('branch_id', $branches,old('branch_id'), array('class' => 'form-control')) !!}
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Material Group</label>
-                        {!! Form::select('material_group_id', $materials,old('material_group_id'), array('class' => 'form-control')) !!}
+                        <label class="control-label">Chart of Account</label>
+                        {!! Form::select('account_id', $coas,old('account_id'), array('class' => 'form-control')) !!}
                     </div>
                 </div>
             </div>

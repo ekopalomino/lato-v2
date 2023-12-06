@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Fiber Tekno | Tambah Mutasi Barang
+LATO | Request ATK
 @endsection
 @section('header.plugins')
 <link href="{{ asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}" rel="stylesheet" type="text/css" />
@@ -11,7 +11,7 @@ Fiber Tekno | Tambah Mutasi Barang
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> Form Mutasi Barang 
+                <i class="fa fa-database"></i> Request ATK
             </div>
         </div>
         <div class="portlet-body form">
@@ -29,16 +29,10 @@ Fiber Tekno | Tambah Mutasi Barang
             @csrf
             <div class="form-body">
             	<div class="row">
-            		<div class="col-md-5">
+            		<div class="col-md-3">
                         <div class="form-group">
-                            <label class="control-label">Gudang Pengirim</label>
-                            {!! Form::select('from_wh', [null=>'Please Select'] + $userLocation,[], array('class' => 'form-control')) !!}
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label class="control-label">Gudang Penerima</label>
-                            {!! Form::select('to_wh', [null=>'Please Select'] + $userLocation,[], array('class' => 'form-control')) !!}
+                            <label class="control-label">Request No</label>
+                            {!! Form::text('ref_id', $refs, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}
                         </div>
                     </div>
             		<!--/span-->

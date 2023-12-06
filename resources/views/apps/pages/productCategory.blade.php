@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Product Category
+LATO | Product Category
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -47,6 +47,14 @@ ATK Management | Product Category
                                                     {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
+                                        </div> 
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Material Group</label>
+                                                    {!! Form::select('material_group_id', [null=>'Please Select'] + $materials,[], array('class' => 'form-control')) !!}
+                                                </div>
+                                            </div>
                                         </div>  
                                     </div>
                                     <div class="modal-footer">
@@ -72,6 +80,7 @@ ATK Management | Product Category
                 		<thead>
                 			<tr>
                                 <th>No</th>
+                                <th>Material Group</th>
                 				<th>Category Name</th>
                                 <th>Status</th>
                                 <th>Create / Update</th>
@@ -83,6 +92,7 @@ ATK Management | Product Category
                             @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
+                                <td>{{ $val->Materials->material_name }}</td>
                 				<td>{{ $val->name }}</td>
                                 <td>
                                     @if(!empty($val->deleted_at))

@@ -31,7 +31,7 @@ ATK Management | Product Catalog
                     @can('Can Create Product')
                     <div class="col-md-6">
                         <div class="form-group">
-                            <a href="{{ route('product.create') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold"> Add
+                            <a href="{{ route('product.create') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold"> Add New
                             </button></a>
                         </div>
                     </div>
@@ -41,10 +41,12 @@ ATK Management | Product Catalog
                 			<tr>
                                 <th>No</th>
                 				<th>Name</th>
+                                <th>Group</th>
                                 <th>Category</th>
                                 <th>UOM</th>
                                 <th>Image</th>
                                 <th>Status</th>
+                                <th>Branch</th>
                                 <th>Create / Update</th>
                                 <th>Data Date</th>
                 				<th></th>
@@ -55,6 +57,7 @@ ATK Management | Product Catalog
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $product->name }}</td>
+                                <td>{{ $product->Materials->material_name }}</td>
                                 <td>{{ $product->Categories->name }}</td>
                                 <td>{{ $product->Uoms->name }}</td>
                                 <td><img src="http://fibertekno.iteos.tech/public/products/{{$product->image}}" width="75" height="100" ></td>
@@ -65,6 +68,7 @@ ATK Management | Product Catalog
                                     <label class="label label-sm label-success">Active</label>
                                     @endif
                                 </td>
+                                <td>{{ $product->Locations->branch_name }}</td>
                                 <td>
                                     @if(!empty($product->updated_by))    
                                     {{ $product->Editor->name }}

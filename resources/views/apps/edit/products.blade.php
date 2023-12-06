@@ -37,6 +37,12 @@ ATK Management | Edit Product
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3 control-label">Material Group</label>
+                        <div class="col-md-4">
+                            {!! Form::select('material_group_id', $materials,old('material_group_id'), array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3 control-label">Product Category</label>
                         <div class="col-md-4">
                             {!! Form::select('category_id', $categories,old('category_id'), array('class' => 'form-control')) !!}

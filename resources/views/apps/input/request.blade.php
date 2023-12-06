@@ -35,7 +35,7 @@ ATK Management | Add Request
             			<div class="form-group">
                             <label class="col-md-2 control-label">Request Title</label>
                             <div class="col-md-5">
-                                {!! Form::text('request_name', null, array('placeholder' => 'Request Title','class' => 'form-control')) !!}
+                                {!! Form::text('request_title', null, array('placeholder' => 'Request Title','class' => 'form-control')) !!}
                             </div>
                         </div>
             		</div>
@@ -61,62 +61,25 @@ ATK Management | Add Request
 	            		<table class="table table-striped table-bordered table-hover" id="sample_2">
 	            			<thead>
 	            				<tr>
+                                    <th>Account Code</th>
+                                    <th>Account Name</th>
 	            					<th>Produk</th>
+                                    <th>Group</th>
 	            					<th>Jumlah</th>
 	            					<th>Satuan</th>
 	            				</tr>
 	            			</thead>
 	            			<tbody>
+                                @foreach($products as $key => $data)
 	            				<tr>
-	            					<td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
+                                    <td>{!! Form::text('account_code[]', $data->Products->Materials->Coas->coa_code, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+	            					<td>{!! Form::text('account_id[]', $data->Products->Materials->Coas->coa_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                    <td>{{ Form::hidden('product_id', $data->product_id) }}{!! Form::text('product_name[]', $data->product_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                    <td>{!! Form::text('material_group_id[]', $data->Products->Materials->material_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                     				<td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required')) !!}</td>
                     				<td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control','required')) !!}</td>
                     			</tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                    </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                    </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                </tr>
-                                <tr>
-                                    <td>{!! Form::select('product_id[]', [null=>'Please Select'] + $products,[], array('class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
-                                </tr>
+                                @endforeach
 	            			</tbody>
 	            		</table>
 	            	</div>

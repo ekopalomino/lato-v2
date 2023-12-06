@@ -13,15 +13,7 @@ class StatusTableSeeder extends Seeder
     public function run()
     {
         $statuses = [
-            'Draft',
-            'Requested',
-            'Approved',
-            'Rejected',
-            'Cancel',
-            'Received',
-            'Not Received',
-            'Active',
-            'Suspend'
+            'Process'
         ];
 
         foreach($statuses as $status) {

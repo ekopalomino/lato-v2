@@ -4,14 +4,17 @@ namespace iteos\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductCategory extends Model
+class MaterialGroup extends Model
 {
     protected $fillable = [
-        'name',
-        'material_group_id',
+        'account_id',
+        'material_name',
         'created_by',
         'updated_by',
+        'deleted_at'
     ];
+
+    public $incrementing = false;
 
     public function Author()
     {
@@ -23,8 +26,8 @@ class ProductCategory extends Model
         return $this->belongsTo(User::class,'updated_by');
     }
 
-    public function Materials()
+    public function Coas()
     {
-        return $this->belongsTo(MaterialGroup::class,'material_group_id');
+        return $this->belongsTo(ChartOfAccount::class,'account_id');
     }
 }

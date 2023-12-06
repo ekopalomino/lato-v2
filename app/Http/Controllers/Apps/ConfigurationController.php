@@ -5,6 +5,7 @@ namespace iteos\Http\Controllers\Apps;
 use Illuminate\Http\Request;
 use iteos\Http\Controllers\Controller;
 use iteos\Models\Warehouse;
+use iteos\Models\MaterialGroup;
 use iteos\Models\Branch;
 use iteos\Models\ChartOfAccount;
 use iteos\Models\UomCategory;
@@ -183,22 +184,25 @@ class ConfigurationController extends Controller
     public function warehouseIndex()
     {
         $data = Warehouse::orderBy('name','asc')->get();
-        $accounts = ChartOfAccount::where('deleted_at',NULL)->pluck('coa_name','id')->toArray();
+        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
 
-        return view('apps.pages.warehouse',compact('data','accounts','branches'));
+        return view('apps.pages.warehouse',compact('data','materials','branches'));
     }
 
     public function warehouseStore(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|unique:warehouses,name',
+            'prefix' => 'required|unique:warehouses,prefix',
+            'material_group_id' => 'required'
         ]);
 
         $input = [
             'name' => $request->input('name'),
+            'prefix' => $request->input('prefix'),
             'branch_id' => $request->input('branch_id'),
-            'account_id' => $request->input('account_id'),
+            'material_group_id' => $request->input('material_group_id'),
             'created_by' => auth()->user()->id,
         ];
         $data = Warehouse::create($input);
@@ -215,22 +219,24 @@ class ConfigurationController extends Controller
     public function warehouseEdit($id)
     {
         $data = Warehouse::find($id);
-        $accounts = ChartOfAccount::where('deleted_at',NULL)->pluck('coa_name','id')->toArray();
+        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
 
-        return view('apps.edit.warehouse',compact('data','accounts','branches'))->renderSections()['content'];
+        return view('apps.edit.warehouse',compact('data','materials','branches'))->renderSections()['content'];
     }
 
     public function warehouseUpdate(Request $request,$id)
     {
         $this->validate($request, [
             'name' => 'required|unique:warehouses,name',
+            'prefix' => 'required|unique:warehouses,prefix',
+            'material_group_id' => 'required'
         ]);
 
         $input = [
             'name' => $request->input('name'),
             'branch_id' => $request->input('branch_id'),
-            'account_id' => $request->input('account_id'),
+            'material_group_id' => $request->input('material_group_id'),
             'updated_by' => auth()->user()->id,
         ];
         $data = Warehouse::find($id);

@@ -1,13 +1,13 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Show Request
+LATO | Show Request
 @endsection
 @section('content')
 <div class="page-content">
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> ATK Request
+                <i class="fa fa-database"></i> ATK Purchase Request
             </div>
         </div>
         <div class="portlet-body form">
@@ -21,7 +21,7 @@ ATK Management | Show Request
                 </ul>
             </div>
             @endif
-            {!! Form::model($data, ['method' => 'POST','route' => ['request.index', $data->id],'class' => 'form-horizontal']) !!}
+            {!! Form::model($data, ['method' => 'POST','route' => ['request.process', $data->id],'class' => 'form-horizontal']) !!}
                 @csrf
                 <div class="form-body">
                     <div class="row">
@@ -35,28 +35,39 @@ ATK Management | Show Request
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Request Name</label>
                                 <div class="col-md-6">
-                                    {!! Form::text('request_name', null, array('placeholder' => 'SAP Code','class' => 'form-control')) !!}
+                                    {!! Form::text('request_title', null, array('placeholder' => 'SAP Code','class' => 'form-control','readonly')) !!}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">From Warehouse</label>
                                 <div class="col-md-6">
-                                    {!! Form::text('from_wh', $data->From->name, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">To Warehouse</label>
-                                <div class="col-md-6">
-                                    {!! Form::text('to_wh', $data->To->branch_name, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}  
+                                    {!! Form::text('request_wh_id', $data->Locations->name, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Status</label>
+                                <label class="col-md-3 control-label">Request By</label>
                                 <div class="col-md-6">
-                                    {!! Form::text('to_wh', $data->To->branch_name, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}  
+                                    {!! Form::text('to_wh', $data->Author->name, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}  
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Request Date</label>
+                                <div class="col-md-6">
+                                    {!! Form::date('created_at', $data->created_at, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}  
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Request Status</label>
+                                <div class="col-md-6">
+                                    <select id="single" name="status" class="form-control select">
+                                        <option value="">Please Select</option>
+                                        <option value="13">Process</option>
+                                        <option value="6">Received</option>
+                                    </select>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -65,19 +76,23 @@ ATK Management | Show Request
                             <table class="table table-striped table-bordered table-hover" id="sample_2">
                                 <thead>
                                     <tr>
+                                        <th>Account Code</th>
+                                        <th>Account Name</td>
                                         <th>Product Name</th>
                                         <th>Request</th>
-                                        <th>Fulfill</th>
+                                        <th>Received</th>
                                         <th>UOM</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($details as $key => $val)
                                     <tr>
-                                        <td>{{ $val->product_name }}</td>
-                                        <td>{{ $val->request_qty }}</td>
-                                        <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Amount','class' => 'form-control')) !!}</td>
-                                        <td>{{ $val->Uoms->name }}</td>
+                                        <td>{!! Form::text('coa_code[]', $val->Coas->coa_code, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::text('coa_name[]', $val->Coas->coa_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::text('product_id[]', $val->product_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required','readonly')) !!}</td>
+                                        <td>{!! Form::number('received_qty[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required')) !!}</td>
+                                        <td>{!! Form::text('uom_id[]', $val->Uoms->name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

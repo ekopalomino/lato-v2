@@ -54,9 +54,7 @@ class InventoryManagementController extends Controller
     public function stockCard(Request $request,$id)
     {
         $source = Inventory::where('id',$id)->first();
-        
-        $data = InventoryMovement::where('product_name',$source->product_name)
-                                   ->paginate(10);
+        $data = InventoryMovement::where('inventory_id',$source->id)->paginate(10);
         
         return view('apps.show.stockCard',compact('data'))->renderSections()['content'];
     }
@@ -476,7 +474,7 @@ class InventoryManagementController extends Controller
         ]);
         $updatePurchase = $purchases->update([
             'status' => '596ae55c-c0fb-4880-8e06-56725b21f6dc'
-        ]);
+        ]); 
 
         $log = 'Pembelian '.($data->order_ref).' Selesai Diproses';
         \LogActivity::addToLog($log);
@@ -508,11 +506,13 @@ class InventoryManagementController extends Controller
 
     public function addTransfer()
     {
-        $userLocation = UserWarehouse::where('user_id',auth()->user()->id)->pluck('warehouse_name','warehouse_name')->toArray();
-        $products = Product::pluck('name','name')->toArray();
         $uoms = UomValue::pluck('name','id')->toArray();
+        $getMonth = Carbon::now()->month;
+        $getYear = Carbon::now()->year;
+        $references = Reference::where('type','1')->where('month',$getMonth)->where('year',$getYear)->count();
+        $refs = 'REQ/'.auth()->user()->Warehouses->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
         
-        return view('apps.input.internalTransfer',compact('products','uoms','userLocation'));
+        return view('apps.input.internalTransfer',compact('uoms','refs'));
     }
 
     public function internStore(Request $request)
@@ -524,36 +524,46 @@ class InventoryManagementController extends Controller
 
         $getMonth = Carbon::now()->month;
         $getYear = Carbon::now()->year;
-        $references = Reference::where('type','3')->where('month',$getMonth)->where('year',$getYear)->count();
-        $ref = 'TG/FTI'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
         $data = InternalTransfer::create([
-            'order_ref' => $ref,
-            'from_wh' => $request->input('from_wh'),
-            'to_wh' => $request->input('to_wh'),
+            'order_ref' => $request->input('ref_id'),
+            'from_wh' => auth()->user()->Branches->branch_name,
+            'to_wh' => auth()->user()->Warehouses->name,
             'created_by' => auth()->user()->name,
         ]);
         $refs = Reference::create([
-                'type' => '3',
+                'type' => '1',
                 'month' => $getMonth,
                 'year' => $getYear,
-                'ref_no' => $ref,
+                'ref_no' => $request->input('ref_id'),
             ]);
 
         foreach($items as $index=>$item) {
             /* Check Source Warehouse Stock */
             $getStock = Inventory::where('product_name',$item)
-                                ->where('warehouse_name',$request->input('from_wh'))
+                                ->where('warehouse_name',auth()->user()->Branches->branch_name)
                                 ->orderBy('updated_at','DESC')
                                 ->first();
             
             /* Delete Transfer If No Stock Available */
-            if (($getStock->closing_amount) < $quantity[$index]) {
+            if ($getStock == NULL ) {
+                $d = Reference::where('ref_no',$data->order_ref)->first();
+                
+                $d->delete();
+                $s = InternalTransfer::find($data->id);
+                $s->delete();
                 $notification = array (
-                    'message' => 'Stok Produk '.($item).' Di '.($request->input('from_wh')).' Tidak Cukup',
+                    'message' => 'No Product Found, Please Try Again',
                     'alert-type' => 'error'
                 );
                 $data->delete();
 
+                return back()->with($notification);
+            } elseif (($getStock->closing_amount) < $quantity[$index]) {
+                $notification = array (
+                    'message' => 'Stok Produk '.($item).' Di '.(auth()->user()->Branches->branch_name).' Tidak Cukup',
+                    'alert-type' => 'error'
+                );
+                
                 return redirect()->route('transfer.index')->with($notification);
             } else {
                 //Check UOM Value//
@@ -593,7 +603,7 @@ class InventoryManagementController extends Controller
                         $outgoing = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dataInvent->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dataInvent->product_name,
                             'warehouse_name' => $data->from_wh,
                             'incoming' => '0',
@@ -604,7 +614,7 @@ class InventoryManagementController extends Controller
                         $incoming = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dataInvent->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dataInvent->product_name,
                             'warehouse_name' => $dataInvent->warehouse_name,
                             'incoming' => $convertion,
@@ -615,7 +625,7 @@ class InventoryManagementController extends Controller
                         $outgoing = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dataInvent->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dataInvent->product_name,
                             'warehouse_name' => $data->from_wh,
                             'incoming' => '0',
@@ -626,7 +636,7 @@ class InventoryManagementController extends Controller
                         $incoming = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dataInvent->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dataInvent->product_name,
                             'warehouse_name' => $dataInvent->warehouse_name,
                             'incoming' => $convertion,
@@ -647,7 +657,7 @@ class InventoryManagementController extends Controller
                         $outgoing = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dest->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dest->product_name,
                             'warehouse_name' => $from->warehouse_name,
                             'incoming' => '0',
@@ -658,7 +668,7 @@ class InventoryManagementController extends Controller
                         $incoming = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dest->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dest->product_name,
                             'warehouse_name' => $dest->warehouse_name,
                             'incoming' => $convertion,
@@ -669,7 +679,7 @@ class InventoryManagementController extends Controller
                         $outgoing = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dest->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dest->product_name,
                             'warehouse_name' => $from->warehouse_name,
                             'incoming' => '0',
@@ -680,7 +690,7 @@ class InventoryManagementController extends Controller
                         $incoming = InventoryMovement::create([
                             'type' => '4',
                             'inventory_id' => $dest->id,
-                            'reference_id' => $ref,
+                            'reference_id' => $data->order_ref,
                             'product_name' => $dest->product_name,
                             'warehouse_name' => $dest->warehouse_name,
                             'incoming' => $convertion,

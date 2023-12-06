@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Purchase Management
+LATO | Purchase Request
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Purchase Management
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Purchase Order 
+                        <i class="fa fa-database"></i>Purchase Request 
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -31,66 +31,48 @@ FiberTekno | Purchase Management
                         @endif
                         @can('Can Create Purchase')
                         <div class="form-group">
-                            <a href="{{ route('request.create') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold">Permintaan Baru
+                            <a href="{{ route('request.create') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold">Add New
                             </button></a>
                         </div>
                         @endcan
                     </div>
-                	<table class="table table-striped table-bordered table-hover" id="sample_1">
+                	<table class="table table-striped table-bordered table-hover" id="sample_2">
                 		<thead>
                 			<tr>
                                 <th>No</th>
                 				<th>Ref No</th>
-                                <th>Nama Supplier</th>
-                                <th>Total Barang</th>
-                				<th>Diminta Oleh</th>
-                                <th>Disetujui Oleh</th>
-                				<th>Tgl Dibuat</th>
+                                <th>Total Quantity</th>
+                                <th>Total Price</th>
+                				<th>Request By</th>
+                                <th>Received By</th>
                                 <th>Status</th>
-                				<th></th>
+                				<th>Data Date</th>
+                                <th></th>
                 			</tr>
                 		</thead> 
                 		<tbody>
                             @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                                <td>{{ $val->order_ref }}</td>
-                                <td>{{ $val->Suppliers->name}}</td>
-                                <td>{{ number_format($val->total,2,',','.')}}</td>
-                                <td>{{ $val->created_by }}</td>
-                                <td>{{ $val->updated_by }}</td>
-                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
-                                <td> 
-                                    @if(($val->status) == '458410e7-384d-47bc-bdbe-02115adc4449')
-                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
-                                    @elseif(($val->status) == '596ae55c-c0fb-4880-8e06-56725b21f6dc')
-                                    <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
-                                    @elseif(($val->status) == '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')
-                                    <label class="label label-sm label-info">{{ $val->Statuses->name }}</label>
-                                    @else
-                                    <label class="label label-sm label-info">{{ $val->Statuses->name }}</label>
+                                <td>{{ $val->request_ref }}</td>
+                                <td>{{ number_format($val->quantity,0,',','.')}}</td>
+                                <td>{{ number_format($val->total,0,',','.')}}</td>
+                                <td>{{ $val->Author->name }}</td>
+                                <td>
+                                    @if(!empty($val->received_by))    
+                                    {{ $val->Receiver->name }}
                                     @endif
                                 </td>
                                 <td>
-                                    @if(($val->status) == '8083f49e-f0aa-4094-894f-f64cd2e9e4e9')
+                                    @if($val->status == '8')
+                                    <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
+                                    @else
+                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
+                                    @endif
+                                </td>
+                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
+                                <td>
                                     <a class="btn btn-xs btn-info" title="Lihat PR" href="{{ route('request.show',$val->id) }}"><i class="fa fa-search"></i></a>
-                                    @can('Can Approve Purchase')
-                                    {!! Form::open(['method' => 'POST','route' => ['request.approve', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmAccept()']) !!}
-                                    {!! Form::button('<i class="fa fa-check"></i>',['type'=>'submit','class' => 'btn btn-xs btn-success','title'=>'Approve PR']) !!}
-                                    {!! Form::close() !!}
-                                    {!! Form::open(['method' => 'POST','route' => ['request.rejected', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
-                                    {!! Form::button('<i class="fa fa-remove"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Tolak PR']) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                    @endif
-                                    @if(($val->status) == '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')
-                                    {!! Form::open(['method' => 'POST','route' => ['purchase.close', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmClose()']) !!}
-                                    {!! Form::button('<i class="fa fa-lock"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Tolak PR']) !!}
-                                    {!! Form::close() !!}
-                                    @endif
-                                    @if(($val->status) == '458410e7-384d-47bc-bdbe-02115adc4449')
-                                    <a class="btn btn-xs btn-info" title="Lihat PO" href="{{ route('purchase.show',$val->id) }}"><i class="fa fa-search"></i></a>
-                                    @endif
                                 </td>
                 			</tr>
                             @endforeach
@@ -110,24 +92,4 @@ FiberTekno | Purchase Management
 @endsection
 @section('footer.scripts')
 <script src="{{ asset('assets/pages/scripts/table-datatables-buttons.min.js') }}" type="text/javascript"></script>
-<script>
-    function ConfirmDelete()
-    {
-    var x = confirm("Pengajuan Akan Dibatalkan?");
-    if (x)
-        return true;
-    else
-        return false;
-    }
-</script>
-<script>
-    function ConfirmAccept()
-    {
-    var x = confirm("Pengajuan Akan Diproses?");
-    if (x)
-        return true;
-    else
-        return false;
-    }
-</script>
 @endsection

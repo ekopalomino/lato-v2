@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Warehouse extends Model
 {
     protected $fillable = [
-        'account_id',
+        'material_group_id',
         'branch_id',
         'name',
+        'prefix',
         'created_by',
         'updated_by',
         'deleted_at'
@@ -27,9 +28,9 @@ class Warehouse extends Model
         return $this->belongsTo(User::class,'updated_by');
     }
 
-    public function Coas()
+    public function Materials()
     {
-        return $this->belongsTo(ChartOfAccount::class,'account_id');
+        return $this->belongsTo(MaterialGroup::class,'material_group_id');
     }
 
     public function Branches()

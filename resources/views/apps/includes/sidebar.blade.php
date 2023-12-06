@@ -84,7 +84,7 @@
             </li>
             @endcan
             @can('Can Access Products')
-            <li class="nav-item {{ set_active(['product-cat.index','product.index','product.create','product.edit']) }}">
+            <li class="nav-item {{ set_active(['product-cat.index','product.index','product.create','product.edit','material.index']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-social-dropbox"></i>
             		<span class="title">Product</span>
@@ -94,6 +94,11 @@
                 	<li class="nav-item {{ set_active(['product.index','product.create','product.edit']) }}">
                 		<a href="{{ route('product.index') }}" class="nav-link ">
                             <span class="title">Product Catalog</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ set_active(['material.index']) }}">
+                		<a href="{{ route('material.index') }}" class="nav-link ">
+                            <span class="title">Material Group</span>
                         </a>
                     </li>
                     <li class="nav-item {{ set_active(['product-cat.index']) }}">
@@ -132,23 +137,23 @@
             </li>
             @endcan
             @can('Can Access Purchasing')
-            <li class="nav-item {{ set_active(['request.index','request.create','request.show']) }}">
+            <li class="nav-item {{ set_active(['request.index','request.create','request.show','transfer.index','add.transfer']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-basket-loaded"></i>
                     <span class="title">Product Request</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="nav-item ">
-                        <a href="" class="nav-link">
+                    <li class="nav-item {{ set_active(['request.index','request.create','request.show']) }}">
+                        <a href="{{ route('request.index') }}" class="nav-link">
                             <span class="title">Purchase Request</span>
                             <span class="badge badge-danger">{{$purchases}}</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ set_active(['request.index','request.create','request.show']) }}">
-                        <a href="{{ route('request.index') }}" class="nav-link">
-                            <span class="title">Internal Request</span>
-                            <span class="badge badge-danger">{{$purchases}}</span>
+                    <li class="nav-item {{ set_active(['transfer.index','add.transfer']) }}">
+                        <a href="{{ route('transfer.index') }}" class="nav-link ">
+                            <span class="title">ATK Request</span>
+                            <span class="badge badge-danger">{{$transfers}}</span>
                         </a>
                     </li>
                 </ul>
@@ -156,7 +161,7 @@
             @endcan
             @can('Can Access Inventories') 
             <li class="nav-item  {{ set_active(['inventory.index','inventory.adjust','receipt.index','receipt.search','receipt.get','receipt.edit','delivery.index','inventory.card','purchase.show'
-            ,'delivery.search','delivery.get','transfer.index','add.transfer','deliveryRetur.index','deliveryRetur.search','deliveryRetur.get']) }}">
+            ,'delivery.search','delivery.get','deliveryRetur.index','deliveryRetur.search','deliveryRetur.get']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-grid"></i>
             		<span class="title">Inventory</span>
@@ -183,12 +188,6 @@
                         <a href="{{ route('delivery.index') }}" class="nav-link ">
                             <span class="title">Pengiriman Barang</span>
                             <span class="badge badge-danger">{{$deliveries}}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item {{ set_active(['transfer.index','add.transfer']) }}">
-                        <a href="{{ route('transfer.index') }}" class="nav-link ">
-                            <span class="title">Transfer Gudang</span>
-                            <span class="badge badge-danger">{{$transfers}}</span>
                         </a>
                     </li>
                     <li class="nav-item {{ set_active(['deliveryRetur.index','deliveryRetur.search','deliveryRetur.get']) }}">

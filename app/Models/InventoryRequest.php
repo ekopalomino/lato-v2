@@ -14,7 +14,7 @@ class InventoryRequest extends Model
         'status_id',
         'created_by',
         'updated_by',
-        'approved_by'
+        'approve_by'
     ];
 
     public function Author()
@@ -29,7 +29,7 @@ class InventoryRequest extends Model
 
     public function Approval()
     {
-        return $this->belongsTo(User::class,'approved_by');
+        return $this->belongsTo(User::class,'approve_by');
     }
 
     public function Statuses()

@@ -80,6 +80,11 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     /*-----------------------End Config Management-----------------------------*/
 
     /*-----------------------Product Management--------------------------------*/
+    Route::get('products/material-group','Apps\ProductManagementController@materialIndex')->name('material.index');
+    Route::post('products/material-group/create','Apps\ProductManagementController@materialStore')->name('material.store');
+    Route::get('products/material-group/edit/{id}','Apps\ProductManagementController@materialEdit')->name('material.edit');
+    Route::post('products/material-group/update/{id}','Apps\ProductManagementController@materialUpdate')->name('material.update');
+    Route::post('products/material-group/delete/{id}','Apps\ProductManagementController@materialDestroy')->name('material.destroy');
     Route::get('products/categories','Apps\ProductManagementController@categoryIndex')->name('product-cat.index');
     Route::post('products/categories/create','Apps\ProductManagementController@categoryStore')->name('product-cat.store');
     Route::get('products/categories/edit/{id}','Apps\ProductManagementController@categoryEdit')->name('product-cat.edit');
@@ -98,7 +103,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('sales/point-of-sale','Apps\SalesManagementController@posIndex')->name('pos.index');
     Route::get('sales/orders/create','Apps\SalesManagementController@create')->name('sales.create');
     Route::post('sales/orders/store','Apps\SalesManagementController@storeSales')->name('sales.store');
-    Route::get('sales/orders/edit/{id}','Apps\SalesManagementController@editSales')->name('sales.edit');
+    Route::get('sales/orders/edit/{id}','Apps\SalesManagementController@editSales')->name('sales.edit'); 
     Route::post('sales/orders/update/{id}','Apps\SalesManagementController@updateSales')->name('sales.update');
     Route::post('sales/orders/approve/{id}','Apps\SalesManagementController@processSales')->name('sales.approve');
     Route::post('sales/orders/rejected/{id}','Apps\SalesManagementController@rejectedSale')->name('sales.rejected');
@@ -112,7 +117,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
 
     /*-----------------------Purchase Management------------------------------------*/
     Route::get('request','Apps\PurchaseManagementController@index')->name('request.index');
-    Route::get('request/show/{id}','Apps\PurchaseManagementController@requestShow')->name('request.show');
+    Route::get('request/process/{id}','Apps\PurchaseManagementController@requestShow')->name('request.show');
+    Route::post('request/process/{id}','Apps\PurchaseManagementController@requestProcess')->name('request.process');
     Route::get('purchase/request/create','Apps\PurchaseManagementController@requestCreate')->name('request.create');
     Route::post('purchase/request/store','Apps\PurchaseManagementController@requestStore')->name('request.store');
     Route::get('purchase/request/print/{id}','Apps\PurchaseManagementController@requestPrint')->name('request.print');

@@ -22,6 +22,12 @@
                 		{!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                 	</div>
                 </div>
+                <div class="col-md-12">
+                	<div class="form-group">
+                		<label class="control-label">Name</label>
+                		{!! Form::select('material_group_id', $materials,old('material_group_id'), array('class' => 'form-control')) !!}
+                	</div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>

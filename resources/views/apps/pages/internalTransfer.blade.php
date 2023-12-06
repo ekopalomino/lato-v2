@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Mutasi Internal
+LATO | ATK Request
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,14 +14,14 @@ FiberTekno | Mutasi Internal
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Mutasi Internal 
+                        <i class="fa fa-database"></i>ATK Request
                     </div>
                 </div>
                 <div class="portlet-body">
                     @can('Can Create Inventory')
                     <div class="col-md-6">
                         <div class="form-group">
-                            <a href="{{ route('add.transfer') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold"> Buat Mutasi
+                            <a href="{{ route('add.transfer') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold">Add New
                             </button></a>
                         </div>
                     </div>
@@ -30,14 +30,14 @@ FiberTekno | Mutasi Internal
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>No Mutasi</th>
-                                <th>Gudang Asal</th>
-                                <th>Gudang Tujuan</th>
-                                <th>Tgl Dibuat</th>
-                                <th>Tgl Diterima</th>
+                				<th>Request No</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Created</th>
+                                <th>Received</th>
                                 <th>Status</th>
-                                <th>Pengirim</th>
-                                <th>Penerima</th>
+                                <th>Request By</th>
+                                <th>Received By</th>
                                 <th></th>
                 			</tr>
                 		</thead>
@@ -55,9 +55,9 @@ FiberTekno | Mutasi Internal
                                     @endif
                                 </td>
                                 <td> 
-                                    @if( ($val->status_id) == 'ffa20f52-a023-4333-b945-a46d04de961c')
+                                    @if( ($val->status_id) == '4')
                                     <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
-                                    @elseif(($val->status_id) == '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')
+                                    @elseif(($val->status_id) == '3')
                                     <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
                                     @endif
                                 </td>
