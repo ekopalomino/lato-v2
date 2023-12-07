@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Penyesuaian Persediaan
+LATO | Stock Adjustment
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Penyesuaian Persediaan
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Penyesuaian Persediaan
+                        <i class="fa fa-database"></i>Stock Adjustment
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -22,12 +22,13 @@ FiberTekno | Penyesuaian Persediaan
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Produk</th>
-                                <th>Gudang</th>
-                                <th>Satuan</th>
-                                <th>Stok Awal</th>
-                                <th>Stok Akhir</th>
-                				<th>Tgl Dibuat</th>
+                				<th>Product</th>
+                                <th>Group</th>
+                                <th>Warehouse</th>
+                                <th>Opening</th>
+                                <th>Ending</th>
+                                <th>UOM</th>
+                				<th>Data Date</th>
                                 <th></th>
                 			</tr>
                 		</thead>
@@ -36,15 +37,16 @@ FiberTekno | Penyesuaian Persediaan
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $product->Products->name }}</td>
+                                <td>{{ $product->Materials->material_name }}</td>
                                 <td>
                                     @if(!empty($product->warehouse_name))
                                     {{ $product->warehouse_name }}
                                     @endif
                                 </td>
-                                <td>{{ $product->Products->Uoms->name }}</td>
                                 <td>{{ number_format($product->opening_amount,2,',','.')}}</td>
                                 <td>{{ number_format($product->closing_amount,2,',','.')}}</td>
-                				<td>{{date("d F Y H:i",strtotime($product->created_at)) }}</td>
+                                <td>{{ $product->Products->Uoms->name }}</td>
+                                <td>{{date("d F Y H:i",strtotime($product->updated_at)) }}</td>
                                 <td>
                                     @can('Can Approve Inventory')
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\InventoryManagementController@makeAdjust',['id'=>$product->id]) }}" title="Make Adjustment" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>

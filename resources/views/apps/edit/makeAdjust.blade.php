@@ -18,16 +18,16 @@
             <div class="row">
             	<div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label">Stok Tambah</label>
-                        {!! Form::number('plus_amount', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}
+                        <label class="control-label">Plus</label>
+                        {!! Form::number('plus_amount', null, array('placeholder' => 'Plus Amount','class' => 'form-control')) !!}
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Stok Kurang</label>
-                        {!! Form::number('min_amount', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}
+                        <label class="control-label">Minus</label>
+                        {!! Form::number('min_amount', null, array('placeholder' => 'Minus Amount','class' => 'form-control')) !!}
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Catatan</label>
-                        {!! Form::textarea('notes', null, array('placeholder' => 'Catatan','class' => 'form-control')) !!}
+                        <label class="control-label">Notes</label>
+                        {!! Form::textarea('notes', null, array('placeholder' => 'Notes','class' => 'form-control')) !!}
                     </div>
                     {{ Form::hidden('product_id', $data->product_id) }}
                     {{ Form::hidden('product_name', $data->product_name) }}
@@ -36,7 +36,7 @@
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                <button id="register" type="submit" class="btn green">Save changes</button>
+                <button id="register" type="submit" class="btn green">Update</button>
             </div>
             {!! Form::close() !!}
 		</div>

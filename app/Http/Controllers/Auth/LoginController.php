@@ -114,6 +114,6 @@ class LoginController extends Controller
 
         session(['lock-expires-at' => now()->addMinutes($request->user()->getLockoutTime())]);
 
-        return redirect()->back();
+        return redirect('/apps/dashboard');
     }
 }

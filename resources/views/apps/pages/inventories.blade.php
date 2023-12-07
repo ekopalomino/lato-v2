@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Persediaan 
+LATO | Stock Data 
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Persediaan
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Persediaan 
+                        <i class="fa fa-database"></i>Stock Data 
                     </div>
                     <div class="tools"> </div>
                 </div>
@@ -23,13 +23,14 @@ FiberTekno | Persediaan
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Produk</th>
-                                <th>Gudang</th>
-                                <th>Stok Awal</th>
-                                <th>Stok Akhir</th>
-                                <th>Satuan</th>
-                                <th>Status Stok</th>
-                				<th>Tgl Update</th>
+                				<th>Product</th>
+                                <th>Group</th>
+                                <th>Warehouse</th>
+                                <th>Opening</th>
+                                <th>Ending</th>
+                                <th>Status</th>
+                                <th>UOM</th>
+                				<th>Data Date</th>
                                 <th></th>
                 			</tr>
                 		</thead>
@@ -38,6 +39,7 @@ FiberTekno | Persediaan
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $product->product_name }}</td>
+                                <td>{{ $product->Materials->material_name }}</td>
                                 <td>
                                     @if(!empty($product->warehouse_name))
                                     {{ $product->warehouse_name }}
@@ -59,7 +61,7 @@ FiberTekno | Persediaan
                                 <td>
                                     <a class="btn btn-xs btn-success" title="Print Stock Card" href="{{ route('stock.pdf',$product->id) }}"><i class="fa fa-print"></i></a>
                                     <a class="btn btn-xs btn-info modalLg" href="#" value="{{ action('Apps\InventoryManagementController@stockCard',['id'=>$product->id]) }}" 
-                                        title="Stock Card Produk {{$product->Products->name }}" data-toggle="modal" data-target="#modalLg"><i class="fa fa-search"></i>
+                                        title="Product Stock Card {{$product->Products->name }}" data-toggle="modal" data-target="#modalLg"><i class="fa fa-search"></i>
                                     </a>
                                 </td>
                 			</tr>

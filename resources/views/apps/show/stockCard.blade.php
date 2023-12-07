@@ -7,14 +7,14 @@
 				<thead>
                 	<tr>
                         <th>No</th>
-                		<th>Tgl Transaksi</th>
-                        <th>Tipe</th>
-                        <th>No Ref</th>
-                        <th>Gudang</th>
-                		<th>Brg Masuk</th>
-                		<th>Brg Keluar</th>
-                		<th>Sisa Brg</th>
-                        <th>Keterangan</th>
+                		<th>Trans Date</th>
+                        <th>Type</th>
+                        <th>Ref No</th>
+                        <th>Warehouse</th>
+                		<th>Stock In</th>
+                		<th>Stock Out</th>
+                		<th>Balance</th>
+                        <th>Notes</th>
                 	</tr>
                 </thead>
                 <tbody>

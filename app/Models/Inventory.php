@@ -9,7 +9,9 @@ class Inventory extends Model
     protected $fillable = [
         'product_id',
         'product_name',
+        'warehouse_id',
         'warehouse_name',
+        'material_group_id',
         'min_stock',
         'opening_amount',
         'closing_amount',
@@ -23,6 +25,11 @@ class Inventory extends Model
     public function Locations()
     {
         return $this->belongsTo(Warehouse::class,'warehouse_id');
+    }
+
+    public function Materials()
+    {
+        return $this->belongsTo(MaterialGroup::class,'material_group_id');
     }
 
     public function Child()
