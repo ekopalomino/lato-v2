@@ -13,7 +13,7 @@ class StatusTableSeeder extends Seeder
     public function run()
     {
         $statuses = [
-            'Process'
+            'Close',
         ];
 
         foreach($statuses as $status) {

@@ -56,11 +56,19 @@ class PurchaseManagementController extends Controller
         $getYear = Carbon::now()->year;
         $references = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
         $refs = 'PR/'.auth()->user()->Branches->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
-        $products = Inventory::join('products','products.id','inventories.product_id')->where([
-            ['inventories.warehouse_name',auth()->user()->Warehouses->name],
+        $products = DB::table('inventories')
+                        ->join('products','products.id','inventories.product_id')->join('warehouses','warehouses.id','inventories.warehouse_id')
+                        ->where([
+                            ['warehouses.branch_id',auth()->user()->branch_id],
+                            ['inventories.closing_amount','=<','inventories.min_stock']
+                        ])
+                        ->select('products.id as id_product','products.name as product_name','warehouses.id as from_wh_id','warehouses.name as from_wh','warehouses.prefix as wh_code')
+                        ->get();
+        /* $products = Inventory::join('products','products.id','inventories.product_id')->join('warehouses','warehouses.id','inventories.warehouse_id')->where([
+            ['warehouses.branch_id',auth()->user()->branch_id],
             ['inventories.closing_amount','=<','inventories.min_stock']
-            ])->get();
-
+            ])->get(); */
+        
         return view('apps.input.request',compact('uoms','products','refs'));
     }
 
@@ -73,14 +81,14 @@ class PurchaseManagementController extends Controller
         $input = [
             'request_ref' => $request->input('request_ref'),
             'request_title' => $request->input('request_title'),
-            'request_wh_id' => auth()->user()->warehouse_id,
+            'branch_id' => auth()->user()->warehouse_id,
             'created_by' => auth()->user()->id,
         ];
         
         $getMonth = Carbon::now()->month;
         $getYear = Carbon::now()->year;
 
-        $refs = Reference::create([
+        $refs = Reference::create([ 
             'type' => '2',
             'month' => $getMonth,
             'year' => $getYear,
@@ -92,18 +100,28 @@ class PurchaseManagementController extends Controller
         $quantity = $request->quantity;
         $uoms = $request->uom_id;
         $request_id = $data->id;
+        $warehouses = $request->warehouse_id;
         
         foreach($items as $index=>$item) {
             if (isset($item)) {
-                $names = Product::where('name',$item)->first();
+                $bases = UomValue::where('id',$uoms[$index])->first();
+                    if($bases->is_parent == null) {
+                        $convertion = ($quantity[$index]) * ($bases->value);
+                    } else {
+                        $convertion = $quantity[$index];
+                    }
+                $names = Inventory::where('product_id',$item)->first();
                 $items = PurchaseItem::create([
                     'purchase_id' => $request_id,
                     'account_id' => $names->Materials->account_id,
                     'material_group_id' => $names->Materials->id,
-                    'product_name' => $names->name,
+                    'warehouse_id' => $warehouses[$index],
+                    'product_id' => $names->product_id,
+                    'product_name' => $names->product_name,
                     'quantity' => $quantity[$index],
-                    'purchase_price' => $names->price,
-                    'sub_total' => ($quantity[$index]) * ($names->price),
+                    'remaining_qty' => $quantity[$index],
+                    'purchase_price' => $names->Products->price,
+                    'sub_total' => ($convertion) * ($names->Products->price),
                     'uom_id' => $uoms[$index],
                 ]);
             } 
@@ -157,7 +175,7 @@ class PurchaseManagementController extends Controller
             );
 
             return redirect()->route('request.index')->with($notification);
-        } elseif (($request->input('status')) == '6') {
+        } else {
             $process = [
                 'status' => $request->input('status'),
                 'updated_by' => auth()->user()->id,
@@ -166,13 +184,21 @@ class PurchaseManagementController extends Controller
             $data->update($process);
 
             $items = $request->product_id;
-            $quantity = $request->quantity;
+            $quantity = $request->remaining_qty;
             $received = $request->received_qty;
             $uoms = $request->uom_id;
             $request_id = $data->id;
             
             foreach($items as $index=>$item) {
                 if (isset($item)) {
+                    $bases = UomValue::where('id',$uoms[$index])->first();
+                    if($bases->is_parent == null) {
+                        $convertion = ($received[$index]) * ($bases->value);
+                        
+                    } else {
+                        $convertion = $delivered[$index];
+                        $destroyed = $damaged[$index];
+                    }
                     $names = Product::where('name',$item)->first();
                     $items = PurchaseItem::where('purchase_id',$id)->update([
                         'quantity' => $quantity[$index],
@@ -180,6 +206,9 @@ class PurchaseManagementController extends Controller
                         'remaining_qty' => ($quantity[$index]) - ($received[$index]),
                         'uom_id' => $uoms[$index],
                     ]);
+
+                    $inventories = Inventory::where('product_id',$item)->first();
+                    
                 } 
             }
             

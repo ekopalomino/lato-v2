@@ -12,7 +12,7 @@ class Purchase extends Model
     protected $fillable = [
         'request_ref',
         'request_title',
-        'request_wh_id',
+        'branch_id',
         'quantity',
         'total',
         'status',
@@ -26,7 +26,7 @@ class Purchase extends Model
 
     public function Locations()
     {
-        return $this->belongsTo(Warehouse::class,'request_wh_id');
+        return $this->belongsTo(Warehouse::class,'branch_id');
     }
 
     public function Author()

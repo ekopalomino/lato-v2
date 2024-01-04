@@ -8,7 +8,7 @@ class InventoryTableSeeder extends SpreadsheetSeeder
 {
     public function __construct()
     {
-        $this->file = '/dump_db/inventories.xls'; // specify relative to Laravel project base path
+        $this->file = '/database/seeds/inventories.xls'; // specify relative to Laravel project base path
     }
     /**
      * Run the database seeds.

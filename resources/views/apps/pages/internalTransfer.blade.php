@@ -31,50 +31,19 @@ LATO | ATK Request
                 			<tr>
                                 <th>No</th>
                 				<th>Request No</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Created</th>
-                                <th>Received</th>
-                                <th>Status</th>
-                                <th>Request By</th>
-                                <th>Received By</th>
-                                <th></th>
-                			</tr>
+                                <th>Requestor</th>
+                                <th>Items</th>
+                                <th>Data Date</th>
+                            </tr>
                 		</thead>
                 		<tbody>
                             @foreach($data as $key=>$val)
                             <tr>      
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $val->order_ref }}</td>
-                                <td>{{ $val->from_wh }}</td>
-                                <td>{{ $val->to_wh }}</td>
-                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
-                                <td>
-                                    @if($val->updated_at != $val->created_at)
-                                    {{date("d F Y H:i",strtotime($val->updated_at)) }}
-                                    @endif
-                                </td>
-                                <td> 
-                                    @if( ($val->status_id) == '4')
-                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
-                                    @elseif(($val->status_id) == '3')
-                                    <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
-                                    @endif
-                                </td>
-                                <td>{{ $val->created_by }}</td>
-                                <td>
-                                    @if(!empty($val->updated_by))
-                                    {{ $val->updated_by }}
-                                    @endif
-                                </td>
-                                <td>
-                                    <a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\InventoryManagementController@transferView',['id'=>$val->id]) }}" title="Detail Mutasi" data-toggle="modal" data-target="#modalMd"><i class="fa fa-search"></i></a>
-                                    @can('Can Edit Inventory')
-                                    {!! Form::open(['method' => 'POST','route' => ['transfer.accept', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
-                                    {!! Form::button('<i class="fa fa-check"></i>',['type'=>'submit','class' => 'btn btn-xs btn-success','title'=>'Terima Mutasi']) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                </td>    
+                                <td></td>
+                                <td></td>
+                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>    
                             </tr>
                             @endforeach
                 		</tbody>

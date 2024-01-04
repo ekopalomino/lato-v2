@@ -23,10 +23,11 @@
                 	</div>
                 </div>
                 <div class="col-md-12">
-                	<div class="form-group">
-                		<label class="control-label">Name</label>
-                		{!! Form::select('material_group_id', $materials,old('material_group_id'), array('class' => 'form-control')) !!}
-                	</div>
+                    <div class="form-group">
+                        <label class="control-label">Material Group</label>
+                        <br>
+                        {!! Form::select('material_id[]', $materials, old('material_id'), ['multiple' => true]) !!}
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

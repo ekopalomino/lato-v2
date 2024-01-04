@@ -61,21 +61,19 @@ ATK Management | Add Request
 	            		<table class="table table-striped table-bordered table-hover" id="sample_2">
 	            			<thead>
 	            				<tr>
-                                    <th>Account Code</th>
-                                    <th>Account Name</th>
-	            					<th>Produk</th>
-                                    <th>Group</th>
+                                    <th>Produk</th>
+                                    <th>Warehouse Code</th>
+                                    <th>Warehouse Name</th>
 	            					<th>Jumlah</th>
 	            					<th>Satuan</th>
 	            				</tr>
 	            			</thead>
 	            			<tbody>
-                                @foreach($products as $key => $data)
+                                @foreach($products as $key => $data) 
 	            				<tr>
-                                    <td>{!! Form::text('account_code[]', $data->Products->Materials->Coas->coa_code, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
-	            					<td>{!! Form::text('account_id[]', $data->Products->Materials->Coas->coa_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
-                                    <td>{{ Form::hidden('product_id', $data->product_id) }}{!! Form::text('product_name[]', $data->product_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
-                                    <td>{!! Form::text('material_group_id[]', $data->Products->Materials->material_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                    <td>{{ Form::hidden('product_id[]', $data->id_product) }}{!! Form::text('product_name[]', $data->product_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                    <td>{!! Form::text('warehouse_code[]', $data->wh_code, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                    <td>{{ Form::hidden('warehouse_id[]', $data->from_wh_id) }}{!! Form::text('warehouse_name[]', $data->from_wh, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                     				<td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required')) !!}</td>
                     				<td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control','required')) !!}</td>
                     			</tr>

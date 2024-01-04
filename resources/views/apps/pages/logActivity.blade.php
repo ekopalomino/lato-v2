@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Activity Log
+LATO | Activity Log
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />

@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Chart of Account
+LATO | Chart of Account
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -32,7 +32,7 @@ ATK Management | Chart of Account
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add New</a>
                                 </td>
                             </tr>
                         </div>

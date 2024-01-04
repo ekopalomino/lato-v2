@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Dashboard
+LATO | Dashboard
 @endsection
 @section('header.plugins')
 <link href="{{ asset('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}" rel="stylesheet" type="text/css" />

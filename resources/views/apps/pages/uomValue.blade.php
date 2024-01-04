@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Nilai UOM
+LATO | Convertion Rate
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Nilai UOM
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Nilai Satuan Ukur 
+                        <i class="fa fa-database"></i>UOM Convertion Rate 
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -33,7 +33,7 @@ FiberTekno | Nilai UOM
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add New </a>
                                 </td>
                             </tr>
                         </div>

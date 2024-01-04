@@ -35,7 +35,7 @@ LATO | Request ATK
                             {!! Form::text('ref_id', $refs, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}
                         </div>
                     </div>
-            		<!--/span-->
+                    <!--/span-->
             	</div>            		
             	<div class="row">
             		<div class="col-md-12">

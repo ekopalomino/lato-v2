@@ -10,6 +10,7 @@ use iteos\Models\Branch;
 use iteos\Models\Division;
 use iteos\Models\Status;
 use iteos\Models\UserWarehouse;
+use iteos\Models\MaterialGroup;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Carbon\Carbon;
@@ -33,9 +34,10 @@ class UserManagementController extends Controller
                         ->get();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
         $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
+        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
         $roles = Role::pluck('name','name')->all();
         
-        return view('apps.pages.users',compact('users','branches','warehouses','roles'));
+        return view('apps.pages.users',compact('users','branches','warehouses','roles','materials'));
     }
 
     public function userProfile()
@@ -54,6 +56,7 @@ class UserManagementController extends Controller
             'roles' => 'required',
             'branch_id' => 'required',
             'warehouse_id' => 'required',
+
         ]);
 
         $input = $request->all();
@@ -84,9 +87,10 @@ class UserManagementController extends Controller
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
+        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
         $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
         
-        return view('apps.edit.users',compact('user','roles','userRole','branches','warehouses'))->renderSections()['content'];
+        return view('apps.edit.users',compact('user','roles','userRole','branches','warehouses','materials'))->renderSections()['content'];
     }
 
     public function userUpdate(Request $request, $id)

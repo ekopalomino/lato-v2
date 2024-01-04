@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use iteos\Http\Controllers\Controller;
 use iteos\Models\Product;
 use iteos\Models\ProductCategory;
+use iteos\Models\ProductHasGroup;
 use iteos\Models\UomValue;
 use iteos\Models\Warehouse;
 use iteos\Models\Inventory;
@@ -29,7 +30,7 @@ class ProductManagementController extends Controller
     public function categoryIndex()
     {
         $data = ProductCategory::orderBy('name','asc')->get();
-        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
+        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray(); 
 
         return view('apps.pages.productCategory',compact('data','materials'));
     }
@@ -38,15 +39,20 @@ class ProductManagementController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:product_categories,name',
-            'material_group_id' => 'required',
         ]);
-
+        $materials = $request->material_id;
         $input = [
             'name' => $request->input('name'),
-            'material_group_id' => $request->input('material_group_id'),
             'created_by' => auth()->user()->id,
         ];
         $data = ProductCategory::create($input);
+        foreach($materials as $index=>$material)
+        {
+            $materialData = ProductHasGroup::create([
+                'category_id' => $data->id,
+                'material_id' => $material,
+            ]);
+        }
         $log = 'Category '.($data->name).' Created';
          \LogActivity::addToLog($log);
         $notification = array (
@@ -62,7 +68,7 @@ class ProductManagementController extends Controller
         $data = ProductCategory::find($id);
         $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
 
-        return view('apps.edit.productCategory',compact('data'))->renderSections()['content'];
+        return view('apps.edit.productCategory',compact('data','materials'))->renderSections()['content'];
     }
 
     public function categoryUpdate(Request $request,$id)
@@ -190,7 +196,7 @@ class ProductManagementController extends Controller
 
     public function productIndex()
     {
-    	$data = Product::where('deleted_at',NULL)->where('location_id',auth()->user()->branch_id)->orderBy('name','asc')->get();
+    	$data = Product::where('deleted_at',NULL)->orderBy('name','asc')->get();
 
     	return view('apps.pages.products',compact('data'));
     }
@@ -200,8 +206,9 @@ class ProductManagementController extends Controller
         $categories = ProductCategory::where('deleted_at',NULL)->pluck('name','id')->toArray();
         $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
         $uoms = UomValue::pluck('name','id')->toArray();
+        $warehouses = Warehouse::where('branch_id',auth()->user()->branch_id)->where('deleted_at',NULL)->pluck('name','id')->toArray();
          
-        return view('apps.input.products',compact('categories','uoms','materials'));
+        return view('apps.input.products',compact('categories','uoms','materials','warehouses'));
     }
 
     public function productStore(Request $request)
@@ -209,7 +216,6 @@ class ProductManagementController extends Controller
         $this->validate($request, [
             'sap_code' => 'required|unique:products,sap_code',
             'name' => 'required',
-            'material_group_id' => 'required',
             'category_id' => 'required',
             'uom_id' => 'required',
             'image' => 'nullable|file|image',
@@ -231,9 +237,7 @@ class ProductManagementController extends Controller
             $input = [ 
                 'sap_code' => $request->input('sap_code'),
                 'name' => $request->input('name'),
-                'material_group_id' => $request->input('material_group_id'),
                 'category_id' => $request->input('category_id'),
-                'location_id' => auth()->user()->branch_id,
                 'uom_id' => $request->input('uom_id'),
                 'image' => $filename,
                 'min_stock' => $request->input('min_stock'),
@@ -245,9 +249,7 @@ class ProductManagementController extends Controller
             $input = [
                 'sap_code' => $request->input('sap_code'),
                 'name' => $request->input('name'),
-                'material_group_id' => $request->input('material_group_id'),
                 'category_id' => $request->input('category_id'),
-                'location_id' => auth()->user()->branch_id,
                 'uom_id' => $request->input('uom_id'),
                 'min_stock' => $request->input('min_stock'),
                 'price' => $request->input('price'),
@@ -257,16 +259,16 @@ class ProductManagementController extends Controller
         }
         
         $data = Product::create($input);
-        $stocks = Inventory::create([
+        /* $stocks = Inventory::create([
             'product_id' => $data->id,
             'product_name' => $data->name,
-            'warehouse_id' => auth()->user()->warehouse_id,
-            'warehouse_name' => auth()->user()->Warehouses->name,
+            'warehouse_id' => $data->warehouse_id,
+            'warehouse_name' => $data->Warehouses->name,
             'material_group_id' => $data->material_group_id,
             'min_stock' => $data->min_stock,
             'opening_amount' => '0',
             'closing_amount' => '0', 
-        ]);
+        ]); */
         $log = 'Product '.($data->name).' Created';
          \LogActivity::addToLog($log);
         $notification = array (
@@ -293,6 +295,7 @@ class ProductManagementController extends Controller
             'sap_code' => 'required',
             'name' => 'required',
             'material_group_id' => 'required',
+            'warehouse_id' => 'required',
             'category_id' => 'required',
             'uom_id' => 'required',
             'image' => 'nullable|file|image',
@@ -315,6 +318,7 @@ class ProductManagementController extends Controller
                 'sap_code' => $request->input('sap_code'),
                 'name' => $request->input('name'),
                 'material_group_id' => $request->input('material_group_id'),
+                'warehouse_id' => $request->input('warehouse_id'),
                 'category_id' => $request->input('category_id'),
                 'uom_id' => $request->input('uom_id'),
                 'image' => $filename,
@@ -328,6 +332,7 @@ class ProductManagementController extends Controller
                 'sap_code' => $request->input('sap_code'),
                 'name' => $request->input('name'),
                 'material_group_id' => $request->input('material_group_id'),
+                'warehouse_id' => $request->input('warehouse_id'),
                 'category_id' => $request->input('category_id'),
                 'uom_id' => $request->input('uom_id'),
                 'min_stock' => $request->input('min_stock'),

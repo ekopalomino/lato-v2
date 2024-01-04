@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Managements | Users
+LATO | Users
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -102,6 +102,14 @@ ATK Managements | Users
                                                 <div class="form-group">
                                                     <label class="control-label">Warehouse</label>
                                                     {!! Form::select('warehouse_id', [null=>'Please Select'] + $warehouses,[], array('class' => 'form-control')) !!}
+                                                </div>
+                                            </div>                                                              
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Material Group</label>
+                                                    {!! Form::select('material_group_id', [null=>'Please Select'] + $materials,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>                                                              
                                         </div>  

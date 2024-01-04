@@ -1,13 +1,13 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Fiber Tekno | Add Receipt Order 
+LATO | Add Receipt Order 
 @endsection
 @section('content')
 <div class="page-content">
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> Form Terima Barang Supplier  
+                <i class="fa fa-database"></i> Receipt Order Form  
             </div>
         </div>
         <div class="portlet-body form">
@@ -28,46 +28,35 @@ Fiber Tekno | Add Receipt Order
                     <div class="col-md-5">
                         <div class="form-group">
                             <label class="control-label">Nomor PO</label>
-                            {!! Form::text('order_ref', $purchases->order_ref, array('class' => 'form-control','readonly'=>'true')) !!}
+                            {!! Form::text('request_ref', $purchases->request_ref, array('class' => 'form-control','readonly'=>'true')) !!}
                         </div>
                     </div>
                 </div>
             	<div class="row">
-            		<div class="col-md-5">
-            			<div class="form-group">
-            				<label class="control-label">ID Supplier</label>
-            				{!! Form::text('supplier', $purchases->supplier_code, array('placeholder' => 'ID Supplier','class' => 'form-control','readonly'=>'true')) !!}
-            			</div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label">Gudang</label>
-                            {!! Form::select('warehouse_name', [null=>'Please Select'] + $locations,[], array('class' => 'form-control')) !!}
-                        </div>
-                    </div>
-                    {{Form::hidden('supplier_id', $purchases->supplier_id)}}
-            	</div>            		
-            	<div class="row">
             		<div class="col-md-12">
 	            		<table class="table table-striped table-bordered table-hover" id="sample_2">
 	            			<thead>
-	            				<tr>
-	            					<th>Produk</th>
-	            					<th>Jumlah Dipesan</th>
-                                    <th>Jumlah Dikirim</th>
-                                    <th>Jumlah Rusak</th>
-	            					<th>Satuan</th>
+                                <tr>
+	            					<th>Product</th>
+                                    <th>Warehouse</th>
+	            					<th>Order Qty</th>
+                                    <th>Order UOM</th>
+                                    <th>Delivery Qty</th>
+                                    <th>Damaged Qty</th>
+	            					<th>Delivery UOM</th>
 	            					<th></th>
 	            				</tr>
 	            			</thead>
 	            			<tbody>
                                 @foreach($purchases->purchaseItems as $key=>$item)
 	            				<tr>
-	            					<td>{!! Form::text('product[]', $item->product_name, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','readonly'=>'true')) !!}</td>
-                    				<td>{!! Form::number('pesanan[]', $item->quantity, array('placeholder' => 'Quantity','class' => 'form-control','readonly'=>'true')) !!}</td>
+	            					<td>{{ Form::hidden('product_id[]', $item->product_id) }}{!! Form::text('product[]', $item->product_name, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','readonly'=>'true')) !!}</td>
+                                    <td>{{ Form::hidden('warehouse_id[]', $item->warehouse_id) }}{!! Form::text('warehouse[]', $item->Warehouses->name, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','readonly'=>'true')) !!}</td>
+                    				<td>{!! Form::number('pesanan[]', number_format($item->remaining_qty,0,',','.'), array('placeholder' => 'Quantity','class' => 'form-control','readonly'=>'true')) !!}</td>
+                                    <td>{!! Form::text('uoms[]', $item->Uoms->name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                                     <td>{!! Form::number('pengiriman[]', null, array('placeholder' => 'Jumlah Dikirim','class' => 'form-control')) !!}</td>
                                     <td>{!! Form::number('rusak[]', null, array('placeholder' => 'Jumlah Rusak','class' => 'form-control')) !!}</td>
-                                    <td>{!! Form::select('uom_id[]', $uoms,$item->uom_id, array('class' => 'form-control','readonly'=>'true')) !!}</td>
+                                    <td>{{ Form::hidden('uom_order[]', $item->uom_id) }}{!! Form::select('uom_id[]', $uoms,$item->uom_id, array('class' => 'form-control')) !!}</td>
                     				<td>
                                         {{ Form::hidden('id', $key+1) }}
                                         <input type="button" value="Delete" class="btn red" onclick="deleteRow(this)">

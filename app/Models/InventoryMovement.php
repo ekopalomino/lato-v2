@@ -10,6 +10,7 @@ class InventoryMovement extends Model
         'type',
         'reference_id',
         'inventory_id',
+        'product_id',
         'product_name',
         'warehouse_name',
         'incoming',

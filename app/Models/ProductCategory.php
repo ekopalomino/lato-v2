@@ -8,7 +8,6 @@ class ProductCategory extends Model
 {
     protected $fillable = [
         'name',
-        'material_group_id',
         'created_by',
         'updated_by',
     ];
@@ -23,8 +22,8 @@ class ProductCategory extends Model
         return $this->belongsTo(User::class,'updated_by');
     }
 
-    public function Materials()
+    public function Child()
     {
-        return $this->belongsTo(MaterialGroup::class,'material_group_id');
+    	return $this->hasMany(ProductHasGroup::class,'category_id');
     }
 }

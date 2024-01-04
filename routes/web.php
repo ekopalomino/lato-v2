@@ -98,27 +98,10 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::post('products/delete/{id}','Apps\ProductManagementController@productDestroy')->name('product.destroy');
     /*-----------------------End Product Management--------------------------------*/
 
-    /*-----------------------Sales Management------------------------------------*/
-    Route::get('sales','Apps\SalesManagementController@index')->name('sales.index');
-    Route::get('sales/point-of-sale','Apps\SalesManagementController@posIndex')->name('pos.index');
-    Route::get('sales/orders/create','Apps\SalesManagementController@create')->name('sales.create');
-    Route::post('sales/orders/store','Apps\SalesManagementController@storeSales')->name('sales.store');
-    Route::get('sales/orders/edit/{id}','Apps\SalesManagementController@editSales')->name('sales.edit'); 
-    Route::post('sales/orders/update/{id}','Apps\SalesManagementController@updateSales')->name('sales.update');
-    Route::post('sales/orders/approve/{id}','Apps\SalesManagementController@processSales')->name('sales.approve');
-    Route::post('sales/orders/rejected/{id}','Apps\SalesManagementController@rejectedSale')->name('sales.rejected');
-    Route::post('sales/orders/close/{id}','Apps\SalesManagementController@closeSale')->name('sales.close');
-    Route::get('sales/orders/pdf/{id}','Apps\SalesManagementController@salesPrint')->name('sales.pdf');
-    Route::get('sales/orders/show/{id}','Apps\SalesManagementController@salesShow')->name('sales.show');
-    Route::get('sales/barcode','Apps\SalesManagementController@salesBarcode')->name('sales.barcode');
-    Route::get('sales/barcode/pdf','Apps\SalesManagementController@barcodePdf')->name('salesbarcode.pdf');
-    Route::get('sales/return-product','Apps\SalesManagementController@returSale')->name('salesRetur.index');
-    /*-----------------------End Sales Management------------------------------------*/
-
     /*-----------------------Purchase Management------------------------------------*/
-    Route::get('request','Apps\PurchaseManagementController@index')->name('request.index');
-    Route::get('request/process/{id}','Apps\PurchaseManagementController@requestShow')->name('request.show');
-    Route::post('request/process/{id}','Apps\PurchaseManagementController@requestProcess')->name('request.process');
+    Route::get('purchase/request','Apps\PurchaseManagementController@index')->name('request.index');
+    Route::get('purchase/request/process/{id}','Apps\PurchaseManagementController@requestShow')->name('request.show');
+    Route::post('purchase/request/process/{id}','Apps\PurchaseManagementController@requestProcess')->name('request.process');
     Route::get('purchase/request/create','Apps\PurchaseManagementController@requestCreate')->name('request.create');
     Route::post('purchase/request/store','Apps\PurchaseManagementController@requestStore')->name('request.store');
     Route::get('purchase/request/print/{id}','Apps\PurchaseManagementController@requestPrint')->name('request.print');
@@ -138,12 +121,12 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('inventory/adjustment','Apps\InventoryManagementController@inventoryAdjustIndex')->name('inventory.adjust');
     Route::get('inventory/adjustment/{id}','Apps\InventoryManagementController@makeAdjust')->name('make.adjust');
     Route::post('inventory/adjustment/store/{id}','Apps\InventoryManagementController@storeAdjust')->name('store.adjust');
-    Route::get('inventories/internal-transfer','Apps\InventoryManagementController@internTransfer')->name('transfer.index');
-    Route::get('inventories/internal-transfer/find','Apps\InventoryManagementController@searchProduct')->name('transfer.product');
-    Route::get('inventories/internal-transfer/create','Apps\InventoryManagementController@addTransfer')->name('add.transfer');
-    Route::post('inventories/internal-transfer/store','Apps\InventoryManagementController@internStore')->name('store.transfer');
-    Route::post('inventories/internal-transfer/accept/{id}','Apps\InventoryManagementController@transferAccept')->name('transfer.accept');
-    Route::get('inventories/internal-transfer/view/{id}','Apps\InventoryManagementController@transferView')->name('transfer.view');
+    Route::get('inventories/internal-request','Apps\InventoryManagementController@internTransfer')->name('transfer.index');
+    Route::get('inventories/internal-request/find','Apps\InventoryManagementController@searchProduct')->name('transfer.product');
+    Route::get('inventories/internal-request/create','Apps\InventoryManagementController@addTransfer')->name('add.transfer');
+    Route::post('inventories/internal-request/store','Apps\InventoryManagementController@internStore')->name('store.transfer');
+    Route::post('inventories/internal-request/accept/{id}','Apps\InventoryManagementController@transferAccept')->name('transfer.accept');
+    Route::get('inventories/internal-request/view/{id}','Apps\InventoryManagementController@transferView')->name('transfer.view');
     Route::get('inventories/purchase-receipt','Apps\InventoryManagementController@receiptIndex')->name('receipt.index');
     Route::get('inventories/purchase-receipt/search/purchase-order','Apps\InventoryManagementController@receiptSearch')->name('receipt.search');
     Route::post('inventories/purchase-receipt/get/purchase-order','Apps\InventoryManagementController@receiptGet')->name('receipt.get');
@@ -151,41 +134,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('inventories/purchase-receipt/edit/{id}','Apps\InventoryManagementController@receiptEdit')->name('receipt.edit');
     Route::post('inventories/purchase-receipt/update/{id}','Apps\InventoryManagementController@receiptUpdate')->name('receipt.update');
     Route::post('inventories/purchase-receipt/close/{id}','Apps\InventoryManagementController@receiptClose')->name('receipt.close');
-    Route::get('inventories/delivery-order','Apps\InventoryManagementController@doIndex')->name('delivery.index');
-    Route::get('inventories/delivery-order/search/sales-order','Apps\InventoryManagementController@doSearch')->name('delivery.search');
-    Route::post('inventories/delivery-order/get/sales-order','Apps\InventoryManagementController@doGet')->name('delivery.get');
-    Route::get('inventories/delivery-order/create','Apps\InventoryManagementController@doMake')->name('delivery.create');
-    Route::post('inventories/delivery-order/store','Apps\InventoryManagementController@doStore')->name('delivery.store');
-    Route::get('inventories/delivery-order/edit/{id}','Apps\InventoryManagementController@doEdit')->name('delivery.edit');
-    Route::post('inventories/delivery-order/cancel/{id}','Apps\InventoryManagementController@doCancel')->name('delivery.cancel');
-    Route::get('inventories/delivery-order/show-items/{id}','Apps\InventoryManagementController@doShow')->name('delivery.show');
-    Route::get('inventories/delivery-order/receipt/{id}','Apps\InventoryManagementController@doReceipt')->name('delivery.receipt');
-    Route::post('inventories/delivery-order/delivered/{id}','Apps\InventoryManagementController@doDone')->name('delivery.done');
-    Route::get('inventories/delivery-order/print/{id}','Apps\InventoryManagementController@doPrint')->name('delivery.print');
-    Route::get('inventories/delivery-order/retur','Apps\InventoryManagementController@returItem')->name('deliveryRetur.index');
-    Route::get('inventories/delivery-order/retur/search/order','Apps\InventoryManagementController@returSearch')->name('deliveryRetur.search');
-    Route::post('inventories/delivery-order/retur/get/order','Apps\InventoryManagementController@returGet')->name('deliveryRetur.get');
-    Route::post('inventories/delivery-order/retur/store','Apps\InventoryManagementController@returStore')->name('deliveryRetur.store');
     /*-----------------------End Inventory Management------------------------------------*/
- 
-    /*-----------------------Manufacture Management------------------------------------*/
-    Route::get('manufactures/request','Apps\ManufactureManagementController@requestIndex')->name('manufacture-request.index');
-    Route::get('manufactures/request/create','Apps\ManufactureManagementController@createRequest')->name('manufacture-request.create');
-    Route::get('manufactures/request/product/find','Apps\ManufactureManagementController@manufactureProduct')->name('manufacture-request.product');
-    Route::post('manufactures/request/store','Apps\ManufactureManagementController@storeRequest')->name('manufacture-request.store');
-    Route::get('manufactures/request/store/{id}','Apps\ManufactureManagementController@checkStock')->name('manufacture-request.check');
-    Route::post('manufactures/request/approve/{id}','Apps\ManufactureManagementController@approveRequest')->name('manufacture-request.approve');
-    Route::get('manufactures','Apps\ManufactureManagementController@index')->name('manufacture.index');
-    Route::get('manufactures/order/stock-check/{id}','Apps\ManufactureManagementController@reCheckStock')->name('manufactureStock.check');
-    Route::post('manufactures/order/stock-validate/{id}','Apps\ManufactureManagementController@approveStock')->name('manufactureStock.validate');
-    Route::post('manufactures/order/process/{id}','Apps\ManufactureManagementController@makeManufacture')->name('manufacture.process');
-    Route::get('manufactures/order/done/{id}','Apps\ManufactureManagementController@manufactureDone')->name('manufacture.done');
-    Route::post('manufactures/order/complete','Apps\ManufactureManagementController@process')->name('manufacture.complete');
-    Route::get('manufactures/order/show/{id}','Apps\ManufactureManagementController@manufactureShow')->name('manufacture.show');
-    Route::get('manufactures/order/transfer/{id}','Apps\ManufactureManagementController@manufactureTransfer')->name('manufacture.transfer');
-    Route::post('manufactures/order/transfer/process/{id}','Apps\ManufactureManagementController@transferProcess')->name('transfer.process');
-    /*-----------------------End Manufacture Management------------------------------------*/
- 
+
     /*-----------------------Reports Management------------------------------------*/
     Route::get('reports/table/sales','Apps\ReportManagementController@saleTable')->name('sale.table');
     Route::post('reports/table/sales/view','Apps\ReportManagementController@reportSales')->name('sale-table.view');
@@ -196,23 +146,4 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('reports/table/manufacture','Apps\ReportManagementController@manufactureTable')->name('manufacture.table');
     Route::post('reports/table/manufacture/view','Apps\ReportManagementController@reportManufacture')->name('manufacture-table.view');
     /*-----------------------End Reports Management------------------------------------*/
-
-    /*-----------------------Finance Management------------------------------------*/
-    Route::get('finance/invoices/index','Apps\PaymentManagementController@invoiceIndex')->name('invoice.index');
-    Route::get('finance/invoices/create','Apps\PaymentManagementController@invoiceMake')->name('invoice.create');
-    Route::post('finance/invoices/search','Apps\PaymentManagementController@referenceGet')->name('invoice.search');
-    Route::post('finance/invoices/store','Apps\PaymentManagementController@invoiceStore')->name('invoice.store');
-    Route::post('finance/invoices/payment-receive/{id}','Apps\PaymentManagementController@invoicePayment')->name('invoice.payment');
-    Route::get('finance/invoices/cicilan/{id}','Apps\PaymentManagementController@cicilanCreate')->name('invoiceCicilan.create');
-    Route::post('finance/invoices/cicilan/{id}','Apps\PaymentManagementController@cicilanStore')->name('invoiceCicilan.store');
-    Route::get('finance/invoices/show/{id}','Apps\PaymentManagementController@invoiceShow')->name('invoice.show');
-    Route::get('finance/invoices/print/{id}','Apps\PaymentManagementController@invoicePrint')->name('invoice.print');
-    Route::get('finance/purchase-receipt/index','Apps\PaymentManagementController@receiptIndex')->name('purchaseReceipt.index');
-    Route::get('finance/purchase-receipt/search','Apps\PaymentManagementController@receiptSearch')->name('purchaseReceipt.search');
-    Route::post('finance/purchase-receipt/result','Apps\PaymentManagementController@receiptGet')->name('purchaseReceipt.get');
-    Route::get('finance/purchase-receipt/make','Apps\PaymentManagementController@receiptMake')->name('receiptPayment.make');
-    Route::post('finance/purchase-receipt/create','Apps\PaymentManagementController@receiptStore')->name('receiptPayment.store');
-    Route::post('finance/purchase-receipt/payment-made/{id}','Apps\PaymentManagementController@receiptPayment')->name('purchaseReceipt.payment');
-    Route::get('finance/purchase-receipt/show/{id}','Apps\PaymentManagementController@receiptShow')->name('purchaseReceipt.show');
-    Route::get('finance/purchase-receipt/print/{id}','Apps\PaymentManagementController@receiptPrint')->name('purchaseReceipt.print');
 });

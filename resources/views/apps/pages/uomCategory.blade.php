@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Kategori UOM
+LATO | UOM Category
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Kategori UOM
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Kategori Satuan Ukur 
+                        <i class="fa fa-database"></i>UOM Category 
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -33,7 +33,7 @@ FiberTekno | Kategori UOM
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add New </a>
                                 </td>
                             </tr>
                         </div>
@@ -53,7 +53,7 @@ FiberTekno | Kategori UOM
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nama Kategori</label>
+                                                    <label class="control-label">Category Name</label>
                                                     {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
@@ -61,7 +61,7 @@ FiberTekno | Kategori UOM
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button id="register" type="submit" class="btn green">Submit</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -72,9 +72,8 @@ FiberTekno | Kategori UOM
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                				<th>Kategori</th>
-                                <th>Dibuat</th>
-                				<th>Tgl Dibuat</th>
+                				<th>Category Name</th>
+                                <th>Data Date</th>
                 				<th></th>
                 			</tr>
                 		</thead>
@@ -83,8 +82,7 @@ FiberTekno | Kategori UOM
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $val->name }}</td>
-                                <td>{{ $val->created_by }}</td>
-                				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
+                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
                 				<td>
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ConfigurationController@uomcatEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
                                     {!! Form::open(['method' => 'POST','route' => ['uom-cat.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
@@ -112,7 +110,7 @@ FiberTekno | Kategori UOM
 <script>
     function ConfirmDelete()
     {
-    var x = confirm("Yakin Data Akan Dihapus?");
+    var x = confirm("Data Will be Delete?");
     if (x)
         return true;
     else

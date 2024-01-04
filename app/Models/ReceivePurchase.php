@@ -12,10 +12,10 @@ class ReceivePurchase extends Model
     protected $fillable = [
         'ref_no',
     	'order_ref',
-    	'warehouse',
+    	'total_qty',
+        'total_price',
         'status_id',
         'received_by',
-        'supplier_id'
     ];
 
     public $incrementing = false;
@@ -25,13 +25,8 @@ class ReceivePurchase extends Model
     	return $this->hasMany(ReceivePurchaseItem::class,'receive_id');
     }
 
-    public function Status()
+    public function Statuses()
     {
         return $this->belongsTo(Status::class,'status_id');
-    }
-
-    public function Contacts()
-    {
-        return $this->belongsTo(Contact::class,'supplier_id');
     }
 }

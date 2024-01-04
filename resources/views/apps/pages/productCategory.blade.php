@@ -52,7 +52,8 @@ LATO | Product Category
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label">Material Group</label>
-                                                    {!! Form::select('material_group_id', [null=>'Please Select'] + $materials,[], array('class' => 'form-control')) !!}
+                                                    <br>
+                                                    {!! Form::select('material_id[]', $materials, null, ['multiple' => true]) !!}
                                                 </div>
                                             </div>
                                         </div>  
@@ -92,7 +93,13 @@ LATO | Product Category
                             @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                                <td>{{ $val->Materials->material_name }}</td>
+                                <td>
+                                    @foreach($val->Child as $child)
+                                    <ul>
+                                        <li>{{ $child->Materials->material_name}}</li>
+                                    </ul>
+                                    @endforeach
+                                </td>
                 				<td>{{ $val->name }}</td>
                                 <td>
                                     @if(!empty($val->deleted_at))

@@ -27,41 +27,31 @@ Fiber Tekno | Add Receipt Order
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label class="control-label">Cari PO</label>
-                            {!! Form::select('order_ref', [null=>'Please Select'] + $purchases,[], array('class' => 'form-control')) !!}
+                            <label class="control-label">PO Search</label>
+                            {!! Form::select('request_ref', [null=>'Please Select'] + $purchases,[], array('class' => 'form-control')) !!}
                         </div>
                     </div>
                 </div>
-            	<div class="row">
-            		<div class="col-md-5">
-            			<div class="form-group">
-            				<label class="control-label">Supplier</label>
-            				{!! Form::text('customer', null, array('placeholder' => 'ID Supplier','class' => 'form-control','disabled')) !!}
-            			</div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label">Gudang</label>
-                            {!! Form::text('customer', null, array('placeholder' => 'Gudang','class' => 'form-control','disabled')) !!}
-                        </div>
-                    </div>
-            	</div>            		
             	<div class="row">
             		<div class="col-md-12">
 	            		<table class="table table-striped table-bordered table-hover" id="sample_2">
 	            			<thead>
 	            				<tr>
-	            					<th>Produk</th>
-	            					<th>Jumlah Dipesan</th>
-                                    <th>Jumlah Dikirim</th>
-                                    <th>Jumlah Rusak</th>
-	            					<th>Satuan</th>
+	            					<th>Product</th>
+                                    <th>Group</th>
+                                    <th>Warehouse</th>
+	            					<th>Order Qty</th>
+                                    <th>Delivery Qty</th>
+                                    <th>Damaged Qty</th>
+	            					<th>UOM</th>
 	            					<th></th>
 	            				</tr>
 	            			</thead>
 	            			<tbody>
 	            				<tr>
 	            					<td>{!! Form::text('product[]', null, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','disabled')) !!}</td>
+                                    <td>{!! Form::text('product[]', null, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','disabled')) !!}</td>
+                                    <td>{!! Form::text('product[]', null, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','disabled')) !!}</td>
                     				<td>{!! Form::number('quantity[]', null, array('placeholder' => 'Quantity','class' => 'form-control','disabled')) !!}</td>
                     				<td>{!! Form::number('quantity[]', null, array('placeholder' => 'Quantity','class' => 'form-control','disabled')) !!}</td>
                                     <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Quantity','class' => 'form-control','disabled')) !!}</td>

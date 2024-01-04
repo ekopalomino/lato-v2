@@ -58,17 +58,35 @@ LATO | Show Request
                                     {!! Form::date('created_at', $data->created_at, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}  
                                 </div>
                             </div>
+                            @if($data->status == '8')
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Request Status</label>
                                 <div class="col-md-6">
                                     <select id="single" name="status" class="form-control select">
                                         <option value="">Please Select</option>
                                         <option value="13">Process</option>
-                                        <option value="6">Received</option>
+                                        <option value="17">Close</option>
                                     </select>
-                                </div>
-                                
+                                </div> 
                             </div>
+                            @elseif($data->status == '13')
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Request Status</label>
+                                <div class="col-md-6">
+                                    <select id="single" name="status" class="form-control select">
+                                        <option value="">Please Select</option>
+                                        <option value="17">Close</option>
+                                    </select>
+                                </div> 
+                            </div>
+                            @else
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Request Status</label>
+                                <div class="col-md-6">
+                                    {!! Form::text('status', $data->Statuses->name, array('placeholder' => 'Item Name','class' => 'form-control','readonly')) !!}
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <div class="row">
@@ -78,10 +96,12 @@ LATO | Show Request
                                     <tr>
                                         <th>Account Code</th>
                                         <th>Account Name</td>
+                                        <th>Warehouse</th>
                                         <th>Product Name</th>
                                         <th>Request</th>
-                                        <th>Received</th>
                                         <th>UOM</th>
+                                        <th>Price</th>
+                                        <th>Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,10 +109,12 @@ LATO | Show Request
                                     <tr>
                                         <td>{!! Form::text('coa_code[]', $val->Coas->coa_code, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                                         <td>{!! Form::text('coa_name[]', $val->Coas->coa_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
-                                        <td>{!! Form::text('product_id[]', $val->product_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
-                                        <td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required','readonly')) !!}</td>
-                                        <td>{!! Form::number('received_qty[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required')) !!}</td>
-                                        <td>{!! Form::text('uom_id[]', $val->Uoms->name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::text('warehouse[]', $val->Warehouses->name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::text('product_name[]', $val->product_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::number('remaining_qty[]', number_format($val->remaining_qty,0,',','.'), array('placeholder' => 'Jumlah','class' => 'form-control','required','readonly')) !!}</td>
+                                        <td>{!! Form::text('uom_name[]', $val->Uoms->name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::text('purchase_price[]', number_format($val->purchase_price,0,',','.'), array('placeholder' => 'Jumlah','class' => 'form-control','readonly')) !!}</td>
+                                        <td>{!! Form::text('sub_total[]', number_format($val->sub_total,0,',','.'), array('placeholder' => 'Jumlah','class' => 'form-control','readonly')) !!}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

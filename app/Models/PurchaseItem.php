@@ -10,6 +10,8 @@ class PurchaseItem extends Model
         'purchase_id',
         'account_id',
         'material_group_id',
+        'warehouse_id',
+        'product_id',
         'product_name',
         'quantity',
         'received_qty',
@@ -32,5 +34,10 @@ class PurchaseItem extends Model
     public function Materials()
     {
         return $this->belongsTo(MaterialGroup::class,'material_group_id');
+    }
+
+    public function Warehouses()
+    {
+        return $this->belongsTo(Warehouse::class,'warehouse_id');
     }
 }

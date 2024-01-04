@@ -46,7 +46,6 @@ ATK Management | Product Catalog
                                 <th>UOM</th>
                                 <th>Image</th>
                                 <th>Status</th>
-                                <th>Branch</th>
                                 <th>Create / Update</th>
                                 <th>Data Date</th>
                 				<th></th>
@@ -57,7 +56,7 @@ ATK Management | Product Catalog
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $product->name }}</td>
-                                <td>{{ $product->Materials->material_name }}</td>
+                                <td></td>
                                 <td>{{ $product->Categories->name }}</td>
                                 <td>{{ $product->Uoms->name }}</td>
                                 <td><img src="http://fibertekno.iteos.tech/public/products/{{$product->image}}" width="75" height="100" ></td>
@@ -68,7 +67,6 @@ ATK Management | Product Catalog
                                     <label class="label label-sm label-success">Active</label>
                                     @endif
                                 </td>
-                                <td>{{ $product->Locations->branch_name }}</td>
                                 <td>
                                     @if(!empty($product->updated_by))    
                                     {{ $product->Editor->name }}

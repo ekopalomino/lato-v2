@@ -41,6 +41,7 @@ LATO | Purchase Request
                 			<tr>
                                 <th>No</th>
                 				<th>Ref No</th>
+                                <th>Remarks</th>
                                 <th>Total Quantity</th>
                                 <th>Total Price</th>
                 				<th>Request By</th>
@@ -55,6 +56,7 @@ LATO | Purchase Request
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                                 <td>{{ $val->request_ref }}</td>
+                                <td>{{ $val->request_title }}</td>
                                 <td>{{ number_format($val->quantity,0,',','.')}}</td>
                                 <td>{{ number_format($val->total,0,',','.')}}</td>
                                 <td>{{ $val->Author->name }}</td>

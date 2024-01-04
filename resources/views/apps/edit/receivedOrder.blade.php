@@ -1,13 +1,13 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Fiber Tekno | Edit Receipt Order 
+LATO | Goods Receipt Update 
 @endsection
 @section('content')
 <div class="page-content">
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> Form Terima Barang Parsial Supplier  
+                <i class="fa fa-database"></i> Goods Receipt Update 
             </div>
         </div>
         <div class="portlet-body form">
@@ -29,7 +29,6 @@ Fiber Tekno | Edit Receipt Order
                         <div class="form-group">
                             <label class="control-label">Nomor PO</label>
                             {!! Form::text('order_ref', null, array('class' => 'form-control','readonly'=>'true')) !!}
-                            {{ Form::hidden('warehouse_name', $data->warehouse) }}
                         </div>
                     </div>
                 </div>            		
@@ -38,25 +37,27 @@ Fiber Tekno | Edit Receipt Order
 	            		<table class="table table-striped table-bordered table-hover" id="sample_2">
 	            			<thead>
 	            				<tr>
-	            					<th>Produk</th>
-	            					<th>Jumlah Dipesan</th>
-                                    <th>Jumlah Diterima</th>
-                                    <th>Jumlah Dikirim</th>
-                                    <th>Jumlah Rusak</th>
-	            					<th>Satuan</th>
+	            					<th>Product</th>
+	            					<th>Order Qty</th>
+                                    <th>Order UOM</th>
+                                    <th>Remaining Qty</th>
+                                    <th>Delivery Qty</th>
+                                    <th>Damaged Qty</th>
+	            					<th>Delivery UOM</th>
 	            					<th></th>
 	            				</tr>
 	            			</thead>
 	            			<tbody>
                                 @foreach($details as $key=>$item)
 	            				<tr>
-	            					<td>{!! Form::text('product[]', $item->product_name, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','readonly'=>'true')) !!}</td>
-                    				<td>{!! Form::number('pesanan[]', $item->orders, array('placeholder' => 'Quantity','class' => 'form-control','readonly'=>'true')) !!}</td>
-                                    <td>{!! Form::number('pengiriman[]', $item->received, array('placeholder' => 'Jumlah Dikirim','class' => 'form-control','readonly'=>'true')) !!}</td>
+	            					<td>{{ Form::hidden('product_id[]', $item->product_id) }}{!! Form::text('product[]', $item->product_name, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','readonly'=>'true')) !!}</td>
+                    				<td>{!! Form::number('pesanan[]', number_format($item->orders,0,',','.'), array('placeholder' => 'Quantity','class' => 'form-control','readonly'=>'true')) !!}</td>
+                                    <td>{!! Form::text('uoms[]',$item->UomOrder->name, array('placeholder' => 'Produk','id' => 'product','class' => 'form-control','readonly'=>'true')) !!}</td>
+                                    <td>{!! Form::number('pengiriman[]', number_format($item->remaining,0,',','.'), array('placeholder' => 'Jumlah Dikirim','class' => 'form-control','readonly'=>'true')) !!}</td>
                                     <td>{!! Form::number('parsial[]', null, array('placeholder' => 'Jumlah Dikirim','class' => 'form-control')) !!}</td>
                                     <td>{!! Form::number('rusak[]', null, array('placeholder' => 'Jumlah Rusak','class' => 'form-control')) !!}</td>
                                     <td>{!! Form::select('uom_id[]', $uoms,$item->uom_id, array('class' => 'form-control')) !!}
-                                        {{Form::hidden('price[]', $item->sub_total)}}
+                                        {{Form::hidden('wh_id[]', $item->warehouse_id)}}
                                     </td>
                     				<td>
                                         {{ Form::hidden('id', $key+1) }}

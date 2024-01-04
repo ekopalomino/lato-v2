@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Purchase Receipt
+LATO | Purchase Receipt
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Purchase Receipt
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Penerimaan Barang Supplier
+                        <i class="fa fa-database"></i>Purchase Receipt
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -22,7 +22,7 @@ FiberTekno | Purchase Receipt
                         @can('Can Create Inventory')
                         <div class="form-group">
                             <div class="form-group">
-                                <a href="{{ route('receipt.search') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold"> Terima Barang
+                                <a href="{{ route('receipt.search') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold"> Add New
                                 </button></a>
                             </div>
                         </div>
@@ -33,12 +33,13 @@ FiberTekno | Purchase Receipt
                 			<tr>
                                 <th>No</th>
                                 <th>Ref No</th>
-                                <th>Nama Barang</th>
-                                <th>Jumlah Dipesan</th>
-                                <th>Jumlah Dikirim</th>
-                                <th>Jumlah Rusak</th>
-                                <th>Status</th>
-                                <th>Tgl Kirim</th>
+                                <th>Product</th>
+                                <th>Warehouse</th>
+                                <th>Order</th>
+                                <th>Delivered</th>
+                                <th>Return</th>
+                                <th>Remaining</th>
+                                <th>Data Date</th>
                                 <th></th>
                 			</tr>
                 		</thead>
@@ -57,39 +58,45 @@ FiberTekno | Purchase Receipt
                                 <td>
                                     @foreach($val->Child as $child)
                                     <ul>
-                                        <li>{{ number_format($child->orders,2,',','.')}}</li>
+                                        <li>{{ $child->Warehouses->name}}</li>
                                     </ul>
                                     @endforeach
                                 </td>
                                 <td>
                                     @foreach($val->Child as $child)
                                     <ul>
-                                        <li>{{ number_format($child->received,2,',','.')}}</li>
+                                        <li>{{ number_format($child->orders,0,',','.')}} {{ $child->OrderUom->name }}</li>
                                     </ul>
                                     @endforeach
                                 </td>
                                 <td>
                                     @foreach($val->Child as $child)
                                     <ul>
-                                        <li>{{ number_format($child->damaged,2,',','.')}}</li>
+                                        <li>{{ number_format($child->received,0,',','.')}} {{ $child->Uoms->name }}</li>
                                     </ul>
                                     @endforeach
                                 </td>
                                 <td>
-                                    @if(($val->status_id) == '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')
-                                        <label class="label label-sm label-danger">{{ $val->Status->name}}</label>
-                                    @else
-                                        <label class="label label-sm label-success">{{ $val->Status->name}}</label>
-                                    @endif
+                                    @foreach($val->Child as $child)
+                                    <ul>
+                                        <li>{{ number_format($child->damaged,0,',','.')}} {{ $child->Uoms->name }}</li>
+                                    </ul>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($val->Child as $child)
+                                    <ul>
+                                        <li>{{ number_format($child->remaining,0,',','.')}} {{ $child->Uoms->name }}</li>
+                                    </ul>
+                                    @endforeach
                                 </td>
                                 <td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                                 <td>
-                                    @if(($val->status_id) == '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')
                                     <a class="btn btn-xs btn-info" title="Edit PO" href="{{ route('receipt.edit',$val->id) }}"><i class="fa fa-edit"></i></a>
                                     {!! Form::open(['method' => 'POST','route' => ['receipt.close', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-lock"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Close PO']) !!}
                                     {!! Form::close() !!}
-                                    @endif
+                                    
                                 </td>
                             </tr>
                             @endforeach
