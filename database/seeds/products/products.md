@@ -1,0 +1,18 @@
+products
+========
+
+|                  id                  | sap_code |                 name                  | material_group_id | category_id | uom_id | branch_id | warehouse_id | image | min_stock | price |             specification             |              created_by              | updated_by |
+|--------------------------------------|----------|---------------------------------------|-------------------|-------------|--------|-----------|--------------|-------|-----------|-------|---------------------------------------|--------------------------------------|------------|
+| 5d9aaffa-33c0-11ea-aec2-2e728ce88125 | ATK-6    | 3M DOUBLE TAPE                        | NULL              | 1           | 1      | NULL      | NULL         | NULL  | 100       | 75    | 3M DOUBLE TAPE                        | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9ab270-33c0-11ea-aec2-2e728ce88125 | ATK-114  | KERTAS HVS A4 70 GR                   | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 332.5 | KERTAS HVS A4 70 GR                   | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9ab3d8-33c0-11ea-aec2-2e728ce88125 | ATK-115  | KERTAS FLIP CHART HVS UK. 60 X 100 CM | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 40    | KERTAS FLIP CHART HVS UK. 60 X 100 CM | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9ab536-33c0-11ea-aec2-2e728ce88125 | ATK-116  | KERTAS FOLIO BURAM CD                 | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 35    | KERTAS FOLIO BURAM CD                 | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9ac882-33c0-11ea-aec2-2e728ce88125 | ATK-117  | KERTAS HVS F4 KUNING 70 GR            | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 6.66  | KERTAS HVS F4 KUNING 70 GR            | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9aca26-33c0-11ea-aec2-2e728ce88125 | ATK-119  | KERTAS THERMAL 57 X 50                | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 6     | KERTAS THERMAL 57 X 50                | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9acb70-33c0-11ea-aec2-2e728ce88125 | ATK-120  | KERTAS THERMAL 80 X 50                | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 7.5   | KERTAS THERMAL 80 X 50                | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9acca6-33c0-11ea-aec2-2e728ce88125 | ATK-121  | KERTAS UBI A4                         | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 45    | KERTAS UBI A4                         | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9ae2c2-33c0-11ea-aec2-2e728ce88125 | ATK-166  | PHOTO PAPER BLUE PRINT A4             | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 10        | 31    | PHOTO PAPER BLUE PRINT A4             | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9ae448-33c0-11ea-aec2-2e728ce88125 | ATK-167  | Kertas HVS A4 70gr Golden Star        | NULL              | 2           | 3      | NULL      | NULL         | NULL  | 0         | 0     | Kertas HVS A4 70gr Golden Star        | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+| 5d9ae9b6-33c0-11ea-aec2-2e728ce88125 | ATK-157  | Kertas Clipart                        | NULL              | 2           | 1      | NULL      | NULL         | NULL  | 0         | 0     | Kertas Clipart                        | bb536994-ada3-4caa-b97b-e412dc2cc882 |            |  |
+(11 rows)
+

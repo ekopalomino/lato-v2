@@ -18,7 +18,7 @@ LATO | ATK Request
                     </div>
                 </div>
                 <div class="portlet-body">
-                    @can('Can Create Inventory')
+                    @can('Can Create Request')
                     <div class="col-md-6">
                         <div class="form-group">
                             <a href="{{ route('add.transfer') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold">Add New

@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Create Role
+LATO | Create Role
 @endsection
 @section('header.plugins')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -10,10 +10,10 @@ FiberTekno | Create Role
 <div class="page-content">
 	<div class="row">
         <div class="portlet light bordered">
-            <div class="portlet-title">
+            <div class="portlet-title"> 
                 <div class="caption">
                     <i class="icon-speech font-green-sharp"></i>
-                    <span class="caption-subject font-green-sharp bold uppercase">Form Hak Akses</span>
+                    <span class="caption-subject font-green-sharp bold uppercase">Access Role Form</span>
                 </div>
             </div>
             <div class="portlet-body">
@@ -34,22 +34,17 @@ FiberTekno | Create Role
 									<thead>
 										<tr>
 											<th>No</th>
-											<th>Nama Modul</th>
-											<th>Akses Data</th>
-											<th>Buat Data</th>
-											<th>Edit Data</th>
-											<th>Hapus Data</th>
-											<th>Accept/Reject Data</th>
-											<th>Input Resi Pengiriman</th>
-											<th>Dashboard User</th>
-											<th>Dashboard Manajemen</th>
-											<th>Dashboard Finance</th>
+											<th>Function</th>
+											<th>Access</th>
+											<th>Create</th>
+											<th>Edit</th>
+											<th>Delete</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											<td>1</td>
-											<td>Konfigurasi Umum</td>
+											<td>Configuration</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
 													<input type="checkbox" value="1" name="permission[]" />
@@ -74,20 +69,10 @@ FiberTekno | Create Role
 													<span></span>
 												</label>
 											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
 										</tr>
 										<tr>
 											<td>2</td>
-											<td>Manajemen User</td>
+											<td>User Management</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
 													<input type="checkbox" value="2" name="permission[]" />
@@ -112,20 +97,10 @@ FiberTekno | Create Role
 													<span></span>
 												</label>
 											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
 										</tr>
 										<tr>
 											<td>3</td>
-											<td>Produk</td>
+											<td>Products</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
 													<input type="checkbox" value="5" name="permission[]" />
@@ -150,45 +125,21 @@ FiberTekno | Create Role
 													<span></span>
 												</label>
 											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
 										</tr>
 										<tr>
 											<td>4</td>
-											<td>Kontak</td>
+											<td>Request</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="15" name="permission[]" />
+													<input type="checkbox" value="51" name="permission[]" />
 													<span></span>
 												</label>
 											</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="45" name="permission[]" />
+													<input type="checkbox" value="52" name="permission[]" />
 													<span></span>
 												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="46" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
 											</td>
 											<td>
 											</td>
@@ -197,48 +148,6 @@ FiberTekno | Create Role
 										</tr>
 										<tr>
 											<td>5</td>
-											<td>Sales</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="3" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="23" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="24" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="25" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="26" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-										</tr>
-										<tr>
-											<td>6</td>
 											<td>Purchasing</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
@@ -264,24 +173,11 @@ FiberTekno | Create Role
 													<span></span>
 												</label>
 											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="30" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
+											
 										</tr>
 										<tr>
-											<td>7</td>
-											<td>Gudang</td>
+											<td>6</td>
+											<td>Inventory</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
 													<input type="checkbox" value="6" name="permission[]" />
@@ -302,112 +198,15 @@ FiberTekno | Create Role
 											</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="36" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
 													<input type="checkbox" value="37" name="permission[]" />
 													<span></span>
 												</label>
 											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="50" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
+											>
 										</tr>
 										<tr>
-											<td>8</td>
-											<td>Produksi</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="7" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="38" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="39" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="40" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="41" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-										</tr>
-										<tr>
-											<td>9</td>
-											<td>Finance</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="8" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="42" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="43" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="44" name="permission[]" />
-													<span></span>
-												</label>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-										</tr>
-										<tr>
-											<td>10</td>
-											<td>Laporan</td>
+											<td>7</td>
+											<td>Reports</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
 													<input type="checkbox" value="48" name="permission[]" />
@@ -426,16 +225,7 @@ FiberTekno | Create Role
 											<td>
 												
 											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
-											<td>
-											</td>
+											
 										</tr>
 									</tbody>
 								</table>

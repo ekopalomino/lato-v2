@@ -44,9 +44,14 @@ class InventoryManagementController extends Controller
 
     public function inventoryIndex()
     {
-        $data = Inventory::where('warehouse_name','!=','Gudang Pengiriman')
+        if (auth()->user()->hasRole('Administrator')) {
+            $data = Inventory::orderBy('id','asc')
+                           ->get();
+        } else {
+            $data = Inventory::where('warehouse_id',auth()->user()->warehouse_id)
                            ->orderBy('id','asc')
                            ->get();
+        }
         
         return view('apps.pages.inventories',compact('data'));
     }

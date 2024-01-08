@@ -18,12 +18,12 @@ LATO | Product Category
                     </div>
                 </div>
                 <div class="portlet-body">
-                    @can('Can Create Product')
+                    @can('Can Create Setting')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add New</a>
                                 </td>
                             </tr>
                         </div>
@@ -117,10 +117,14 @@ LATO | Product Category
                                 </td>
                 				<td>{{date("d F Y H:i",strtotime($val->updated_at)) }}</td>
                 				<td>
+                                    @can('Can Edit Setting')
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\ProductManagementController@categoryEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    @endcan
+                                    @can('Can Delete Setting')
                                     {!! Form::open(['method' => 'POST','route' => ['product-cat.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Data']) !!}
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
                 			</tr>
                             @endforeach
