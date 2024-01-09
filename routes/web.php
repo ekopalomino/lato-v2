@@ -111,6 +111,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::post('purchase/orders/rejected/{id}','Apps\PurchaseManagementController@requestRejected')->name('request.rejected');
     Route::get('purchase/orders/print/{id}','Apps\PurchaseManagementController@purchasePrint')->name('purchase.print');
     Route::post('purchase/orders/close/{id}','Apps\PurchaseManagementController@purchaseClose')->name('purchase.close');
+    Route::get('purchase/request/excel/{id}','Apps\PurchaseManagementController@requestExcel')->name('purchase.excel');
     /*-----------------------End Purchase Management------------------------------------*/
 
     /*-----------------------Inventory Management------------------------------------*/

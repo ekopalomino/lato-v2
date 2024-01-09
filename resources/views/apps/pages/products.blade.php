@@ -40,8 +40,8 @@ LATO | Product Catalog
                 		<thead>
                 			<tr>
                                 <th>No</th>
+                                <th>SAP Code</th>
                 				<th>Name</th>
-                                <th>Group</th>
                                 <th>Category</th>
                                 <th>UOM</th>
                                 <th>Min Stock</th>
@@ -55,8 +55,8 @@ LATO | Product Catalog
                             @foreach($data as $key => $product)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
+                                <td>{{ $product->sap_code }}</td>
                 				<td>{{ $product->name }}</td>
-                                <td></td>
                                 <td>{{ $product->Categories->name }}</td>
                                 <td>{{ $product->Uoms->name }}</td>
                                 <td>{{ $product->min_stock }}</td>

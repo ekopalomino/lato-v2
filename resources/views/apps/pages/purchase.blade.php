@@ -75,6 +75,7 @@ LATO | Purchase Request
                                 <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
                                 <td>
                                     <a class="btn btn-xs btn-info" title="Lihat PR" href="{{ route('request.show',$val->id) }}"><i class="fa fa-search"></i></a>
+                                    <a class="btn btn-xs btn-danger" title="Export Excel" href="{{ route('purchase.excel',$val->id) }}"><i class="fa fa-print"></i></a>
                                 </td>
                 			</tr>
                             @endforeach

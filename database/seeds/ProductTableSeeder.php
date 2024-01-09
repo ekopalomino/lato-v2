@@ -15,17 +15,11 @@ class ProductTableSeeder extends SpreadsheetSeeder
      *
      * @return void
      */
-    /* public function settings(SpreadsheetSeederSettings $set)
+    public function settings(SpreadsheetSeederSettings $set)
     {
-        $set->file = '\database\seeds\products.xls';
-    } */
+        $set->file = '/database/seeds/products.xlsx';
+    }
     
-    /*public function run()
-    {
-        DB::disableQueryLog();
-	    parent::run();
-    }*/
-
     public function run()
     {
         $this->call([

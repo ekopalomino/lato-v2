@@ -69,16 +69,6 @@ LATO | Show Request
                                     </select>
                                 </div> 
                             </div>
-                            @elseif($data->status == '13')
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Request Status</label>
-                                <div class="col-md-6">
-                                    <select id="single" name="status" class="form-control select">
-                                        <option value="">Please Select</option>
-                                        <option value="17">Close</option>
-                                    </select>
-                                </div> 
-                            </div>
                             @else
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Request Status</label>
@@ -124,8 +114,10 @@ LATO | Show Request
             	</div>
                     <div class="form-actions right">
                         <a button type="button" class="btn default" href="{{ route('request.index') }}">Cancel</a>
+                        @if($data->status == '8')
                         <button type="submit" class="btn blue">
                         <i class="fa fa-check"></i> Update</button>
+                        @endif
                     </div>
                 </div>
             {!! Form::close() !!}

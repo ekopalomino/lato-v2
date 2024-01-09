@@ -33,9 +33,9 @@ class NotificationServiceProvider extends ServiceProvider
     {
         View::composer('apps.includes.sidebar',function($views) {
             if(Auth::check()) {
-                $views->with('purchases',Purchase::where('status','14')->count())
+                $views->with('purchases',Purchase::where('status','13')->count())
                       ->with('transfers',InternalTransfer::where('status_id','8083f49e-f0aa-4094-894f-f64cd2e9e4e9')->count())
-                      ->with('ex_receipt',Purchase::where('status','14')->count())
+                      ->with('ex_receipt',Purchase::where('status','13')->count())
                       ->with('receipts',Purchase::where('status','314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')->count());
             }
         });

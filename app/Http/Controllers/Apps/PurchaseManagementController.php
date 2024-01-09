@@ -20,6 +20,8 @@ use Carbon\Carbon;
 use Auth;
 use DB;
 use PDF;
+use iteos\Exports\PurchaseRequestExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseManagementController extends Controller
 {
@@ -117,7 +119,7 @@ class PurchaseManagementController extends Controller
                     } else {
                         $convertion = $quantity[$index];
                     }
-                $names = Inventory::where('product_id',$item)->first();
+                $names = Inventory::where('product_id',$item)->where('warehouse_id',$warehouses[$index])->first();
                 $items = PurchaseItem::create([
                     'purchase_id' => $request_id,
                     'account_id' => $names->Materials->account_id,
@@ -159,75 +161,33 @@ class PurchaseManagementController extends Controller
         return view('apps.edit.request',compact('data','details','uoms'));
     }
 
+    public function requestExcel(Request $request)
+    {
+        return Excel::download(new PurchaseRequestExport($request->id), 'purchaseRequest.xlsx');
+    }
+
     public function requestProcess(Request $request,$id)
     {
         $this->validate($request, [
             'status' => 'required',
         ]);
+        $process = [
+            'status' => $request->input('status'),
+            'updated_by' => auth()->user()->id,
+        ];
 
-        if (($request->input('status')) == '13') {
-            $process = [
-                'status' => $request->input('status'),
-                'updated_by' => auth()->user()->id,
-            ];
+        $data = Purchase::find($id);
+        $data->update($process);
 
-            $data = Purchase::find($id);
-            $data->update($process);
+        $log = 'Request '.($data->request_ref).' Processed';
+        \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Request '.($data->request_ref).' Processed',
+            'alert-type' => 'success'
+        );
 
-            $log = 'Request '.($data->request_ref).' Processed';
-            \LogActivity::addToLog($log);
-            $notification = array (
-                'message' => 'Request '.($data->request_ref).' Processed',
-                'alert-type' => 'success'
-            );
-
-            return redirect()->route('request.index')->with($notification);
-        } else {
-            $process = [
-                'status' => $request->input('status'),
-                'updated_by' => auth()->user()->id,
-            ];
-            $data = Purchase::find($id);
-            $data->update($process);
-
-            $items = $request->product_id;
-            $quantity = $request->remaining_qty;
-            $received = $request->received_qty;
-            $uoms = $request->uom_id;
-            $request_id = $data->id;
-            
-            foreach($items as $index=>$item) {
-                if (isset($item)) {
-                    $bases = UomValue::where('id',$uoms[$index])->first();
-                    if($bases->is_parent == null) {
-                        $convertion = ($received[$index]) * ($bases->value);
-                        
-                    } else {
-                        $convertion = $delivered[$index];
-                        $destroyed = $damaged[$index];
-                    }
-                    $names = Product::where('name',$item)->first();
-                    $items = PurchaseItem::where('purchase_id',$id)->update([
-                        'quantity' => $quantity[$index],
-                        'received_qty' => $received[$index],
-                        'remaining_qty' => ($quantity[$index]) - ($received[$index]),
-                        'uom_id' => $uoms[$index],
-                    ]);
-
-                    $inventories = Inventory::where('product_id',$item)->first();
-                    
-                } 
-            }
-            
-            $log = 'Request '.($data->request_ref).' Received';
-            \LogActivity::addToLog($log);
-            $notification = array (
-                'message' => 'Request '.($data->request_ref).' Received',
-                'alert-type' => 'success'
-            );
-
-            return redirect()->route('request.index')->with($notification);
-        }
+        return redirect()->route('request.index')->with($notification);
+        
     }
 
     /* public function requestProcess(Request $request,$id)
