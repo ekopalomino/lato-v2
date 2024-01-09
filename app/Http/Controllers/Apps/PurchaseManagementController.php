@@ -4,6 +4,7 @@ namespace iteos\Http\Controllers\Apps;
 
 use Illuminate\Http\Request;
 use iteos\Http\Controllers\Controller;
+use iteos\Models\Branch;
 use iteos\Models\Purchase;
 use iteos\Models\PurchaseItem;
 use iteos\Models\InventoryRequest;
@@ -37,39 +38,45 @@ class PurchaseManagementController extends Controller
         return view('apps.pages.purchase',compact('data'));
     }
 
-    public function oldIndex()
-    {
-        if(auth()->user()->hasAnyPermission(['Can View All Request']))
-        {
-            $data = InventoryRequest::where('to_wh',auth()->user()->branch_id)->orderBy('created_at','DESC')->get();
-        } else {
-            $data = InventoryRequest::where('from_wh',auth()->user()->warehouse_id)->orderBy('created_at','DESC')->get();
-        }
-        
-        return view('apps.pages.request',compact('data'));
-    }
-
     public function requestCreate()
     {
-        $uoms = UomValue::pluck('name','id')->toArray();
-        $getMonth = Carbon::now()->month;
-        $getYear = Carbon::now()->year;
-        $references = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
-        $refs = 'PR/'.auth()->user()->Branches->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
-        $products = DB::table('inventories')
+        if (auth()->user()->hasRole('Administrator')) {
+            $getMonth = Carbon::now()->month;
+            $getYear = Carbon::now()->year;
+            $references = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
+            $refs = 'PR/ADM/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+            $uoms = UomValue::pluck('name','id')->toArray();
+            $products = DB::table('inventories')
                         ->join('products','products.id','inventories.product_id')->join('warehouses','warehouses.id','inventories.warehouse_id')
                         ->where([
-                            ['warehouses.branch_id',auth()->user()->branch_id],
                             ['inventories.closing_amount','=<','inventories.min_stock']
                         ])
                         ->select('products.id as id_product','products.name as product_name','warehouses.id as from_wh_id','warehouses.name as from_wh','warehouses.prefix as wh_code')
                         ->get();
-        /* $products = Inventory::join('products','products.id','inventories.product_id')->join('warehouses','warehouses.id','inventories.warehouse_id')->where([
-            ['warehouses.branch_id',auth()->user()->branch_id],
-            ['inventories.closing_amount','=<','inventories.min_stock']
-            ])->get(); */
-        
-        return view('apps.input.request',compact('uoms','products','refs'));
+
+            return view('apps.input.request',compact('uoms','products','refs'));
+
+        } else {
+            $uoms = UomValue::pluck('name','id')->toArray();
+            $getMonth = Carbon::now()->month;
+            $getYear = Carbon::now()->year;
+            $references = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
+            $refs = 'PR/'.auth()->user()->Branches->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+            $products = DB::table('inventories')
+                            ->join('products','products.id','inventories.product_id')->join('warehouses','warehouses.id','inventories.warehouse_id')
+                            ->where([
+                                ['warehouses.branch_id',auth()->user()->branch_id],
+                                ['inventories.closing_amount','=<','inventories.min_stock']
+                            ])
+                            ->select('products.id as id_product','products.name as product_name','warehouses.id as from_wh_id','warehouses.name as from_wh','warehouses.prefix as wh_code')
+                            ->get();
+            /* $products = Inventory::join('products','products.id','inventories.product_id')->join('warehouses','warehouses.id','inventories.warehouse_id')->where([
+                ['warehouses.branch_id',auth()->user()->branch_id],
+                ['inventories.closing_amount','=<','inventories.min_stock']
+                ])->get(); */
+            
+            return view('apps.input.request',compact('uoms','products','refs'));
+        }
     }
 
     public function requestStore(Request $request)

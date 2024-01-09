@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>ATK Management | User Login</title>
+        <title>LATO | User Login</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -28,7 +28,7 @@
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="{{ asset('assets/fibertekno.ico') }}" /> </head>
+        <link rel="shortcut icon" href="{{ asset('assets/favicon.ico') }}" /> </head>
     <!-- END HEAD -->
 
     <body class=" login">

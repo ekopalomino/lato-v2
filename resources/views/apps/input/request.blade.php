@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Add Request
+LATO | Add Purchase Request
 @endsection
 @section('header.plugins')
 <link href="{{ asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}" rel="stylesheet" type="text/css" />
@@ -13,7 +13,7 @@ ATK Management | Add Request
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> Add Request 
+                <i class="fa fa-database"></i> Add Purchase Request 
             </div>
         </div>
         <div class="portlet-body form">
