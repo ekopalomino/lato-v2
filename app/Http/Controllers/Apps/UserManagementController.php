@@ -83,10 +83,9 @@ class UserManagementController extends Controller
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
-        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
         $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
         
-        return view('apps.edit.users',compact('user','roles','userRole','branches','warehouses','materials'))->renderSections()['content'];
+        return view('apps.edit.users',compact('user','roles','userRole','branches','warehouses'))->renderSections()['content'];
     }
 
     public function userUpdate(Request $request, $id)

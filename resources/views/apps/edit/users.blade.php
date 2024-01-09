@@ -69,14 +69,6 @@
                     </div>
                 </div>                                                              
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Material Group</label>
-                        {!! Form::select('material_group_id', $materials,old('material_group_id'), array('class' => 'form-control')) !!}
-                    </div>
-                </div>                                                              
-            </div>
             <div class="modal-footer">
                 <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                 <button id="register" type="submit" class="btn green">Update</button>
