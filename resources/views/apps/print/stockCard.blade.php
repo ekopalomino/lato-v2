@@ -22,9 +22,9 @@
                                     @elseif($val->type == 2)
                                     Penjualan
                                     @elseif($val->type == 3)
-                                    Pembelian
+                                    Purchase
                                     @elseif($val->type == 4)
-                                    Internal Transfer
+                                    Usage
                                     @elseif($val->type == 5)
                                     Pengiriman
                                     @elseif($val->type == 6)

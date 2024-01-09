@@ -28,8 +28,8 @@ LATO | Stock Data
                                 <th>Warehouse</th>
                                 <th>Opening</th>
                                 <th>Ending</th>
-                                <th>Status</th>
                                 <th>UOM</th>
+                                <th>Status</th>
                 				<th>Data Date</th>
                                 <th></th>
                 			</tr>
