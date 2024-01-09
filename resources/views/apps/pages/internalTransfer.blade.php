@@ -32,7 +32,9 @@ LATO | ATK Request
                                 <th>No</th>
                 				<th>Request No</th>
                                 <th>Requestor</th>
+                                <th>Location</th>
                                 <th>Items</th>
+                                <th>Qty</th>
                                 <th>Data Date</th>
                             </tr>
                 		</thead>
@@ -41,8 +43,22 @@ LATO | ATK Request
                             <tr>      
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $val->order_ref }}</td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ $val->Sender->name }}</td>
+                                <td>{{ $val->to_wh }}</td>
+                                <td>
+                                    @foreach($val->Child as $child)
+                                    <ul>
+                                        <li>{{ $child->product_name}}</li>
+                                    </ul>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($val->Child as $child)
+                                    <ul>
+                                        <li>{{ number_format($child->quantity,0,',','.')}} {{ $child->Uoms->name }}</li>
+                                    </ul>
+                                    @endforeach
+                                </td>
                                 <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>    
                             </tr>
                             @endforeach

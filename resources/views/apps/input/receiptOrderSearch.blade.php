@@ -1,13 +1,13 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Fiber Tekno | Add Receipt Order 
+LATO | Add Goods Receipt
 @endsection
 @section('content')
 <div class="page-content">
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> Form Terima Barang Supplier 
+                <i class="fa fa-database"></i> Goods Receipt Form 
             </div>
         </div>
         <div class="portlet-body form">

@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-ATK Management | Product Catalog
+LATO | Product Catalog
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -44,7 +44,7 @@ ATK Management | Product Catalog
                                 <th>Group</th>
                                 <th>Category</th>
                                 <th>UOM</th>
-                                <th>Image</th>
+                                <th>Min Stock</th>
                                 <th>Status</th>
                                 <th>Create / Update</th>
                                 <th>Data Date</th>
@@ -59,7 +59,7 @@ ATK Management | Product Catalog
                                 <td></td>
                                 <td>{{ $product->Categories->name }}</td>
                                 <td>{{ $product->Uoms->name }}</td>
-                                <td><img src="http://fibertekno.iteos.tech/public/products/{{$product->image}}" width="75" height="100" ></td>
+                                <td>{{ $product->min_stock }}</td>
                                 <td>
                                     @if(!empty($product->deleted_at))
                                     <label class="label label-sm label-danger">Inactive</label>

@@ -33,6 +33,6 @@ class InternalTransfer extends Model
 
     public function Child()
     {
-        return $this->hasMany(InternalItems::class,'id');
+        return $this->hasMany(InternalItems::class,'mutasi_id');
     }
 }

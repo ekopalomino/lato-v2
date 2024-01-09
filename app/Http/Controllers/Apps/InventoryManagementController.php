@@ -34,13 +34,13 @@ use PDF;
 
 class InventoryManagementController extends Controller
 {
-    function __construct()
+    /* function __construct()
     {
          $this->middleware('permission:Can Access Inventories');
          $this->middleware('permission:Can Create Inventory', ['only' => ['create','store']]);
          $this->middleware('permission:Can Edit Inventory', ['only' => ['edit','update']]);
          $this->middleware('permission:Can Delete Inventory', ['only' => ['destroy']]);
-    }
+    } */
 
     public function inventoryIndex()
     {
@@ -48,7 +48,7 @@ class InventoryManagementController extends Controller
             $data = Inventory::orderBy('id','asc')
                            ->get();
         } else {
-            $data = Inventory::where('warehouse_id',auth()->user()->warehouse_id)
+            $data = Inventory::where('branch_id',auth()->user()->branch_id)
                            ->orderBy('id','asc')
                            ->get();
         }
@@ -580,7 +580,7 @@ class InventoryManagementController extends Controller
                 /* Base Query */ 
                 $source = Inventory::where('product_name',$item)->where('warehouse_id',auth()->user()->warehouse_id)->first();
                 $to = InventoryMovement::where('product_name',$item)->where('warehouse_name',$data->to_wh)->orderBy('updated_at','DESC')->first();
-                dd($to);
+                
 
                 $items = InternalItems::create([
                     'product_name' => $item,

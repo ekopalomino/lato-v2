@@ -7,10 +7,7 @@ use iteos\Http\Controllers\Controller;
 use iteos\Models\User;
 use iteos\Models\Warehouse;
 use iteos\Models\Branch;
-use iteos\Models\Division;
 use iteos\Models\Status;
-use iteos\Models\UserWarehouse;
-use iteos\Models\MaterialGroup;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Carbon\Carbon;
@@ -34,10 +31,9 @@ class UserManagementController extends Controller
                         ->get();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
         $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
-        $materials = MaterialGroup::where('deleted_at',NULL)->pluck('material_name','id')->toArray();
         $roles = Role::pluck('name','name')->all();
         
-        return view('apps.pages.users',compact('users','branches','warehouses','roles','materials'));
+        return view('apps.pages.users',compact('users','branches','warehouses','roles'));
     }
 
     public function userProfile()

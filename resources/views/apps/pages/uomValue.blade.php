@@ -47,37 +47,37 @@ LATO | Convertion Rate
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Nilai Satuan Ukur Baru</h4>
+                                        <h4 class="modal-title">UOM Value</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nama Satuan</label>
+                                                    <label class="control-label">UOM Name</label>
                                                     {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Kategori Satuan</label>
+                                                    <label class="control-label">UOM Category</label>
                                                     {!! Form::select('type_id', [null=>'Please Select'] + $categories,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Satuan Dasar</label>
+                                                    <label class="control-label">Is UOM Base</label>
                                                     {!! Form::checkbox('is_parent') !!}
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Parent Satuan</label>
+                                                    <label class="control-label">UOM Parent</label>
                                                     {!! Form::select('parent_id', [null=>'Please Select'] + $parents,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Nilai Satuan</label>
+                                                    <label class="control-label">UOM Value</label>
                                                     {!! Form::text('value', null, array('placeholder' => 'Value','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
@@ -85,7 +85,7 @@ LATO | Convertion Rate
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button id="register" type="submit" class="btn green">Save</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

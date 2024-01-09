@@ -33,7 +33,7 @@ LATO | Access Role
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" href="{{ route('role.create') }}"> Add </a>
+                                    <a class="btn red btn-outline sbold" href="{{ route('role.create') }}"> Add New</a>
                                 </td>
                             </tr>
                         </div>

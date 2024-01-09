@@ -47,7 +47,7 @@ LATO | UOM Category
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Kategori Satuan Ukur Baru</h4>
+                                        <h4 class="modal-title">UOM Category</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
@@ -61,7 +61,7 @@ LATO | UOM Category
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Submit</button>
+                                        <button id="register" type="submit" class="btn green">Save</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

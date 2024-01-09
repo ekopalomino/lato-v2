@@ -34,7 +34,7 @@ LATO | Users
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Add New</a>
                                 </td>
                             </tr>
                         </div>
@@ -105,14 +105,6 @@ LATO | Users
                                                 </div>
                                             </div>                                                              
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label">Material Group</label>
-                                                    {!! Form::select('material_group_id', [null=>'Please Select'] + $materials,[], array('class' => 'form-control')) !!}
-                                                </div>
-                                            </div>                                                              
-                                        </div>  
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>

@@ -18,7 +18,7 @@ LATO | Purchase Receipt
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <div class="col-md-6">
+                    <div class="col-md-6"> 
                         @can('Can Create Inventory')
                         <div class="form-group">
                             <div class="form-group">

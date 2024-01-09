@@ -193,7 +193,7 @@ LATO | Edit Role
                                                 <label class="mt-checkbox mt-checkbox-outline">
                                                     <input type="checkbox" value="51" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '15')checked
+                                                        @if($rolePermissions->permission_id == '51')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -204,7 +204,7 @@ LATO | Edit Role
                                                 <label class="mt-checkbox mt-checkbox-outline">
                                                     <input type="checkbox" value="52" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '45')checked
+                                                        @if($rolePermissions->permission_id == '52')checked
                                                         @endif
                                                     @endforeach
                                                     />
