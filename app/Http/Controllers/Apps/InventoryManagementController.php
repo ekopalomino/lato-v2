@@ -524,6 +524,7 @@ class InventoryManagementController extends Controller
         $data = InternalTransfer::create([
             'order_ref' => $request->input('ref_id'),
             'to_wh' => auth()->user()->Warehouses->name,
+            'status_id' => '13',
             'created_by' => auth()->user()->id,
         ]);
         $refs = Reference::create([
@@ -606,10 +607,10 @@ class InventoryManagementController extends Controller
                 ]);
             } 
         }
-        $log = 'Internal Transfer '.($data->order_ref).' Berhasil Dibuat';
+        $log = 'ATK Request '.($data->order_ref).' Created';
             \LogActivity::addToLog($log);
             $notification = array (
-                'message' => 'Internal Transfer '.($data->order_ref).' Berhasil Dibuat',
+                'message' => 'ATK Request '.($data->order_ref).' Created',
                 'alert-type' => 'success'
             );
                 
@@ -621,20 +622,20 @@ class InventoryManagementController extends Controller
         $source = InternalTransfer::find($id);
         $details = InternalItems::where('mutasi_id',$id)->get();
         
-        return view('apps.show.internalTransfer',compact('details'))->renderSections()['content'];
+        return view('apps.show.internalTransfer',compact('details'));
     }
 
-    public function transferAccept(Request $request,$id)
+    public function transferClose(Request $request,$id)
     {
         $data = InternalTransfer::find($id);
         $accept = $data->update([
-            'status_id' => '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43',
-            'updated_by' => auth()->user()->name,
+            'status_id' => '17',
+            'updated_by' => auth()->user()->id,
         ]);
-        $log = 'Internal Transfer '.($data->order_ref).' Berhasil Diterima';
+        $log = 'ATK Request '.($data->order_ref).' Completed';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Internal Transfer '.($data->order_ref).' Berhasil Diterima',
+            'message' => 'ATK Request '.($data->order_ref).' Completed',
             'alert-type' => 'success'
         );
 

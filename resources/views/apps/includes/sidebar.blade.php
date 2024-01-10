@@ -109,7 +109,7 @@
                 </ul>
             </li>
             @endcan
-            <li class="nav-item {{ set_active(['request.index','request.create','request.show','transfer.index','add.transfer']) }}">
+            <li class="nav-item {{ set_active(['request.index','request.create','request.show','transfer.index','add.transfer','transfer.view']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-basket-loaded"></i>
                     <span class="title">Product Request</span>
@@ -124,9 +124,10 @@
                         </a>
                     </li>
                     @endcan
-                    <li class="nav-item {{ set_active(['transfer.index','add.transfer']) }}">
+                    <li class="nav-item {{ set_active(['transfer.index','add.transfer','transfer.view']) }}">
                         <a href="{{ route('transfer.index') }}" class="nav-link ">
                             <span class="title">ATK Request</span>
+                            <span class="badge badge-danger">{{$transfers}}</span>
                         </a>
                     </li>
                 </ul>

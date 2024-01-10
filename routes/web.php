@@ -122,12 +122,12 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('inventory/adjustment','Apps\InventoryManagementController@inventoryAdjustIndex')->name('inventory.adjust');
     Route::get('inventory/adjustment/{id}','Apps\InventoryManagementController@makeAdjust')->name('make.adjust');
     Route::post('inventory/adjustment/store/{id}','Apps\InventoryManagementController@storeAdjust')->name('store.adjust');
-    Route::get('inventories/internal-request','Apps\InventoryManagementController@internTransfer')->name('transfer.index');
-    Route::get('inventories/internal-request/find','Apps\InventoryManagementController@searchProduct')->name('transfer.product');
-    Route::get('inventories/internal-request/create','Apps\InventoryManagementController@addTransfer')->name('add.transfer');
-    Route::post('inventories/internal-request/store','Apps\InventoryManagementController@internStore')->name('store.transfer');
-    Route::post('inventories/internal-request/accept/{id}','Apps\InventoryManagementController@transferAccept')->name('transfer.accept');
-    Route::get('inventories/internal-request/view/{id}','Apps\InventoryManagementController@transferView')->name('transfer.view');
+    Route::get('product-request/atk-request','Apps\InventoryManagementController@internTransfer')->name('transfer.index');
+    Route::get('product-request/atk-request/find','Apps\InventoryManagementController@searchProduct')->name('transfer.product');
+    Route::get('product-request/atk-request/create','Apps\InventoryManagementController@addTransfer')->name('add.transfer');
+    Route::post('product-request/atk-request/store','Apps\InventoryManagementController@internStore')->name('store.transfer');
+    Route::post('product-request/atk-request/accept/{id}','Apps\InventoryManagementController@transferClose')->name('transfer.close');
+    Route::get('product-request/atk-request/view/{id}','Apps\InventoryManagementController@transferView')->name('transfer.view');
     Route::get('inventories/purchase-receipt','Apps\InventoryManagementController@receiptIndex')->name('receipt.index');
     Route::get('inventories/purchase-receipt/search/purchase-order','Apps\InventoryManagementController@receiptSearch')->name('receipt.search');
     Route::post('inventories/purchase-receipt/get/purchase-order','Apps\InventoryManagementController@receiptGet')->name('receipt.get');

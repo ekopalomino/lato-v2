@@ -33,9 +33,9 @@ LATO | ATK Request
                 				<th>Request No</th>
                                 <th>Requestor</th>
                                 <th>Location</th>
-                                <th>Items</th>
-                                <th>Qty</th>
+                                <th>Status</th>
                                 <th>Data Date</th>
+                                <th></th>
                             </tr>
                 		</thead>
                 		<tbody>
@@ -46,20 +46,21 @@ LATO | ATK Request
                                 <td>{{ $val->Sender->name }}</td>
                                 <td>{{ $val->to_wh }}</td>
                                 <td>
-                                    @foreach($val->Child as $child)
-                                    <ul>
-                                        <li>{{ $child->product_name}}</li>
-                                    </ul>
-                                    @endforeach
+                                    @if($val->status_id == '13')
+                                    <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
+                                    @else
+                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
+                                    @endif
                                 </td>
+                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td> 
                                 <td>
-                                    @foreach($val->Child as $child)
-                                    <ul>
-                                        <li>{{ number_format($child->quantity,0,',','.')}} {{ $child->Uoms->name }}</li>
-                                    </ul>
-                                    @endforeach
-                                </td>
-                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>    
+                                    <a class="btn btn-xs btn-info" title="Lihat Request" href="{{ route('transfer.view',$val->id) }}"><i class="fa fa-search"></i></a>
+                                    @if(($val->status_id) == '13')
+                                    {!! Form::open(['method' => 'POST','route' => ['transfer.close', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
+                                    {!! Form::button('<i class="fa fa-lock"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Close Request']) !!}
+                                    {!! Form::close() !!} 
+                                    @endif
+                                </td>   
                             </tr>
                             @endforeach
                 		</tbody>
@@ -81,7 +82,7 @@ LATO | ATK Request
 <script>
     function ConfirmDelete()
     {
-    var x = confirm("Mutasi Barang Diterima?");
+    var x = confirm("Close Request?");
     if (x)
         return true;
     else
