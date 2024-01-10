@@ -79,7 +79,7 @@ class ReportManagementController extends Controller
 
     public function inventoryTable()
     {
-        $getProduct = Product::where('category_id','1')->pluck('name','name')->toArray();
+        $getProduct = Product::where('deleted_at',NULL)->pluck('name','name')->toArray();
         $getWarehouse = Warehouse::pluck('name','name')->toArray();
 
         return view('apps.pages.inventoryTable',compact('getProduct','getWarehouse'));
@@ -90,6 +90,8 @@ class ReportManagementController extends Controller
         $this->validate($request, [
             'from_date' => 'required',
             'to_date' => 'required',
+            'product' => 'required',
+            'location' => 'required',
         ]);
 
         $getProducts = $request->input('product_id');
@@ -103,7 +105,7 @@ class ReportManagementController extends Controller
                     ->selectRaw('sum(distinct(inventories.opening_amount)) as Awal,sum(distinct(inventories.closing_amount)) as Akhir,sum(distinct(inventory_movements.incoming)) as incoming,sum(inventory_movements.outgoing) as outgoing,
                     inventories.product_name')
                     ->get();
-         
+        dd($data);
         return view('apps.reports.inventoryTable',compact('data'));
     }
 

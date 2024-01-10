@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Laporan Stok Barang
+LATO | Stock Usage Report
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ FiberTekno | Laporan Stok Barang
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Laporan Stok Barang 
+                        <i class="fa fa-database"></i>Stock Usage Report
                     </div>
                     <div class="tools"> </div>
                 </div>
@@ -23,11 +23,12 @@ FiberTekno | Laporan Stok Barang
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                                <th>Nama Barang</th>
-                                <th>Stok Awal</th>
-                                <th>Stok Masuk</th>
-                                <th>Stok Keluar</th>
-                                <th>Stok Akhir</th>
+                                <th>Trans Date</th>
+                                <th>Type</th>
+                                <th>Begin</th>
+                                <th>In</th>
+                                <th>Out</th>
+                                <th>Ending</th>
                 			</tr>
                 		</thead>
                 		<tbody>
@@ -35,10 +36,11 @@ FiberTekno | Laporan Stok Barang
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $val->product_name }}</td>
-                                <td>{{ number_format($val->Awal,2,',','.')}}</td>
-                                <td>{{ number_format($val->incoming,2,',','.')}}</td>
-                                <td>{{ number_format($val->outgoing,2,',','.')}}</td>
-                                <td>{{ number_format($val->Akhir,2,',','.')}}</td>
+                                <td></td>
+                                <td>{{ number_format($val->Awal,0,',','.')}}</td>
+                                <td>{{ number_format($val->incoming,0,',','.')}}</td>
+                                <td>{{ number_format($val->outgoing,0,',','.')}}</td>
+                                <td>{{ number_format($val->Akhir,0,',','.')}}</td>
                             </tr>
                             @endforeach
                 		</tbody>

@@ -1,13 +1,13 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Stock Report
+LATO | Stock Usage Report
 @endsection
 @section('content')
 <div class="page-content">
 	<div class="portlet box red ">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-database"></i> Query Laporan Stok
+				<i class="fa fa-database"></i> Stock Usage Report
 			</div>
 		</div>
 		<div class="portlet-body form">
@@ -27,13 +27,13 @@ FiberTekno | Stock Report
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">Tanggal Awal</label>
+							<label class="control-label">From</label>
 							{!! Form::date('from_date', '', array('id' => 'datepicker','class' => 'form-control')) !!}
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">Tanggal Akhir</label>
+							<label class="control-label">To</label>
 							{!! Form::date('to_date', '', array('id' => 'datepicker','class' => 'form-control')) !!}
 						</div>
 					</div>
@@ -41,21 +41,21 @@ FiberTekno | Stock Report
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">Produk</label>
-							{!! Form::select('product_id', [null=>'Please Select'] + $getProduct,[], array('class' => 'form-control')) !!}
+							<label class="control-label">Product</label>
+							{!! Form::select('product', [null=>'Please Select'] + $getProduct,[], array('class' => 'form-control')) !!}
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">Gudang</label>
-							{!! Form::select('warehouse_id', [null=>'Please Select'] + $getWarehouse,[], array('class' => 'form-control')) !!}
+							<label class="control-label">Location</label>
+							{!! Form::select('location', [null=>'Please Select'] + $getWarehouse,[], array('class' => 'form-control')) !!}
 						</div>
 					</div>
 				</div>
 				<div class="form-actions left">
 					<a button type="button" class="btn default" href="{{ route('inventory.table') }}">Cancel</a>
 					<button type="submit" class="btn blue">
-						<i class="fa fa-check"></i> Save
+						<i class="fa fa-check"></i> Run
 					</button>
 				</div>
 			</div>

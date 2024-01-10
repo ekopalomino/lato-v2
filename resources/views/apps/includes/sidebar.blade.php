@@ -159,7 +159,7 @@
                 </ul>
             </li>
             @endcan
-            @can('Can Access Report')
+            @can('Can Disabled')
             <li class="nav-item {{ set_active(['sale.table','purchase.table','inventory.table','sale-table.view','inventory-table.view','manufacture.table','purchase-table.view',
                 'manufacture-table.view']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
