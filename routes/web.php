@@ -138,13 +138,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     /*-----------------------End Inventory Management------------------------------------*/
 
     /*-----------------------Reports Management------------------------------------*/
-    Route::get('reports/table/sales','Apps\ReportManagementController@saleTable')->name('sale.table');
-    Route::post('reports/table/sales/view','Apps\ReportManagementController@reportSales')->name('sale-table.view');
     Route::get('reports/table/inventory','Apps\ReportManagementController@inventoryTable')->name('inventory.table');
-    Route::post('reports/table/inventory/view','Apps\ReportManagementController@reportInventory')->name('inventory-table.view');
-    Route::get('reports/table/purchase','Apps\ReportManagementController@purchaseTable')->name('purchase.table');
-    Route::post('reports/table/purchase/view','Apps\ReportManagementController@reportPurchase')->name('purchase-table.view');
-    Route::get('reports/table/manufacture','Apps\ReportManagementController@manufactureTable')->name('manufacture.table');
-    Route::post('reports/table/manufacture/view','Apps\ReportManagementController@reportManufacture')->name('manufacture-table.view');
+    Route::post('reports/table/inventory/view','Apps\ReportManagementController@inventoryReport')->name('inventory.view');
     /*-----------------------End Reports Management------------------------------------*/
 });

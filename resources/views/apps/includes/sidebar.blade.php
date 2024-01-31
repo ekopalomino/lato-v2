@@ -159,28 +159,25 @@
                 </ul>
             </li>
             @endcan
-            @can('Can Disabled')
-            <li class="nav-item {{ set_active(['sale.table','purchase.table','inventory.table','sale-table.view','inventory-table.view','manufacture.table','purchase-table.view',
-                'manufacture-table.view']) }}">
+            <li class="nav-item {{ set_active(['inventory.table','inventory.view']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-bar-chart"></i>
                     <span class="title">Reports</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="nav-item {{ set_active(['sale.table','sale-table.view']) }}">
-                        <a href="{{ route('sale.table') }}" class="nav-link ">
-                            <span class="title">Inventory</span>
+                    <li class="nav-item {{ set_active(['inventory.table','inventory.view']) }}">
+                        <a href="{{ route('inventory.table') }}" class="nav-link ">
+                            <span class="title">Stock Card</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ set_active(['inventory.table','inventory-table.view']) }}">
-                        <a href="{{ route('inventory.table') }}" class="nav-link ">
+                    <li class="nav-item ">
+                        <a href="" class="nav-link ">
                             <span class="title">Usage</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            @endcan
         </ul>
     </div>
 </div>
