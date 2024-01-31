@@ -31,6 +31,7 @@ use Spatie\Permission\Models\Permission;
 use Carbon\Carbon;
 use Auth;
 use PDF;
+use DataTables;
 
 class InventoryManagementController extends Controller
 {
@@ -42,18 +43,50 @@ class InventoryManagementController extends Controller
          $this->middleware('permission:Can Delete Inventory', ['only' => ['destroy']]);
     } */
 
-    public function inventoryIndex()
-    {
-        if (auth()->user()->hasRole('Administrator')) {
-            $data = Inventory::orderBy('id','asc')
-                           ->get();
-        } else {
-            $data = Inventory::where('branch_id',auth()->user()->branch_id)
-                           ->orderBy('id','asc')
-                           ->get();
+    public function inventoryIndex(Request $request)
+    { 
+        if ($request->ajax()) {
+            if (auth()->user()->hasRole('Administrator')) {
+                $data = Inventory::with('Products','Locations','Materials','Child')->orderBy('product_name','ASC');
+
+                return Datatables::eloquent($data)
+                ->addIndexColumn()
+                ->addColumn('materials',function(Inventory $inventory){
+                    return $inventory->materials->material_name;
+                })
+                ->addColumn('uoms',function(Inventory $inventory){
+                    return $inventory->products->uoms->name;
+                })
+                ->addColumn('statuses',function($row){
+                    if($row->closing_amount == 0) {
+                        return "<label class='label label-sm label-danger'>No Stock</label>";
+                    }elseif(($row->closing_amount) <= ($row->min_stock)) {
+                        return "<label class='label label-sm label-warning'>Low On Stock</label>";
+                    }else{
+                        return "<label class='label label-sm label-success'>Stock Normal</label>";
+                    }
+                })
+                ->addColumn('created_at',function($row){
+                    $date = date("d F Y H:i", strtotime($row->created_at));
+                    return $date;
+                })
+                ->addColumn('action', function($row){
+                    // Update Button
+                    $updateButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                    
+                    return $updateButton;
+
+                }) 
+                ->make();
+            } else {
+                $data = Inventory::where('branch_id',auth()->user()->branch_id)
+                               ->orderBy('id','asc')
+                               ->get();
+            }
         }
         
-        return view('apps.pages.inventories',compact('data'));
+        
+        return view('apps.pages.inventoriesNew');
     }
 
     public function stockCard(Request $request,$id)
@@ -76,11 +109,34 @@ class InventoryManagementController extends Controller
         return $pdf->download('Stock Card '.$filename->name.'.pdf');
     }
 
-    public function inventoryAdjustIndex()
+    public function inventoryAdjustIndex(Request $request)
     {
-        $data = Inventory::orderBy('id','asc')->get();
-       
-        return view('apps.pages.inventoryAdjustment',compact('data'));
+        if ($request->ajax()) {
+            $$data = Inventory::with('Products','Locations','Materials','Child')->orderBy('product_name','ASC');
+
+            return Datatables::eloquent($data)
+            ->addIndexColumn()
+            ->addColumn('materials',function(Inventory $inventory){
+                return $inventory->materials->material_name;
+            })
+            ->addColumn('uoms',function(Inventory $inventory){
+                return $inventory->products->uoms->name;
+            })
+            ->addColumn('created_at',function($row){
+                $date = date("d F Y H:i", strtotime($row->created_at));
+                return $date;
+            })
+            ->addColumn('action', function($row){
+                // Update Button
+                $updateButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                
+                return $updateButton;
+
+            }) 
+            ->make();
+        }
+        
+        return view('apps.pages.inventoryAdjustment');
     }
 
     public function makeAdjust($id)

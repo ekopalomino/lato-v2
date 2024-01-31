@@ -17,7 +17,8 @@
         "laravelcollective/html": "5.8",
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^5.3",
-        "spatie/laravel-permission": "^3.0"
+        "spatie/laravel-permission": "^3.0",
+        "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "3.4.*",

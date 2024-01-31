@@ -66,6 +66,7 @@ LATO | Add Purchase Request
                                     <th>Warehouse Name</th>
 	            					<th>Jumlah</th>
 	            					<th>Satuan</th>
+                                    <th></th>
 	            				</tr>
 	            			</thead>
 	            			<tbody>
@@ -76,6 +77,7 @@ LATO | Add Purchase Request
                                     <td>{{ Form::hidden('warehouse_id[]', $data->from_wh_id) }}{!! Form::text('warehouse_name[]', $data->from_wh, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                     				<td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required')) !!}</td>
                     				<td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control','required')) !!}</td>
+                                    <td><button type="button" name="remove" id="remove" onclick="deleteRow()" class="btn btn-danger btn_remove">Remove</button></td>
                     			</tr>
                                 @endforeach
 	            			</tbody>
@@ -102,4 +104,9 @@ LATO | Add Purchase Request
 <script src="{{ asset('assets/pages/scripts/components-date-time-pickers.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/pages/scripts/form-samples.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
+<script>
+    function deleteRow() {
+        document.getElementById("sample_2").deleteRow(0);
+    }
+</script>
 @endsection
