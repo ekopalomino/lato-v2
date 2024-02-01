@@ -15,22 +15,19 @@ class ProductExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Product::with('categories','branches','locations','departments','author','warranties')->where('deleted_at',NULL)->select('id','sap_code','name','category_id','branch_id',
-        'location_id','department_id','price','specification','purchase_date','warranty_period','updated_at','created_by')->get();
+        return Product::with('categories','uoms','materials')->where('deleted_at',NULL)->select('id','sap_code','name','category_id','uom_id',
+        'min_stock','price','specification','status_id','updated_at','created_by')->get();
     }
 
     public function map($product) : array {
         return [
-            $product->id,
+            $product->sap_code,
             $product->name,
             $product->categories->name,
-            $product->branches->name,
-            $product->locations->location_name,
-            $product->departments->name,
+            $product->uoms->name,
+            $product->min_stock,
             $product->price,
             $product->specification,
-            Carbon::parse($product->purchase_date)->toFormattedDateString(),
-            $product->warranties->warranty_name,
             Carbon::parse($product->updated_at)->toFormattedDateString(),
             $product->author->name,
         ] ;
@@ -41,16 +38,13 @@ class ProductExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'Product EPC',
+            'SAP Code',
             'Name',
             'Category',
-            'Branch',
-            'Location',
-            'Department',
+            'UOM',
+            'Min Stock',
             'Price',
             'Specification',
-            'Purchase Date',
-            'Warranty Period',
             'Last Update',
             'Created By'
         ];

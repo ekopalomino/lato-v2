@@ -16,6 +16,7 @@ use iteos\Exports\CategoryExport;
 use iteos\Exports\MaterialExport;
 use Carbon\Carbon;
 use iteos\Imports\ProductImport;
+use iteos\Exports\ProductExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 use PDF;
@@ -459,5 +460,10 @@ class ProductManagementController extends Controller
         }
 
         return response()->json($response); 
+    }
+
+    public function downloadProduct()
+    {
+        return Excel::download( new ProductExport(), 'atk.xlsx') ;
     }
 }

@@ -35,7 +35,7 @@ LATO | Product Catalog
                             </button></a>
                             <a href="{{ route('product.page') }}"><button id="import" class="btn blue btn-outline sbold"> Import Data
                             </button></a> 
-                            <a href=""><button id="download" class="btn green btn-outline sbold"> Download Data
+                            <a href="{{ route('product.download') }}"><button id="download" class="btn green btn-outline sbold"> Download Data
                             </button></a>
                         </div>
                     </div>

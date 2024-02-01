@@ -102,6 +102,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('products/edit/{id}','Apps\ProductManagementController@productEdit')->name('product.edit');
     Route::post('products/update/{id}','Apps\ProductManagementController@productUpdate')->name('product.update');
     Route::post('products/delete','Apps\ProductManagementController@productDestroy')->name('product.destroy');
+    Route::get('products/download','Apps\ProductManagementController@downloadProduct')->name('product.download');
     /*-----------------------End Product Management--------------------------------*/
 
     /*-----------------------Purchase Management------------------------------------*/
