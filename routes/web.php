@@ -76,6 +76,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('settings/uom-value/edit/{id}','Apps\ConfigurationController@uomvalEdit')->name('uom-val.edit');
     Route::post('settings/uom-value/update/{id}','Apps\ConfigurationController@uomvalUpdate')->name('uom-val.update');
     Route::post('settings/uom-value/delete/{id}','Apps\ConfigurationController@uomvalDestroy')->name('uom-val.destroy');
+    Route::get('settings/uom-value/export','Apps\ConfigurationController@uomExport')->name('uom.export');
 
     /*-----------------------End Config Management-----------------------------*/
 
@@ -85,17 +86,22 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('products/material-group/edit/{id}','Apps\ProductManagementController@materialEdit')->name('material.edit');
     Route::post('products/material-group/update/{id}','Apps\ProductManagementController@materialUpdate')->name('material.update');
     Route::post('products/material-group/delete/{id}','Apps\ProductManagementController@materialDestroy')->name('material.destroy');
+    Route::get('products/material-group/export','Apps\ProductManagementController@materialExport')->name('material.export');
     Route::get('products/categories','Apps\ProductManagementController@categoryIndex')->name('product-cat.index');
     Route::post('products/categories/create','Apps\ProductManagementController@categoryStore')->name('product-cat.store');
     Route::get('products/categories/edit/{id}','Apps\ProductManagementController@categoryEdit')->name('product-cat.edit');
     Route::post('products/categories/update/{id}','Apps\ProductManagementController@categoryUpdate')->name('product-cat.update');
     Route::post('products/categories/delete/{id}','Apps\ProductManagementController@categoryDestroy')->name('product-cat.destroy');
+    Route::get('products/categories/export','Apps\ProductManagementController@categoryExport')->name('product-cat.export');
     Route::get('products','Apps\ProductManagementController@productIndex')->name('product.index');
     Route::get('products/create','Apps\ProductManagementController@productCreate')->name('product.create');
     Route::post('products/store','Apps\ProductManagementController@productStore')->name('product.store');
+    Route::get('products/import','Apps\ProductManagementController@productImport')->name('product.page');
+    Route::get('products/import/template','Apps\ProductManagementController@importTemplate')->name('product.template');
+    Route::post('products/import/store','Apps\ProductManagementController@productImportStore')->name('product.import');
     Route::get('products/edit/{id}','Apps\ProductManagementController@productEdit')->name('product.edit');
     Route::post('products/update/{id}','Apps\ProductManagementController@productUpdate')->name('product.update');
-    Route::post('products/delete/{id}','Apps\ProductManagementController@productDestroy')->name('product.destroy');
+    Route::post('products/delete','Apps\ProductManagementController@productDestroy')->name('product.destroy');
     /*-----------------------End Product Management--------------------------------*/
 
     /*-----------------------Purchase Management------------------------------------*/

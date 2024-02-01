@@ -21,6 +21,7 @@ class Product extends Model
         'min_stock',
         'price',
         'specification',
+        'status_id',
         'created_by',
         'updated_by',
         'deleted_at',

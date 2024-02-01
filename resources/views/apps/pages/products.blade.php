@@ -31,63 +31,28 @@ LATO | Product Catalog
                     @can('Can Create Product')
                     <div class="col-md-6">
                         <div class="form-group">
-                            <a href="{{ route('product.create') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold"> Add New
+                            <a href="{{ route('product.create') }}"><button id="create" class="btn red btn-outline sbold"> Add New
+                            </button></a>
+                            <a href="{{ route('product.page') }}"><button id="import" class="btn blue btn-outline sbold"> Import Data
+                            </button></a> 
+                            <a href=""><button id="download" class="btn green btn-outline sbold"> Download Data
                             </button></a>
                         </div>
                     </div>
                     @endcan
-                	<table class="table table-striped table-bordered table-hover" id="sample_2">
+                	<table class="table table-striped table-bordered table-hover" id="product">
                 		<thead>
                 			<tr>
-                                <th>No</th>
                                 <th>SAP Code</th>
                 				<th>Name</th>
                                 <th>Category</th>
+                                <th>Price</th>
                                 <th>UOM</th>
                                 <th>Min Stock</th>
-                                <th>Status</th>
-                                <th>Create / Update</th>
                                 <th>Data Date</th>
                 				<th></th>
                 			</tr>
                 		</thead>
-                		<tbody>
-                            @foreach($data as $key => $product)
-                			<tr>
-                				<td>{{ $key+1 }}</td>
-                                <td>{{ $product->sap_code }}</td>
-                				<td>{{ $product->name }}</td>
-                                <td>{{ $product->Categories->name }}</td>
-                                <td>{{ $product->Uoms->name }}</td>
-                                <td>{{ $product->min_stock }}</td>
-                                <td>
-                                    @if(!empty($product->deleted_at))
-                                    <label class="label label-sm label-danger">Inactive</label>
-                                    @else
-                                    <label class="label label-sm label-success">Active</label>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if(!empty($product->updated_by))    
-                                    {{ $product->Editor->name }}
-                                    @else
-                                    {{ $product->Author->name }}
-                                    @endif
-                                </td>
-                                <td>{{date("d F Y H:i",strtotime($product->updated_at)) }}</td>
-                				<td>
-                                    @can('Can Edit Product')
-                                    <a class="btn btn-xs btn-success" href="{{ route('product.edit',$product->id) }}" title="Edit Product" ><i class="fa fa-edit"></i></a>
-                                    @endcan
-                                    @can('Can Delete Product')
-                                    {!! Form::open(['method' => 'POST','route' => ['product.destroy', $product->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
-                                    {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Disable Product']) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                </td>
-                			</tr>
-                            @endforeach
-                		</tbody>
                 	</table>
                 </div>
             </div>
@@ -104,13 +69,51 @@ LATO | Product Catalog
 @section('footer.scripts')
 <script src="{{ asset('assets/pages/scripts/table-datatables-buttons.min.js') }}" type="text/javascript"></script>
 <script>
-    function ConfirmDelete()
-    {
-    var x = confirm("Are you sure you want to deactivate?");
-    if (x)
-        return true;
-    else
-        return false;
-    }
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content'); 
+    $(document).ready(function(){
+
+       // Initialize
+       var empTable = $('#product').DataTable({
+             processing: true,
+             serverSide: true,
+             orderable: true, 
+             searchable: true,
+             ajax: "{{ route('product.index') }}",
+             columns: [
+                { data: 'sap_code' },
+                { data: 'name' },
+                {data: 'categories', name: 'category_id'},
+                { data: 'price' },
+                {data: 'uoms', name: 'uom_id'},
+                { data: 'min_stock' },
+                {data: 'created_at', name: 'created_at'},
+                { data: 'action' },
+             ]
+       });
+       $('#product').on('click','.deleteProduct',function(){
+            var id = $(this).data('id');
+
+            var deleteConfirm = confirm("Are you sure?");
+            if (deleteConfirm == true) {
+                 // AJAX request
+                 $.ajax({
+                     url: "{{ route('product.destroy') }}",
+                     type: 'post',
+                     data: {_token: CSRF_TOKEN,id: id},
+                     success: function(response){
+                          if(response.success == 1){
+                               alert("Product Suspend.");
+
+                               // Reload DataTable
+                               empTable.ajax.reload();
+                          }else{
+                                alert("Invalid ID.");
+                          }
+                     }
+                 });
+            }
+       });
+       
+    });
 </script>
 @endsection

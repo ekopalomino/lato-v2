@@ -12,10 +12,16 @@ use iteos\Models\Warehouse;
 use iteos\Models\Inventory;
 use iteos\Models\MaterialGroup;
 use iteos\Models\ChartOfAccount;
+use iteos\Exports\CategoryExport;
+use iteos\Exports\MaterialExport;
 use Carbon\Carbon;
+use iteos\Imports\ProductImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 use PDF;
 use File;
+use DataTables;
+use Storage;
 
 class ProductManagementController extends Controller
 {
@@ -113,6 +119,11 @@ class ProductManagementController extends Controller
         return redirect()->route('product-cat.index')->with($notification);
     }
 
+    public function categoryExport()
+    {
+        return Excel::download(new CategoryExport, 'product-category.xlsx');
+    }
+
     public function materialIndex()
     {
         $data = MaterialGroup::orderBy('material_name','asc')->get();
@@ -194,11 +205,51 @@ class ProductManagementController extends Controller
         return redirect()->route('product-cat.index')->with($notification);
     }
 
-    public function productIndex()
+    public function materialExport()
     {
-    	$data = Product::where('deleted_at',NULL)->orderBy('name','asc')->get();
+        return Excel::download(new MaterialExport, 'material-group.xlsx');
+    }
 
-    	return view('apps.pages.products',compact('data'));
+    public function productIndex(Request $request)
+    {
+        if($request->ajax()) {
+            $data = Product::with('Categories','Materials','Uoms','Branches','Warehouses')->orderBy('name','ASC');
+
+            return Datatables::eloquent($data)
+                ->addIndexColumn()
+                ->addColumn('categories',function(Product $product){
+                    return $product->categories->name;
+                })
+                ->addColumn('uoms',function(Product $product){
+                    return $product->uoms->name;
+                })
+                ->addColumn('statuses',function($row){
+                    if($row->status_id == 8){
+                        return "<label class='label label-sm label-success'>Active</label>";
+                    }else{
+                        return "<label class='label label-sm label-danger'>Inactive</label>";
+                    }
+                })
+                ->addColumn('author',function(Product $product){
+                    return $product->author->name;
+                })
+                ->addColumn('created_at',function($row){
+                    $date = date("d F Y H:i", strtotime($row->created_at));
+                    return $date;
+                })
+                ->addColumn('action', function($row){
+                    // Update Button
+                    $updateButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('product.edit',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                    // Delete Button
+                    $deleteButton = "<button class='btn btn-xs btn-danger deleteProduct' data-id='".$row->id."'><i class='fa fa-trash'></i></button>";
+
+                    return $updateButton." ".$deleteButton;
+
+                }) 
+                ->make();
+        }
+    	
+    	return view('apps.pages.products');
     }
 
     public function productCreate()
@@ -279,6 +330,35 @@ class ProductManagementController extends Controller
         return redirect()->route('product.index')->with($notification);
     }
 
+    public function importTemplate()
+    {
+        $file = 'atk.xlsx';
+        return response()->download(storage_path('app/public/'. $file));
+    }
+
+    public function productImport()
+    {
+        return view('apps.input.productImport');
+    }
+
+    public function productImportStore(Request $request)
+    {
+        $this->validate($request, [
+            'atk' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
+        ]);
+        $data = new ProductImport();
+        Excel::import($data, $request->file('atk'));
+
+        $log = 'File Successfully Uploaded';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'File Successfully Uploaded',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('asset.index')->with($notification);
+    }
+
     public function productEdit($id)
     {
         $data = Product::find($id);
@@ -354,11 +434,12 @@ class ProductManagementController extends Controller
         return redirect()->route('product.index')->with($notification);
     }
 
-    public function productDestroy($id)
+    public function productDestroy(Request $request)
     {
         $data = Product::find($id);
         $destroy = [
             'deleted_at' => Carbon::now()->toDateTimeString(),
+            'status_id' => '9',
             'updated_by' => auth()->user()->id,
         ];
         $data->update($destroy);
@@ -369,6 +450,14 @@ class ProductManagementController extends Controller
             'alert-type' => 'success'
         );
         
-        return redirect()->route('product.index')->with($notification);
+        if($data->update($destroy)){
+            $response['success'] = 1;
+            $response['msg'] = 'Delete successfully'; 
+        }else{
+            $response['success'] = 0;
+            $response['msg'] = 'Invalid ID.';
+        }
+
+        return response()->json($response); 
     }
 }

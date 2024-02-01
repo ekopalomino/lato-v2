@@ -10,8 +10,10 @@ use iteos\Models\Branch;
 use iteos\Models\ChartOfAccount;
 use iteos\Models\UomCategory;
 use iteos\Models\UomValue;
+use iteos\Exports\UomExport;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Auth;
 
@@ -422,5 +424,10 @@ class ConfigurationController extends Controller
         $data->delete();
 
         return redirect()->route('uom-val.index')->with($notification);
+    }
+
+    public function uomExport()
+    {
+        return Excel::download(new UomExport, 'uom.xlsx');
     }
 }
