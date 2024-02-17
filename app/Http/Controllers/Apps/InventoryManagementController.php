@@ -76,9 +76,9 @@ class InventoryManagementController extends Controller
                 })
                 ->addColumn('action', function($row){
                     // Update Button
-                    $adjustButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                    $adjustButton = "<a class='btn btn-xs btn-info adjustStock' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
                     // Delete Button
-                    $cardButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                    $cardButton = "<a class='btn btn-xs btn-warning stockCard' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-search'></i></a>";
 
                     return $adjustButton." ".$cardButton;
 
@@ -111,9 +111,9 @@ class InventoryManagementController extends Controller
                     })
                     ->addColumn('action', function($row){
                         // Update Button
-                        $adjustButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                        $adjustButton = "<a class='btn btn-xs btn-info adjustStock' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
                         // Delete Button
-                        $cardButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                        $cardButton = "<a class='btn btn-xs btn-warning stockCard' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-search'></i></a>";
     
                         return $adjustButton." ".$cardButton;
     
@@ -143,9 +143,9 @@ class InventoryManagementController extends Controller
                     })
                     ->addColumn('action', function($row){
                         // Update Button
-                        $adjustButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                        $adjustButton = "<a class='btn btn-xs btn-info adjustStock' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
                         // Delete Button
-                        $cardButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                        $cardButton = "<a class='btn btn-xs btn-warning stockCard' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-search'></i></a>";
     
                         return $adjustButton." ".$cardButton;
     
