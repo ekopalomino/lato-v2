@@ -26,8 +26,12 @@ use iteos\Models\ReturReason;
 use iteos\Models\UomValue;
 use iteos\Models\Contact;
 use iteos\Models\Reference;
+use iteos\Models\InventoryAdjustment;
+use iteos\Exports\StockExport;
+use iteos\Imports\StockImport;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Auth;
 use PDF;
@@ -59,42 +63,105 @@ class InventoryManagementController extends Controller
                 })
                 ->addColumn('statuses',function($row){
                     if($row->closing_amount == 0) {
-                        return "<label class='label label-sm label-danger'>No Stock</label>";
+                        return "No Stock";
                     }elseif(($row->closing_amount) <= ($row->min_stock)) {
-                        return "<label class='label label-sm label-warning'>Low On Stock</label>";
+                        return "Low On Stock";
                     }else{
-                        return "<label class='label label-sm label-success'>Stock Normal</label>";
+                        return "Stock Available";
                     }
                 })
-                ->addColumn('created_at',function($row){
-                    $date = date("d F Y H:i", strtotime($row->created_at));
+                ->addColumn('updated_at',function($row){
+                    $date = date("d F Y H:i", strtotime($row->updated_at));
                     return $date;
                 })
                 ->addColumn('action', function($row){
                     // Update Button
-                    $updateButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-edit'></i></a>";
-                    
-                    return $updateButton;
+                    $adjustButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                    // Delete Button
+                    $cardButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+
+                    return $adjustButton." ".$cardButton;
 
                 }) 
                 ->make();
+            } elseif (auth()->user()->hasRole('GA')) {
+                $data = Inventory::with('Products','Locations','Materials','Child')->where('branch_id',auth()->user()->branch_id)
+                               ->orderBy('product_name','asc');
+                
+                return Datatables::eloquent($data)
+                    ->addIndexColumn()
+                    ->addColumn('materials',function(Inventory $inventory){
+                        return $inventory->materials->material_name;
+                    })
+                    ->addColumn('uoms',function(Inventory $inventory){
+                        return $inventory->products->uoms->name;
+                    })
+                    ->addColumn('statuses',function($row){
+                        if($row->closing_amount == 0) {
+                            return "No Stock";
+                        }elseif(($row->closing_amount) <= ($row->min_stock)) {
+                            return "Low On Stock";
+                        }else{
+                            return "Stock Available";
+                        }
+                    })
+                    ->addColumn('updated_at',function($row){
+                        $date = date("d F Y H:i", strtotime($row->updated_at));
+                        return $date;
+                    })
+                    ->addColumn('action', function($row){
+                        // Update Button
+                        $adjustButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                        // Delete Button
+                        $cardButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+    
+                        return $adjustButton." ".$cardButton;
+    
+                    }) 
+                ->make();
             } else {
-                $data = Inventory::where('branch_id',auth()->user()->branch_id)
-                               ->orderBy('id','asc')
-                               ->get();
+                $data = Inventory::with('Products','Locations','Materials','Child')->where('warehouse_id',auth()->user()->warehouse_id)
+                               ->orderBy('product_name','asc');
+                
+                return Datatables::eloquent($data)
+                    ->addIndexColumn()
+                    ->addColumn('materials',function(Inventory $inventory){
+                        return $inventory->materials->material_name;
+                    })
+                    ->addColumn('statuses',function($row){
+                        if($row->closing_amount == 0) {
+                            return "No Stock";
+                        }elseif(($row->closing_amount) <= ($row->min_stock)) {
+                            return "Low On Stock";
+                        }else{
+                            return "Stock Available";
+                        }
+                    })
+                    ->addColumn('updated_at',function($row){
+                        $date = date("d F Y H:i", strtotime($row->updated_at));
+                        return $date;
+                    })
+                    ->addColumn('action', function($row){
+                        // Update Button
+                        $adjustButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                        // Delete Button
+                        $cardButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('adjustment.page',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+    
+                        return $adjustButton." ".$cardButton;
+    
+                    }) 
+                ->make();
             }
         }
-        
-        
-        return view('apps.pages.inventoriesNew');
+        return view('apps.pages.inventories');
     }
 
-    public function stockCard(Request $request,$id)
+    public function stockCard($id)
     {
-        $source = Inventory::where('id',$id)->first();
+        $source = Inventory::find($id);
         $data = InventoryMovement::where('inventory_id',$source->id)->paginate(10);
         
-        return view('apps.show.stockCard',compact('data'))->renderSections()['content'];
+        return view('apps.show.stockCard',compact('data'));
     }
 
     public function stockPrint(Request $request,$id)
@@ -109,34 +176,62 @@ class InventoryManagementController extends Controller
         return $pdf->download('Stock Card '.$filename->name.'.pdf');
     }
 
-    public function inventoryAdjustIndex(Request $request)
+    public function stockOpnameIndex(Request $request)
     {
-        if ($request->ajax()) {
-            $$data = Inventory::with('Products','Locations','Materials','Child')->orderBy('product_name','ASC');
+        $data = InventoryAdjustment::orderBy('id','ASC')->get();
 
-            return Datatables::eloquent($data)
-            ->addIndexColumn()
-            ->addColumn('materials',function(Inventory $inventory){
-                return $inventory->materials->material_name;
-            })
-            ->addColumn('uoms',function(Inventory $inventory){
-                return $inventory->products->uoms->name;
-            })
-            ->addColumn('created_at',function($row){
-                $date = date("d F Y H:i", strtotime($row->created_at));
-                return $date;
-            })
-            ->addColumn('action', function($row){
-                // Update Button
-                $updateButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('inventory.card',$row->id)."'' ><i class='fa fa-edit'></i></a>";
-                
-                return $updateButton;
+        return view('apps.pages.stockOpname',compact('data'));
+    }
 
-            }) 
-            ->make();
-        }
+    public function opnameImportPage()
+    {
+        return view('apps.input.opname');
+    }
+
+    public function stockExport()
+    {
+        return Excel::download(new stockExport, 'stocks.xlsx');
+    }
+
+    public function opnameProcess(Request $request)
+    {
+        $this->validate($request, [
+            'stocks' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
+        ]);
         
-        return view('apps.pages.inventoryAdjustment');
+        $getMonth = Carbon::now()->month;
+        $getYear = Carbon::now()->year;
+        $latestOrder = Reference::where('type','5')->where('month',$getMonth)->where('year',$getYear)->count();
+        $ref_id = 'SO/ARG/'.(auth()->user()->warehouses->prefix).'/'.str_pad($latestOrder + 1, 6, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+        $refs = Reference::create([
+            'type' => '5',
+            'month' => $getMonth,
+            'year' => $getYear,
+            'ref_no' => $ref_id,
+        ]);
+        $index = InventoryAdjustment::create([
+            'remarks' => $ref_id,
+            'branch_id' => auth()->user()->branch_id,
+            'status_id' => '18',
+            'created_by' => auth()->user()->id,
+        ]);
+        $data = new StockImport($ref_id);
+        Excel::import($data, $request->file('stocks'));
+
+        $log = 'Stock Opname Successfully Uploaded';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Stock Opname Successfully Uploaded',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('opname.index')->with($notification);
+    }
+
+    public function adjustmentForm($id)
+    {
+        $data = Inventory::find($id);
+        return view('apps.input.stockAdjustment',compact('data'));
     }
 
     public function makeAdjust($id)

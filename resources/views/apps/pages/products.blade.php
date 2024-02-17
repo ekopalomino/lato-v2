@@ -31,12 +31,31 @@ LATO | Product Catalog
                     @can('Can Create Product')
                     <div class="col-md-6">
                         <div class="form-group">
-                            <a href="{{ route('product.create') }}"><button id="create" class="btn red btn-outline sbold"> Add New
+                            <tr>
+                                <td>
+                                    <a class="btn red btn-outline sbold fa fa-pencil" data-toggle="modal" href="#basic"> Create </a>
+                                </td>
+                            </tr>
+                           <a href="{{ route('product.download') }}"><button id="download" class="btn green btn-outline sbold fa fa-download"> Download Data
                             </button></a>
-                            <a href="{{ route('product.page') }}"><button id="import" class="btn blue btn-outline sbold"> Import Data
-                            </button></a> 
-                            <a href="{{ route('product.download') }}"><button id="download" class="btn green btn-outline sbold"> Download Data
-                            </button></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title">Choose Method for Creating Data</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <a href="{{ route('product.create') }}"><button id="create" class="btn red btn-outline sbold fa fa-edit"> Manual
+                                        </button></a>
+                                        <a href="{{ route('product.page') }}"><button id="import" class="btn blue btn-outline sbold fa fa-upload"> Import
+                                        </button></a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     @endcan
@@ -87,7 +106,7 @@ LATO | Product Catalog
                 {data: 'uoms', name: 'uom_id'},
                 { data: 'min_stock' },
                 {data: 'created_at', name: 'created_at'},
-                { data: 'action' },
+                { data: 'action' }, 
              ]
        });
        $('#product').on('click','.deleteProduct',function(){

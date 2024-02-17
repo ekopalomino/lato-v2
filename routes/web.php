@@ -110,6 +110,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('purchase/request/process/{id}','Apps\PurchaseManagementController@requestShow')->name('request.show');
     Route::post('purchase/request/process/{id}','Apps\PurchaseManagementController@requestProcess')->name('request.process');
     Route::get('purchase/request/create','Apps\PurchaseManagementController@requestCreate')->name('request.create');
+    Route::get('purchase/request/import','Apps\PurchaseManagementController@requestImport')->name('request.import');
+    Route::get('purchase/request/data/download','Apps\PurchaseManagementController@requestDownload')->name('request.download');
     Route::post('purchase/request/store','Apps\PurchaseManagementController@requestStore')->name('request.store');
     Route::get('purchase/request/print/{id}','Apps\PurchaseManagementController@requestPrint')->name('request.print');
     Route::get('purchase/request/edit/{id}','Apps\PurchaseManagementController@requestForm')->name('request.form');
@@ -123,11 +125,13 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
 
     /*-----------------------Inventory Management------------------------------------*/
     Route::get('inventories','Apps\InventoryManagementController@inventoryIndex')->name('inventory.index');
-    Route::post('inventories/initial-stock','Apps\InventoryManagementController@initialStock')->name('initial.stock');
     Route::get('inventories/stockcard/{id}','Apps\InventoryManagementController@stockCard')->name('inventory.card');
     Route::get('inventories/stockcard/print/{id}','Apps\InventoryManagementController@stockPrint')->name('stock.pdf');
-    Route::get('inventory/adjustment','Apps\InventoryManagementController@inventoryAdjustIndex')->name('inventory.adjust');
-    Route::get('inventory/adjustment/{id}','Apps\InventoryManagementController@makeAdjust')->name('make.adjust');
+    Route::get('inventory/opname','Apps\InventoryManagementController@stockOpnameIndex')->name('opname.index');
+    Route::get('inventory/opname/create','Apps\InventoryManagementController@opnameImportPage')->name('opname.create');
+    Route::get('inventory/opname/stocks','Apps\InventoryManagementController@stockExport')->name('opname.export');
+    Route::post('inventory/opname/import','Apps\InventoryManagementController@opnameProcess')->name('opname.import');
+    Route::get('inventory/adjustment/item/{id}','Apps\InventoryManagementController@adjustmentForm')->name('adjustment.page');
     Route::post('inventory/adjustment/store/{id}','Apps\InventoryManagementController@storeAdjust')->name('store.adjust');
     Route::get('product-request/atk-request','Apps\InventoryManagementController@internTransfer')->name('transfer.index');
     Route::get('product-request/atk-request/find','Apps\InventoryManagementController@searchProduct')->name('transfer.product');

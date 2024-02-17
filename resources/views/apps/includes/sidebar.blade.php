@@ -133,21 +133,21 @@
                 </ul>
             </li>
             @can('Can Access Inventories') 
-            <li class="nav-item  {{ set_active(['inventory.index','inventory.adjust','receipt.index','receipt.search','receipt.get','receipt.edit','inventory.card','purchase.show']) }}">
+            <li class="nav-item  {{ set_active(['inventory.index','adjustment.page','opname.index','opname.create','receipt.index','receipt.search','receipt.get','receipt.edit','inventory.card','purchase.show']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-grid"></i>
             		<span class="title">Inventories</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                	<li class="nav-item  {{ set_active(['inventory.index','inventory.card']) }}">
+                	<li class="nav-item  {{ set_active(['inventory.index','inventory.card','adjustment.page']) }}">
                 		<a href="{{ route('inventory.index') }}" class="nav-link ">
-                            <span class="title">Stocks</span>
+                            <span class="title">Product Stock</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ set_active(['inventory.adjust']) }}">
-                		<a href="{{ route('inventory.adjust') }}" class="nav-link ">
-                            <span class="title">Adjustment</span>
+                    <li class="nav-item {{ set_active(['opname.index','opname.create']) }}">
+                		<a href="{{ route('opname.index') }}" class="nav-link ">
+                            <span class="title">Stock Opname</span>
                         </a>
                     </li>
                     <li class="nav-item {{ set_active(['receipt.index','receipt.search','receipt.get','receipt.edit']) }}">

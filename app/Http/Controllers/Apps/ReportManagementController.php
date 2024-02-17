@@ -10,6 +10,7 @@ use iteos\Models\Product;
 use iteos\Models\Warehouse;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use DataTables;
 
 class ReportManagementController extends Controller
 {

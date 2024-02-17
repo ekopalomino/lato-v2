@@ -75,9 +75,9 @@ LATO | Add Purchase Request
                                     <td>{{ Form::hidden('product_id[]', $data->id_product) }}{!! Form::text('product_name[]', $data->product_name, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                                     <td>{!! Form::text('warehouse_code[]', $data->wh_code, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
                                     <td>{{ Form::hidden('warehouse_id[]', $data->from_wh_id) }}{!! Form::text('warehouse_name[]', $data->from_wh, array('placeholder' => 'Customer PO', 'class' => 'form-control','readonly')) !!}</td>
-                    				<td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control','required')) !!}</td>
-                    				<td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control','required')) !!}</td>
-                                    <td><button type="button" name="remove" id="remove" onclick="deleteRow()" class="btn btn-danger btn_remove">Remove</button></td>
+                    				<td>{!! Form::number('quantity[]', null, array('placeholder' => 'Jumlah','class' => 'form-control')) !!}</td>
+                    				<td>{!! Form::select('uom_id[]', [null=>'Please Select'] + $uoms,[], array('class' => 'form-control')) !!}</td>
+                                    <td><input type="button" class="btn red" value="Remove"></td>
                     			</tr>
                                 @endforeach
 	            			</tbody>
@@ -85,7 +85,7 @@ LATO | Add Purchase Request
 	            	</div>
             	</div>
             	<div class="form-actions right">
-                    <a button type="button" class="btn default" href="{{ route('request.index') }}">Cancel</a>
+                    <a button type="cancel" class="btn default" href="{{ route('request.index') }}">Cancel</a>
                     <button type="submit" class="btn blue">
                     <i class="fa fa-check"></i> Save</button>
                 </div>
@@ -96,17 +96,10 @@ LATO | Add Purchase Request
     </div>
 </div>
 @endsection
-@section('footer.plugins')
-<script src="{{ asset('assets//global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
-@endsection
 @section('footer.scripts')
-<script src="{{ asset('assets/pages/scripts/components-date-time-pickers.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/pages/scripts/form-samples.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
 <script>
-    function deleteRow() {
-        document.getElementById("sample_2").deleteRow(0);
-    }
+    $('input[type="button"]').click(function(e){
+        $(this).closest('tr').remove()
+    })
 </script>
 @endsection

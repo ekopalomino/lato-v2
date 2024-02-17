@@ -14,6 +14,7 @@ use iteos\Models\InventoryMovement;
 use iteos\Models\Product;
 use iteos\Models\UomValue;
 use iteos\Models\Reference;
+use iteos\Exports\RequestExport;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Carbon\Carbon;
@@ -79,6 +80,28 @@ class PurchaseManagementController extends Controller
             
             return view('apps.input.request',compact('uoms','products','refs'));
         }
+    }
+
+    public function requestImport()
+    {
+        if (auth()->user()->hasRole('Administrator')) {
+            $getMonth = Carbon::now()->month;
+            $getYear = Carbon::now()->year;
+            $references = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
+            $refs = 'PR/ADM/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+        } else {
+            $uoms = UomValue::pluck('name','id')->toArray();
+            $getMonth = Carbon::now()->month;
+            $getYear = Carbon::now()->year;
+            $references = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
+            $refs = 'PR/'.auth()->user()->Branches->prefix.'/'.str_pad($references + 1, 4, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+        }
+        return view ('apps.input.requestImport',compact('refs'));
+    }
+
+    public function requestDownload()
+    {
+        return Excel::download(new RequestExport, 'pr.xlsx');
     }
 
     public function requestStore(Request $request)
