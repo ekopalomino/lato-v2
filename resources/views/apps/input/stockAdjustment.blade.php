@@ -21,7 +21,7 @@ LATO | Stock Adjustment
                 </ul>
             </div>
             @endif
-            {!! Form::model($data, ['method' => 'POST','route' => ['product.update', $data->id],'class' => 'form-horizontal','files' => 'true']) !!}
+            {!! Form::model($data, ['method' => 'POST','route' => ['store.adjust', $data->id],'class' => 'form-horizontal']) !!}
             @csrf
             <div class="form-body">
                 <div class="form-group">

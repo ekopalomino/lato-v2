@@ -234,24 +234,17 @@ class InventoryManagementController extends Controller
         return view('apps.input.stockAdjustment',compact('data'));
     }
 
-    public function makeAdjust($id)
-    {
-        $data = Inventory::find($id);
- 
-        return view('apps.edit.makeAdjust',compact('data'))->renderSections()['content'];
-    }
-
-    public function storeAdjust(Request $request,$id)
+    public function storeAdjustment(Request $request,$id)
     {
         $this->validate($request, [
             'notes' => 'required',
         ]);
         $getMonth = Carbon::now()->month;
         $getYear = Carbon::now()->year;
-        $latestOrder = Reference::where('type','2')->where('month',$getMonth)->where('year',$getYear)->count();
-        $ref = 'ADJ/FTI/'.str_pad($latestOrder + 1, 6, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
+        $latestOrder = Reference::where('type','1')->where('month',$getMonth)->where('year',$getYear)->count();
+        $ref = 'ADJ/ARG/'.(auth()->user()->warehouses->prefix).'/'.str_pad($latestOrder + 1, 6, "0", STR_PAD_LEFT).'/'.(\GenerateRoman::integerToRoman(Carbon::now()->month)).'/'.(Carbon::now()->year).'';
         $refs = Reference::create([
-            'type' => '2',
+            'type' => '1',
             'month' => $getMonth,
             'year' => $getYear,
             'ref_no' => $ref,
@@ -285,14 +278,14 @@ class InventoryManagementController extends Controller
                     'closing_amount' => $movements->remaining,
                 ]);
                 
-                $log = 'Stok '.($movements->product_name).' Berhasil Disesuaikan';
+                $log = 'Stok '.($movements->product_name).' Adjusted';
                 \LogActivity::addToLog($log);
                 $notification = array (
-                    'message' => 'Stok '.($movements->product_name).' Berhasil Disesuaikan',
+                    'message' => 'Stok '.($movements->product_name).' Adjusted',
                     'alert-type' => 'success'
                 );
     
-                return redirect()->route('inventory.adjust')->with($notification);
+                return redirect()->route('inventory.index')->with($notification);
             } elseif (($request->input('min_amount')) == null) {
                 $input = [
                     'reference_id' => $ref,
@@ -311,14 +304,14 @@ class InventoryManagementController extends Controller
                     'closing_amount' => $movements->remaining,
                 ]);
                 
-                $log = 'Stok '.($movements->product_name).' Berhasil Disesuaikan';
+                $log = 'Stok '.($movements->product_name).' Adjusted';
                 \LogActivity::addToLog($log);
                 $notification = array (
-                    'message' => 'Stok '.($movements->product_name).' Berhasil Disesuaikan',
+                    'message' => 'Stok '.($movements->product_name).' Adjusted',
                     'alert-type' => 'success'
                 );
     
-                return redirect()->route('inventory.adjust')->with($notification);
+                return redirect()->route('inventory.index')->with($notification);
             }
         } else {
             if(($request->input('plus_amount')) == null) {
@@ -339,14 +332,14 @@ class InventoryManagementController extends Controller
                     'closing_amount' => ($checkInv->closing_amount) - ($movements->outgoing),
                 ]);
                 
-                $log = 'Stok '.($movements->product_name).' Berhasil Disesuaikan';
+                $log = 'Stok '.($movements->product_name).' Adjusted';
                 \LogActivity::addToLog($log);
                 $notification = array (
-                    'message' => 'Stok '.($movements->product_name).' Berhasil Disesuaikan',
+                    'message' => 'Stok '.($movements->product_name).' Adjusted',
                     'alert-type' => 'success'
                 );
     
-                return redirect()->route('inventory.adjust')->with($notification);
+                return redirect()->route('inventory.index')->with($notification);
             } elseif (($request->input('min_amount')) == null) {
                 $input = [
                     'reference_id' => $ref,
@@ -365,14 +358,14 @@ class InventoryManagementController extends Controller
                     'closing_amount' => ($checkInv->closing_amount) + ($movements->incoming),
                 ]);
                 
-                $log = 'Stok '.($movements->product_name).' Berhasil Disesuaikan';
+                $log = 'Stok '.($movements->product_name).' Adjusted';
                 \LogActivity::addToLog($log);
                 $notification = array (
-                    'message' => 'Stok '.($movements->product_name).' Berhasil Disesuaikan',
+                    'message' => 'Stok '.($movements->product_name).' Adjusted',
                     'alert-type' => 'success'
                 );
     
-                return redirect()->route('inventory.adjust')->with($notification);
+                return redirect()->route('inventory.index')->with($notification);
             }
         }
     }

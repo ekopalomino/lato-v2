@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-LATO | Purchase Receipt
+LATO | Goods Receipt
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ LATO | Purchase Receipt
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Purchase Receipt
+                        <i class="fa fa-database"></i>Goods Receipt
                     </div>
                 </div>
                 <div class="portlet-body">

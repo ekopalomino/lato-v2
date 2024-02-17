@@ -132,7 +132,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('inventory/opname/stocks','Apps\InventoryManagementController@stockExport')->name('opname.export');
     Route::post('inventory/opname/import','Apps\InventoryManagementController@opnameProcess')->name('opname.import');
     Route::get('inventory/adjustment/item/{id}','Apps\InventoryManagementController@adjustmentForm')->name('adjustment.page');
-    Route::post('inventory/adjustment/store/{id}','Apps\InventoryManagementController@storeAdjust')->name('store.adjust');
+    Route::post('inventory/adjustment/store/{id}','Apps\InventoryManagementController@storeAdjustment')->name('store.adjust');
     Route::get('product-request/atk-request','Apps\InventoryManagementController@internTransfer')->name('transfer.index');
     Route::get('product-request/atk-request/find','Apps\InventoryManagementController@searchProduct')->name('transfer.product');
     Route::get('product-request/atk-request/create','Apps\InventoryManagementController@addTransfer')->name('add.transfer');
