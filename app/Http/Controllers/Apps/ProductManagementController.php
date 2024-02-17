@@ -81,10 +81,9 @@ class ProductManagementController extends Controller
     public function categoryUpdate(Request $request,$id)
     {
         $this->validate($request, [
-            'name' => 'required|unique:product_categories,name',
-            'material_group_id' => 'required',
+            'name' => 'required',
         ]);
-
+        $materials = $request->material_id;
         $input = [
             'name' => $request->input('name'),
             'material_group_id' => $request->input('material_group_id'),
@@ -92,10 +91,18 @@ class ProductManagementController extends Controller
         ];
         $data = ProductCategory::find($id);
         $data->update($input);
-        $log = 'Category '.($input->name).' Updated';
+        $group = ProductHasGroup::where('category_id',$data->id)->delete();
+        foreach($materials as $index=>$material)
+        {
+            $materialData = ProductHasGroup::create([
+                'category_id' => $data->id,
+                'material_id' => $material,
+            ]);
+        }
+        $log = 'Category '.($data->name).' Updated';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Category '.($input->name).' Updated',
+            'message' => 'Category '.($data->name).' Updated',
             'alert-type' => 'success'
         );
 
@@ -214,7 +221,7 @@ class ProductManagementController extends Controller
     public function productIndex(Request $request)
     {
         if($request->ajax()) {
-            $data = Product::with('Categories','Materials','Uoms','Branches','Warehouses')->orderBy('name','ASC');
+            $data = Product::with('Categories','Materials','Uoms')->orderBy('name','ASC');
 
             return Datatables::eloquent($data)
                 ->addIndexColumn()

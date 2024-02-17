@@ -15,8 +15,6 @@ class Product extends Model
         'material_group_id',
         'category_id',
         'uom_id',
-        'branch_id',
-        'warehouse_id',
         'image',
         'min_stock',
         'price',
@@ -52,16 +50,6 @@ class Product extends Model
     public function Uoms()
     {
         return $this->belongsTo(UomValue::class,'uom_id');
-    }
-
-    public function Branches()
-    {
-        return $this->belongsTo(Branch::class,'branch_id');
-    }
-
-    public function Warehouses()
-    {
-        return $this->belongsTo(Warehouse::class,'warehouse_id');
     }
 
     public function Invent()

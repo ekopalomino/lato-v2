@@ -531,7 +531,7 @@ class InventoryManagementController extends Controller
         $details = ReceivePurchaseItem::where('receive_id',$id)->where('remaining','>','0')->get();
         $uoms = UomValue::where('is_parent','1')->pluck('name','id')->toArray();
         
-        return view('apps.edit.receivedOrder',compact('data','details','uoms'));
+        return view('apps.edit.receivedOrder',compact('data','details','uoms')); 
     }
 
     public function receiptUpdate(Request $request,$id)
@@ -606,19 +606,19 @@ class InventoryManagementController extends Controller
     public function receiptClose(Request $request,$id)
     {
         $data = ReceivePurchase::find($id);
-        $purchases = Purchase::where('order_ref',$data->order_ref)->first();
+        $purchases = Purchase::where('request_ref',$data->order_ref)->first();
 
         $updateData = $data->update([
-            'status_id' => '596ae55c-c0fb-4880-8e06-56725b21f6dc'
+            'status_id' => '18'
         ]);
         $updatePurchase = $purchases->update([
-            'status' => '596ae55c-c0fb-4880-8e06-56725b21f6dc'
+            'status' => '18'
         ]); 
 
-        $log = 'Pembelian '.($data->order_ref).' Selesai Diproses';
+        $log = 'Purchase '.($data->request_ref).' Completed';
         \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Pembelian '.($data->order_ref).' Selesai Diproses',
+            'message' => 'Purchase '.($data->request_ref).' Completed',
             'alert-type' => 'success'
         );
 
