@@ -103,6 +103,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::post('products/update/{id}','Apps\ProductManagementController@productUpdate')->name('product.update');
     Route::post('products/delete','Apps\ProductManagementController@productDestroy')->name('product.destroy');
     Route::get('products/download','Apps\ProductManagementController@downloadProduct')->name('product.download');
+    Route::get('products/inventory/{id}','Apps\ProductManagementController@uploadInventoryIndex')->name('product.inventory');
+    Route::post('products/inventory/{id}','Apps\ProductManagementController@productWarehouse')->name('product.warehouse');
     /*-----------------------End Product Management--------------------------------*/
 
     /*-----------------------Purchase Management------------------------------------*/

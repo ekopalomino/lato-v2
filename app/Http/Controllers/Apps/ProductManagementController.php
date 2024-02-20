@@ -23,6 +23,7 @@ use PDF;
 use File;
 use DataTables;
 use Storage;
+use DB;
 
 class ProductManagementController extends Controller
 {
@@ -221,7 +222,7 @@ class ProductManagementController extends Controller
     public function productIndex(Request $request)
     {
         if($request->ajax()) {
-            $data = Product::with('Categories','Materials','Uoms')->orderBy('name','ASC');
+            $data = Product::with('Categories','Uoms')->orderBy('name','ASC');
 
             return Datatables::eloquent($data)
                 ->addIndexColumn()
@@ -246,12 +247,12 @@ class ProductManagementController extends Controller
                     return $date;
                 })
                 ->addColumn('action', function($row){
-                    // Update Button
-                    $updateButton = "<a class='btn btn-xs btn-info updateProduct' href='".route('product.edit',$row->id)."'' ><i class='fa fa-edit'></i></a>";
-                    // Delete Button
+                    $updateButton = "<a class='btn btn-xs btn-info updateProduct' title='Edit Product' href='".route('product.edit',$row->id)."'' ><i class='fa fa-edit'></i></a>";
+                    $uploadInventory = "<a class='btn btn-xs btn-warning uploadInventory' title='Add Warehouse' href='".route('product.inventory',$row->id)."'' ><i class='fa fa-database'></i></a>";
                     $deleteButton = "<button class='btn btn-xs btn-danger deleteProduct' data-id='".$row->id."'><i class='fa fa-trash'></i></button>";
+                    
 
-                    return $updateButton." ".$deleteButton;
+                    return $updateButton." ".$uploadInventory." ".$deleteButton;
 
                 }) 
                 ->make();
@@ -318,16 +319,7 @@ class ProductManagementController extends Controller
         }
         
         $data = Product::create($input);
-        /* $stocks = Inventory::create([
-            'product_id' => $data->id,
-            'product_name' => $data->name,
-            'warehouse_id' => $data->warehouse_id,
-            'warehouse_name' => $data->Warehouses->name,
-            'material_group_id' => $data->material_group_id,
-            'min_stock' => $data->min_stock,
-            'opening_amount' => '0',
-            'closing_amount' => '0', 
-        ]); */
+        
         $log = 'Product '.($data->name).' Created';
          \LogActivity::addToLog($log);
         $notification = array (
@@ -364,7 +356,7 @@ class ProductManagementController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->route('asset.index')->with($notification);
+        return redirect()->route('product.index')->with($notification);
     }
 
     public function productEdit($id)
@@ -472,5 +464,46 @@ class ProductManagementController extends Controller
     public function downloadProduct()
     {
         return Excel::download( new ProductExport(), 'atk.xlsx') ;
+    }
+
+    public function uploadInventoryIndex($id)
+    {
+        $data = Product::find($id);
+        $warehouses = Warehouse::where('deleted_at',NULL)->get();
+
+        return view('apps.input.inventoryUpload',compact('data','warehouses'));
+    }
+
+    public function productWarehouse(Request $request,$id)
+    {
+        $this->validate($request, [
+            'warehouse_name' => 'required',
+        ]);
+
+        $warehouses = $request->warehouse_name;
+        $names = $request->product_name;
+        $stocks = $request->product_stock;
+        foreach($warehouses as $index=>$warehouse) {
+            $source = DB::table('warehouses')->where('id',$warehouse)->first();
+            $data = Inventory::create([
+                'product_id' => $id,
+                'product_name' => $names[$index],
+                'branch_id' => $source->branch_id,
+                'warehouse_id' => $source->id,
+                'warehouse_name' => $source->name,
+                'material_group_id' => $source->material_group_id,
+                'min_stock' => $stocks[$index],
+                'opening_amount' => '0',
+                'closing_amount' => '0',
+            ]);
+        }
+        $log = 'Warehouse for Product '.($data->name).' Selected';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Warehouse for Product '.($data->name).' Selected',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('product.index')->with($notification);
     }
 }

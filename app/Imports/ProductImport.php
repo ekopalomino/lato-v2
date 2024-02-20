@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class ProductImport implements ToModel
+class ProductImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, WithValidation
 {
     /**
     * @param array $row
@@ -23,7 +23,6 @@ class ProductImport implements ToModel
             'id' => Uuid::uuid4(),
             'sap_code' => $row['sap_code'],
             'name' => $row['name'],
-            'material_group_id' => $row['material_group_id'],
             'category_id' => $row['category_id'],
             'uom_id' => $row['uom_id'], 
             'min_stock' => $row['min_stock'],

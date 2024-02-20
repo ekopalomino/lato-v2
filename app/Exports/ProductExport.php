@@ -15,8 +15,8 @@ class ProductExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Product::with('categories','uoms','materials')->where('deleted_at',NULL)->select('id','sap_code','name','category_id','uom_id',
-        'min_stock','price','specification','status_id','updated_at','created_by')->get();
+        return Product::with('categories','uoms')->where('deleted_at',NULL)->select('sap_code','name','category_id','uom_id',
+        'min_stock','price','specification','updated_at','created_by')->get();
     }
 
     public function map($product) : array {

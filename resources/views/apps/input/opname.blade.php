@@ -28,7 +28,8 @@ LATO | Stock Opname
                         <div class="col-md-6">
                             <div class="m-heading-1 border-red m-bordered">
                                 <h3>How to Import Data</h3>
-                                    <p>Download templates & data from the right side column. Use id number for each data to fill the id field on asset template.</p>
+                                    <p>1. Download templates from the right side column.</p>
+                                    <p>2. Fill in the actual stock number to "Amount" column.</p>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">

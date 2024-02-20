@@ -12,7 +12,6 @@ class Product extends Model
     protected $fillable = [
         'sap_code',
         'name',
-        'material_group_id',
         'category_id',
         'uom_id',
         'image',
@@ -40,11 +39,6 @@ class Product extends Model
     public function Categories()
     {
         return $this->belongsTo(ProductCategory::class,'category_id');
-    }
-
-    public function Materials()
-    {
-        return $this->belongsTo(MaterialGroup::class,'material_group_id');
     }
 
     public function Uoms()

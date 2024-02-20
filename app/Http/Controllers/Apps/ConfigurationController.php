@@ -401,7 +401,8 @@ class ConfigurationController extends Controller
             'value' => $request->input('value'),
             'updated_by' => auth()->user()->name,
         ];
-        $data = UomValue::find($id)->update($input);
+        $data = UomValue::find($id);
+        $data->update($input);
         $log = 'Satuan '.($data->name).' Berhasil Diubah';
          \LogActivity::addToLog($log);
         $notification = array (

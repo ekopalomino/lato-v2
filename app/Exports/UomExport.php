@@ -21,6 +21,6 @@ class UomExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        return UomValue::where('deleted_at',NULL)->select('id','name')->get();
+        return UomValue::select('id','name')->get();
     }
 }

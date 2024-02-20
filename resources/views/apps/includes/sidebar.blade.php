@@ -84,14 +84,14 @@
             </li>
             @endcan
             @can('Can Access Products')
-            <li class="nav-item {{ set_active(['product-cat.index','product.index','product.create','product.edit','product.page','material.index']) }}">
+            <li class="nav-item {{ set_active(['product-cat.index','product.index','product.inventory','product.create','product.edit','product.page','material.index']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-social-dropbox"></i>
             		<span class="title">Product</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                	<li class="nav-item {{ set_active(['product.index','product.create','product.edit','product.page']) }}">
+                	<li class="nav-item {{ set_active(['product.index','product.inventory','product.create','product.edit','product.page']) }}">
                 		<a href="{{ route('product.index') }}" class="nav-link ">
                             <span class="title">Product Catalog</span>
                         </a>
@@ -169,11 +169,6 @@
                     <li class="nav-item {{ set_active(['inventory.table','inventory.view']) }}">
                         <a href="{{ route('inventory.table') }}" class="nav-link ">
                             <span class="title">Stock Card</span>
-                        </a>
-                    </li>
-                    <li class="nav-item ">
-                        <a href="" class="nav-link ">
-                            <span class="title">Usage</span>
                         </a>
                     </li>
                 </ul>

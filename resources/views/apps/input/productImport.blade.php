@@ -28,7 +28,9 @@ LATO | Product Import
                         <div class="col-md-6">
                             <div class="m-heading-1 border-red m-bordered">
                                 <h3>How to Import Data</h3>
-                                    <p>Download templates & data from the right side column. Use id number for each data to fill the id field on asset template.</p>
+                                    <p>1. Download templates & data source from the right side column.</p>
+                                    <p>2. Use id number from each data source to fill the category_id and uom_id field on product template.</p>
+                                    <p>3. Make sure that SAP code are unique for every product.</p>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -51,12 +53,6 @@ LATO | Product Import
                                             <label class="col-md-2 control-label">Product</label>
                                             <div class="col-md-6">
                                             <a button type="button" class="btn default red" href="{{ route('product.template') }}">Download</a>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Material Group</label>
-                                            <div class="col-md-6">
-                                            <a button type="button" class="btn default red" href="{{ route('material.export') }}">Download</a>
                                             </div>
                                         </div>
                                         <div class="form-group">
