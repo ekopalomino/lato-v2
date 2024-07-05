@@ -64,6 +64,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="control-label">Department</label>
+                        {!! Form::select('dept_id', $departments,old('dept_id'), array('class' => 'form-control')) !!}
+                    </div>
+                </div>                                                              
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="control-label">Warehouse</label>
                         {!! Form::select('warehouse_id', $warehouses,old('warehouse_id'), array('class' => 'form-control')) !!}
                     </div>

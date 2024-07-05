@@ -100,6 +100,14 @@ LATO | Users
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label class="control-label">Department</label>
+                                                    {!! Form::select('dept_id', [null=>'Please Select'] + $departments,[], array('class' => 'form-control')) !!}
+                                                </div>
+                                            </div>                                                              
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <label class="control-label">Warehouse</label>
                                                     {!! Form::select('warehouse_id', [null=>'Please Select'] + $warehouses,[], array('class' => 'form-control')) !!}
                                                 </div>
@@ -123,6 +131,7 @@ LATO | Users
                 				<th>Email</th>
                 				<th>Access Role</th>
                                 <th>Branch</th>
+                                <th>Department</th>
                                 <th>Warehouse</th>
                 				<th>Status</th>
                 				<th>Last Login</th>
@@ -146,6 +155,11 @@ LATO | Users
                                 <td>
                                     @if(!empty($user->branch_id))
                                     {{ $user->Branches->branch_name }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!empty($user->dept_id))
+                                    {{ $user->Departments->dept_name }}
                                     @endif
                                 </td>
                                 <td>

@@ -7,6 +7,7 @@ use iteos\Http\Controllers\Controller;
 use iteos\Models\User;
 use iteos\Models\Warehouse;
 use iteos\Models\Branch;
+use iteos\Models\Department;
 use iteos\Models\Status;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -30,10 +31,11 @@ class UserManagementController extends Controller
         $users = User::orderBy('name','asc')
                         ->get();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
+        $departments = Department::where('deleted_at',NULL)->pluck('dept_name','id')->toArray();
         $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
         $roles = Role::pluck('name','name')->all();
         
-        return view('apps.pages.users',compact('users','branches','warehouses','roles'));
+        return view('apps.pages.users',compact('users','branches','departments','warehouses','roles'));
     }
 
     public function userProfile()
@@ -51,6 +53,7 @@ class UserManagementController extends Controller
             'password' => 'required|same:confirm-password',
             'roles' => 'required',
             'branch_id' => 'required',
+            'dept_id' => 'required',
             'warehouse_id' => 'required',
 
         ]);
@@ -83,9 +86,10 @@ class UserManagementController extends Controller
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
         $branches = Branch::where('deleted_at',NULL)->pluck('branch_name','id')->toArray();
+        $departments = Department::where('deleted_at',NULL)->pluck('dept_name','id')->toArray();
         $warehouses = Warehouse::where('deleted_at',NULL)->pluck('name','id')->toArray();
         
-        return view('apps.edit.users',compact('user','roles','userRole','branches','warehouses'))->renderSections()['content'];
+        return view('apps.edit.users',compact('user','roles','userRole','branches','departments','warehouses'))->renderSections()['content'];
     }
 
     public function userUpdate(Request $request, $id)
@@ -96,6 +100,7 @@ class UserManagementController extends Controller
             'password' => 'same:confirm-password',
             'roles' => 'required',
             'branch_id' => 'required',
+            'dept_id' => 'required',
             'warehouse_id' => 'required',
         ]);
 

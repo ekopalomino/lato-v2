@@ -25,6 +25,7 @@ class User extends Authenticatable
         'avatar',
         'division_id',
         'branch_id',
+        'dept_id',
         'warehouse_id',
         'status_id',
         'last_login_at',
@@ -56,9 +57,9 @@ class User extends Authenticatable
         return $this->belongsTo(Status::class,'status_id');
     }
 
-    public function Divisions()
+    public function Departments()
     {
-        return $this->belongsTo(Division::class,'division_id');
+        return $this->belongsTo(Department::class,'dept_id');
     }
 
     public function Branches()

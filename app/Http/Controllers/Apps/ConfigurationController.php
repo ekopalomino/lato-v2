@@ -444,7 +444,7 @@ class ConfigurationController extends Controller
     public function deptStore(Request $request)
     {
         $this->validate($request, [
-            'dept_name' => 'required|unique:departments,dept_name',
+            'dept_name' => 'required',
             'branch_id' => 'required',
         ]);
 
