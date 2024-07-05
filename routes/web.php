@@ -61,6 +61,13 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('settings/branch/edit/{id}','Apps\ConfigurationController@branchEdit')->name('branch.edit');
     Route::post('settings/branch/update/{id}','Apps\ConfigurationController@branchUpdate')->name('branch.update');
     Route::post('settings/branch/delete/{id}','Apps\ConfigurationController@branchDestroy')->name('branch.destroy');
+
+    Route::get('settings/department','Apps\ConfigurationController@deptIndex')->name('dept.index');
+    Route::post('settings/department/create','Apps\ConfigurationController@deptStore')->name('dept.store');
+    Route::get('settings/department/edit/{id}','Apps\ConfigurationController@deptEdit')->name('dept.edit');
+    Route::post('settings/department/update/{id}','Apps\ConfigurationController@deptUpdate')->name('dept.update');
+    Route::post('settings/department/delete/{id}','Apps\ConfigurationController@deptDestroy')->name('dept.destroy');
+
     Route::get('settings/warehouse','Apps\ConfigurationController@warehouseIndex')->name('warehouse.index');
     Route::post('settings/warehouse/create','Apps\ConfigurationController@warehouseStore')->name('warehouse.store');
     Route::get('settings/warehouse/edit/{id}','Apps\ConfigurationController@warehouseEdit')->name('warehouse.edit');

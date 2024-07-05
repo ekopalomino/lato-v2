@@ -14,7 +14,7 @@
                 </a>
             </li>
             @can('Can Access Settings')
-            <li class="nav-item {{ set_active(['coas.index','branch.index','warehouse.index','uom-cat.index','uom-val.index']) }}">
+            <li class="nav-item {{ set_active(['coas.index','branch.index','warehouse.index','uom-cat.index','uom-val.index','dept.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">Configuration</span>
@@ -29,6 +29,11 @@
                     <li class="nav-item {{ set_active(['branch.index']) }}">
                         <a href="{{ route('branch.index') }}" class="nav-link">
                             <span class="title">Branch</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ set_active(['dept.index']) }}">
+                        <a href="{{ route('dept.index') }}" class="nav-link">
+                            <span class="title">Department</span>
                         </a>
                     </li>
                     <li class="nav-item {{ set_active(['warehouse.index']) }}">

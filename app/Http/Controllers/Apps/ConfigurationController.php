@@ -10,6 +10,7 @@ use iteos\Models\Branch;
 use iteos\Models\ChartOfAccount;
 use iteos\Models\UomCategory;
 use iteos\Models\UomValue;
+use iteos\Models\Department;
 use iteos\Exports\UomExport;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -430,5 +431,87 @@ class ConfigurationController extends Controller
     public function uomExport()
     {
         return Excel::download(new UomExport, 'uom.xlsx');
+    }
+
+    public function deptIndex()
+    {
+        $data = Department::where('deleted_at',NULL)->orderBy('dept_name','asc')->get();
+        $branches = Branch::pluck('branch_name','id')->toArray();
+        
+        return view('apps.pages.department',compact('data','branches'));
+    }
+
+    public function deptStore(Request $request)
+    {
+        $this->validate($request, [
+            'dept_name' => 'required|unique:departments,dept_name',
+            'branch_id' => 'required',
+        ]);
+
+        $input = [
+            'dept_name' => $request->input('dept_name'),
+            'branch_id' => $request->input('branch_id'),
+            'created_by' => auth()->user()->id,
+        ];
+        $data = Department::create($input);
+        $log = 'Department '.($data->name).' Created';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Department '.($data->name).' Created',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('dept.index')->with($notification);
+    }
+
+    public function deptEdit($id)
+    {
+        $data = Department::find($id);
+        
+        $branches = Branch::pluck('branch_name','id')->toArray();
+
+        return view('apps.edit.department',compact('data','branches'))->renderSections()['content'];
+    }
+
+    public function deptUpdate(Request $request,$id)
+    {
+        $this->validate($request, [
+           'dept_name' => 'required',
+            'branch_id' => 'required',
+        ]);
+
+        $input = [
+            'dept_name' => $request->input('dept_name'),
+            'branch_id' => $request->input('branch_id'),
+            'updated_by' => auth()->user()->id,
+        ];
+        $data = Department::find($id);
+        $data->update($input);
+        $log = 'Department '.($data->dept_name).' Updated';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Department '.($data->dept_name).' Updated',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('dept.index')->with($notification);
+    }
+
+    public function deptDestroy($id)
+    {
+        $data = Department::find($id);
+        $destroy = [
+            'deleted_at' => Carbon::now()->toDateTimeString(),
+            'updated_by' => auth()->user()->id,
+        ];
+        $data->update($destroy);
+        $log = 'Department '.($data->dept_name).' Deleted';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Department '.($data->dept_name).' Deleted',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('dept.index')->with($notification);
     }
 }
